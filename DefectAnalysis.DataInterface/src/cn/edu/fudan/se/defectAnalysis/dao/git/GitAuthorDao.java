@@ -19,12 +19,14 @@ public class GitAuthorDao {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println(new GitAuthorDao().listAllAuthors().size());
+		System.out.println(new GitAuthorDao().listAllAuthors(DaoConstants.HIBERNATE_LOCATION_PATH).size());
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GitAuthor> listAllAuthors() {
-		return HibernateUtils.retrieveAll(GitAuthor.class,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+	public List<GitAuthor> listAllAuthors(String hibernateConf) {
+		if(hibernateConf==null||hibernateConf.isEmpty()){
+			return null;
+		}
+		return HibernateUtils.retrieveAll(GitAuthor.class,hibernateConf);
 	}
 }
