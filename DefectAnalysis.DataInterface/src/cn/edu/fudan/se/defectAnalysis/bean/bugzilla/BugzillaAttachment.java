@@ -266,4 +266,20 @@ public class BugzillaAttachment {
 	public void setContent_type(String content_type) {
 		this.content_type = content_type;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BugzillaAttachment [id=" + id + ", last_change_time="
+				+ last_change_time + ", summary=" + summary + ", flags="
+				+ flags + ", is_obsolete=" + is_obsolete + ", data=" + data
+				+ ", is_patch=" + is_patch + ", bug_id=" + bug_id
+				+ ", file_name=" + file_name + ", attacher=" + attacher
+				+ ", creator=" + creator + ", size=" + size + ", description="
+				+ description + ", is_private=" + is_private
+				+ ", creation_time=" + creation_time + ", content_type="
+				+ content_type + "]";
+	}
 }

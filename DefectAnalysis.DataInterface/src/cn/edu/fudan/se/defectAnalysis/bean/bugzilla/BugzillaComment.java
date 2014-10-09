@@ -154,4 +154,16 @@ public class BugzillaComment {
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BugzillaComment [commentiId=" + commentiId + ", commentText="
+				+ commentText + ", bugId=" + bugId + ", author=" + author
+				+ ", time=" + time + ", count=" + count + ", creation_time="
+				+ creation_time + ", is_private=" + is_private + ", creator="
+				+ creator + "]";
+	}
 }

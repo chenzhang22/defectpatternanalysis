@@ -179,4 +179,15 @@ public class BugzillaHistory implements Serializable{
 	public void setAttachment_id(int attachment_id) {
 		this.attachment_id = attachment_id;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BugzillaHistory [history_count=" + history_count + ", bug_id="
+				+ bug_id + ", time=" + time + ", who=" + who + ", field_name="
+				+ field_name + ", added=" + added + ", removed=" + removed
+				+ ", attachment_id=" + attachment_id + "]";
+	}
 }

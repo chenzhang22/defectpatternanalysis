@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * @author Lotay
  * 
  */
-public class BuzillaBug {
+public class BugzillaBug {
 	private int id;
 	private String summary;
 	private String target_milestone;
@@ -41,7 +41,8 @@ public class BuzillaBug {
 	private String whiteboard;
 	private String classification;
 	private String cc;
-
+	private int dupe_of;
+	private String alias;
 	/**
 	 * @return the id
 	 */
@@ -505,5 +506,57 @@ public class BuzillaBug {
 	 */
 	public void setCc(String cc) {
 		this.cc = cc;
+	}
+
+	/**
+	 * @return the dupe_of
+	 */
+	public int getDupe_of() {
+		return dupe_of;
+	}
+
+	/**
+	 * @param dupe_of the dupe_of to set
+	 */
+	public void setDupe_of(int dupe_of) {
+		this.dupe_of = dupe_of;
+	}
+
+	/**
+	 * @return the alias
+	 */
+	public String getAlias() {
+		return alias;
+	}
+
+	/**
+	 * @param alias the alias to set
+	 */
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BugzillaBug [id=" + id + ", summary=" + summary
+				+ ", target_milestone=" + target_milestone + ", see_also="
+				+ see_also + ", last_change_time=" + last_change_time
+				+ ", is_confirmed=" + is_confirmed + ", is_open=" + is_open
+				+ ", resolution=" + resolution + ", depends_on=" + depends_on
+				+ ", version=" + version + ", creator=" + creator + ", op_sys="
+				+ op_sys + ", component=" + component + ", priority="
+				+ priority + ", creation_time=" + creation_time
+				+ ", qa_contact=" + qa_contact + ", groups=" + groups
+				+ ", platform=" + platform + ", flags=" + flags + ", keywords="
+				+ keywords + ", is_creator_accessible=" + is_creator_accessible
+				+ ", status=" + status + ", is_cc_accessible="
+				+ is_cc_accessible + ", severity=" + severity + ", blocks="
+				+ blocks + ", url=" + url + ", product=" + product
+				+ ", assigned_to=" + assigned_to + ", whiteboard=" + whiteboard
+				+ ", classification=" + classification + ", cc=" + cc
+				+ ", dupe_of=" + dupe_of + ", alias=" + alias + "]";
 	}
 }
