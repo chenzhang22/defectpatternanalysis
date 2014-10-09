@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.bugzilla">
+	<class name="BugzillaBug" table="bugzilla_bug">
+		<id column="id" name="id" type="integer">
+			<generator class="assigned" />
+		</id>
+
+		<property column="summary" name="summary" type="string" />
+		<property column="target_milestone" name="target_milestone"
+			type="string" />
+		<property column="see_also" name="see_also" type="string" />
+		<property column="last_change_time" name="last_change_time"
+			type="timestamp" />
+		<property column="is_confirmed" name="is_confirmed" type="boolean" />
+		<property column="is_open" name="is_open" type="boolean" />
+		<property column="resolution" name="resolution" type="string" />
+		<property column="depends_on" name="depends_on" type="string" />
+		<property column="version" name="version" type="string" />
+		<property column="creator" name="creator" type="string" />
+		<property column="op_sys" name="op_sys" type="string" />
+		<property column="component" name="component" type="string" />
+		<property column="priority" name="priority" type="string" />
+		<property column="creation_time" name="creation_time" type="timestamp" />
+		<property column="qa_contact" name="qa_contact" type="string" />
+		<property column="groups" name="groups" type="string" />
+		<property column="platform" name="platform" type="string" />
+		<property column="flags" name="flags" type="string" />
+		<property column="keywords" name="keywords" type="string" />
+		<property column="is_creator_accessible" name="is_creator_accessible"
+			type="boolean" />
+		<property column="status" name="status" type="string" />
+		<property column="is_cc_accessible" name="is_cc_accessible"
+			type="boolean" />
+		<property column="severity" name="severity" type="string" />
+		<property column="blocks" name="blocks" type="string" />
+		<property column="url" name="url" type="string" />
+		<property column="product" name="product" type="string" />
+		<property column="assigned_to" name="assigned_to" type="string" />
+		<property column="whiteboard" name="whiteboard" type="string" />
+		<property column="classification" name="classification" type="string" />
+		<property column="cc" name="cc" type="string" />
+		<property column="dupe_of" name="dupe_of" type="integer" />
+		<property column="alias" name="alias" type="string" />
+	</class>
+</hibernate-mapping>

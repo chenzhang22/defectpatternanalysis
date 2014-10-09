@@ -14,16 +14,32 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
  * 
  */
 public class GitAuthorDao {
-
+	private String hibernateConf = null;
+	
 	/**
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
-		System.out.println(new GitAuthorDao().listAllAuthors(DaoConstants.HIBERNATE_LOCATION_PATH).size());
+	public static void main(String[] args) throws Exception {
+		System.out.println(new GitAuthorDao(DaoConstants.HIBERNATE_LOCATION_PATH).listAllAuthors().size());
 	}
 
+	/**
+	 * @param hibernateConf
+	 * @throws Exception 
+	 */
+	public GitAuthorDao(String hibernateConf) throws Exception {
+		super();
+		if(hibernateConf==null){
+			throw new Exception("The hibernate configuration file is null.");
+		}
+		this.hibernateConf = hibernateConf;
+	}
+
+
+
 	@SuppressWarnings("unchecked")
-	public List<GitAuthor> listAllAuthors(String hibernateConf) {
+	public List<GitAuthor> listAllAuthors() {
 		if(hibernateConf==null||hibernateConf.isEmpty()){
 			return null;
 		}

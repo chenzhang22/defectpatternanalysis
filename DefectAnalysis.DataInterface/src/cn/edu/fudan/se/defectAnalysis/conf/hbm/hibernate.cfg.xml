@@ -17,6 +17,9 @@
 
 		<!-- OR Mappings -->
 		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_author.hbm.xml" />
+		
+		
+		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_bug.hbm.xml" />
 
 	</session-factory>
 </hibernate-configuration>
