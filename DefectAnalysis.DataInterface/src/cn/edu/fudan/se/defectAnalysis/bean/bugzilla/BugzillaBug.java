@@ -41,7 +41,7 @@ public class BugzillaBug {
 	private String whiteboard;
 	private String classification;
 	private String cc;
-	private int dupe_of;
+	private int dupe_of = -1;
 	private String alias;
 	/**
 	 * @return the id
