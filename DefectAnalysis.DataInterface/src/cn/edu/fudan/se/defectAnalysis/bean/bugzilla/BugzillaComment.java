@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * 
  */
 public class BugzillaComment {
-	private int commentiId;
+	private int commentId;
 	private String commentText;
 	private int bugId;
 	private String author;
@@ -21,18 +21,17 @@ public class BugzillaComment {
 	private String creator;
 
 	/**
-	 * @return the commentiId
+	 * @return the commentId
 	 */
-	public int getCommentiId() {
-		return commentiId;
+	public int getCommentId() {
+		return commentId;
 	}
 
 	/**
-	 * @param commentiId
-	 *            the commentiId to set
+	 * @param commentId the commentId to set
 	 */
-	public void setCommentiId(int commentiId) {
-		this.commentiId = commentiId;
+	public void setCommentId(int commentId) {
+		this.commentId = commentId;
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class BugzillaComment {
 	 */
 	@Override
 	public String toString() {
-		return "BugzillaComment [commentiId=" + commentiId + ", commentText="
+		return "BugzillaComment [commentiId=" + commentId + ", commentText="
 				+ commentText + ", bugId=" + bugId + ", author=" + author
 				+ ", time=" + time + ", count=" + count + ", creation_time="
 				+ creation_time + ", is_private=" + is_private + ", creator="
