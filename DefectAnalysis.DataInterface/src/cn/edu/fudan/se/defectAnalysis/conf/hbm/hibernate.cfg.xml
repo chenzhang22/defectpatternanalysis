@@ -15,11 +15,27 @@
 		<property name="hibernate.connection.characterEncoding">utf-8</property>
 
 
-		<!-- OR Mappings -->
+		<!-- OR Mappings for git.. -->
 		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_author.hbm.xml" />
-		
-		
-		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_bug.hbm.xml" />
+		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_changes.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_commitinfo.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_sourcefile.hbm.xml" />
+
+		<!-- OR Mappings for bugzilla -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_attachment.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_bug.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_comment.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_history.hbm.xml" />
+
+		<!-- OR Mappings for link -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitfiltedlink.hbm.xml" />
 
 	</session-factory>
 </hibernate-configuration>

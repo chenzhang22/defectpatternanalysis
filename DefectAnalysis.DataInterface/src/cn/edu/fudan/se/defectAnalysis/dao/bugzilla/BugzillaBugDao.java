@@ -37,7 +37,7 @@ public class BugzillaBugDao {
 		}
 		this.hibernateConf = hibernateConf;
 	}
-
+	@SuppressWarnings("unchecked")
 	public List<BugzillaBug> loadBugzillaBugsByProduct(String product) throws Exception{
 		if(hibernateConf==null||hibernateConf.isEmpty()){
 			throw new Exception("The hibernate configuration file is null.");

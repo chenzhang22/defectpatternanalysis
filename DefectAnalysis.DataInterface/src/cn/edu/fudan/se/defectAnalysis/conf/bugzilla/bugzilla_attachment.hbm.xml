@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.bugzilla">
+	<class name="BugzillaBug" table="bugzilla_bug">
+		<id column="commentId" name="commentId" type="integer">
+			<generator class="assigned" />
+		</id>
+		<property column="last_change_time" name="last_change_time"
+			type="timestamp" />
+		<property column="summary" name="summary" type="string" />
+		<property column="flags" name="flags" type="string" />
+		<property column="is_obsolete" name="is_obsolete" type="boolean" />
+		<property column="data" name="data" type="string" />
+		<property column="is_patch" name="is_patch" type="boolean" />
+		<property column="bug_id" name="bug_id" type="integer" />
+		<property column="file_name" name="file_name" type="string" />
+		<property column="attacher" name="attacher" type="string" />
+		<property column="creator" name="creator" type="string" />
+		<property column="size" name="size" type="integer" />
+		<property column="description" name="description" type="string" />
+		<property column="is_private" name="is_private" type="boolean" />
+		<property column="creation_time" name="creation_time" type="timestamp" />
+		<property column="content_type" name="content_type" type="string" />
+	</class>
+</hibernate-mapping>

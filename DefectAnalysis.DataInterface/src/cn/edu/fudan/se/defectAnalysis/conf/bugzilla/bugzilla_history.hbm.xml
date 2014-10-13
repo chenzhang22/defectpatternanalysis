@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.bugzilla">
+	<class name="BugzillaBug" table="bugzilla_bug">
+		<composite-id>
+			<key-property name="bug_id" column="bug_id" type="integer" />
+			<key-property name="history_count" column="history_count"
+				type="int" />
+		</composite-id>
+
+		<property column="time" name="time" type="timestamp" />
+		<property column="who" name="who" type="string" />
+		<property column="field_name" name="field_name" type="string" />
+		<property column="added" name="added" type="string" />
+		<property column="removed" name="removed" type="string" />
+		<property column="attachment_id" name="attachment_id" type="integer" />
+	</class>
+</hibernate-mapping>

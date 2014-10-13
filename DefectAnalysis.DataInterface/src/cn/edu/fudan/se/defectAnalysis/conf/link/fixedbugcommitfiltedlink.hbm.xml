@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.link">
+	<class name="FixedBugCommitFiltedLink" table="fixedbugcommitfiltedlink">
+		<composite-id>
+			<key-property name="revisionId" column="revisionId"
+				type="string" />
+			<key-property name="bugId" column="bugId" type="int" />
+		</composite-id>
+	</class>
+</hibernate-mapping>

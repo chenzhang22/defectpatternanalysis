@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.git">
+	<class name="GitCommitInfo" table="git_commitinfo">
+		<id column="revisionID" name="revisionID" type="string">
+			<generator class="assigned" />
+		</id>
+		<property column="previousRID" name="previousRID" type="string" />
+		<property column="postRID" name="postRID" type="string" />
+		<property column="authorID" name="authorID" type="string" />
+		<property column="log" name="log" type="string" />
+		<property column="time" name="time" type="timestamp" />
+		<property column="component" name="component" type="string" />
+	</class>
+</hibernate-mapping>
