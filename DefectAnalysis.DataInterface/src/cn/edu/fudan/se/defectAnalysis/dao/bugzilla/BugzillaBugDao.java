@@ -18,7 +18,7 @@ public class BugzillaBugDao {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 		BugzillaBugDao bugDao = new BugzillaBugDao();
 		String product = "Platform";
 		List<BugzillaBug> bugs = bugDao.loadBugzillaBugsByProduct(product);
@@ -26,10 +26,9 @@ public class BugzillaBugDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BugzillaBug> loadBugzillaBugsByProduct(String product)
-			throws Exception {
+	public List<BugzillaBug> loadBugzillaBugsByProduct(String product){
 		if (product == null) {
-			throw new Exception("The product is null.");
+			return null;
 		}
 		String hql = "from BugzillaBug where product = '" + product + "'";
 		return HibernateUtils.retrieveObjects(hql,
@@ -37,10 +36,9 @@ public class BugzillaBugDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaBug loadBugzillaBugsByBugId(String product, int bugId)
-			throws Exception {
+	public BugzillaBug loadBugzillaBugsByBugId(String product, int bugId) {
 		if (product == null) {
-			throw new Exception("The product is null.");
+			return null;
 		}
 		String hql = "from BugzillaBug where product = '" + product
 				+ "' and id = " + bugId;
@@ -53,7 +51,7 @@ public class BugzillaBugDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaBug loadBugzillaBugsByBugId(int bugId) throws Exception {
+	public BugzillaBug loadBugzillaBugsByBugId(int bugId){
 		String hql = "from BugzillaBug where id = " + bugId;
 		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
 				DaoConstants.HIBERNATE_LOCATION_PATH);
