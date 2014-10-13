@@ -3,7 +3,7 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.bugzilla">
-	<class name="BugzillaBug" table="bugzilla_bug">
+	<class name="BugzillaHistory" table="bugzilla_history">
 		<composite-id>
 			<key-property name="bug_id" column="bug_id" type="integer" />
 			<key-property name="history_count" column="history_count"
