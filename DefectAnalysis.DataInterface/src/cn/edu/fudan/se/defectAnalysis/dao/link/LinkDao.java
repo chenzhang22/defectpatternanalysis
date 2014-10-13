@@ -20,12 +20,18 @@ public class LinkDao {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(new LinkDao().listLinkByBugId(195346));
+		System.out.println(new LinkDao().listLinks().get(0));
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<FixedBugCommitFiltedLink> listLinkByBugId(final int bugId){
-		String hql = "from FixedBugCommitFiltedLink where bugId = "+bugId;
+		String hql = "from FixedBugCommitFiltedLink where bugId = "+bugId +" order by bugId";
+		return HibernateUtils.retrieveObjects(hql, DaoConstants.HIBERNATE_LOCATION_PATH);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FixedBugCommitFiltedLink> listLinks(){
+		String hql = "from FixedBugCommitFiltedLink order by bugId";
 		return HibernateUtils.retrieveObjects(hql, DaoConstants.HIBERNATE_LOCATION_PATH);
 	}
 }
