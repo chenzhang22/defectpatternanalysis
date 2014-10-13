@@ -14,58 +14,49 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
  * 
  */
 public class BugzillaBugDao {
-	private String hibernateConf = null;
-
 	/**
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		BugzillaBugDao bugDao = new BugzillaBugDao(
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		BugzillaBugDao bugDao = new BugzillaBugDao();
 		String product = "Platform";
 		List<BugzillaBug> bugs = bugDao.loadBugzillaBugsByProduct(product);
 		System.out.println(bugs.get(0) + "\n\n" + bugs.size());
 	}
 
-	/**
-	 * @param hibernateConf
-	 * @throws Exception
-	 */
-	public BugzillaBugDao(String hibernateConf) throws Exception {
-		super();
-		if (hibernateConf == null) {
-			throw new Exception("The hibernate configuration file is null.");
-		}
-		this.hibernateConf = hibernateConf;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<BugzillaBug> loadBugzillaBugsByProduct(String product)
 			throws Exception {
-		if (hibernateConf == null || hibernateConf.isEmpty()) {
-			throw new Exception("The hibernate configuration file is null.");
-		}
 		if (product == null) {
 			throw new Exception("The product is null.");
 		}
 		String hql = "from BugzillaBug where product = '" + product + "'";
-		return HibernateUtils.retrieveObjects(hql, hibernateConf);
+		return HibernateUtils.retrieveObjects(hql,
+				DaoConstants.HIBERNATE_LOCATION_PATH);
 	}
 
 	@SuppressWarnings("unchecked")
 	public BugzillaBug loadBugzillaBugsByBugId(String product, int bugId)
 			throws Exception {
-		if (hibernateConf == null || hibernateConf.isEmpty()) {
-			throw new Exception("The hibernate configuration file is null.");
-		}
 		if (product == null) {
 			throw new Exception("The product is null.");
 		}
 		String hql = "from BugzillaBug where product = '" + product
 				+ "' and id = " + bugId;
 		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
-				hibernateConf);
+				DaoConstants.HIBERNATE_LOCATION_PATH);
+		if (bugzillaBugs == null || bugzillaBugs.size() != 1) {
+			return null;
+		}
+		return bugzillaBugs.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public BugzillaBug loadBugzillaBugsByBugId(int bugId) throws Exception {
+		String hql = "from BugzillaBug where id = " + bugId;
+		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
+				DaoConstants.HIBERNATE_LOCATION_PATH);
 		if (bugzillaBugs == null || bugzillaBugs.size() != 1) {
 			return null;
 		}
