@@ -13,32 +13,31 @@ import java.io.IOException;
  */
 public class GitFileOperation {
 	private static final String suffix = "java";
-
+	private static final String tempFileName = "tempFileName";
 	public static void main(String[] args){
-		String tempFileName = "tempFileName";
 		byte[] data =tempFileName.getBytes();
 		
-		System.out.println(new GitFileOperation().byte2File(data, tempFileName));
+		System.out.println(new GitFileOperation().byte2File(data));
 		new GitFileOperation().deleteTempFile("C:\\Users\\Lotay\\AppData\\Local\\Temp\\tempFileName8890886761654397178java");
 	}
 		
-	public String byte2File(final byte data[], String tempFileName) {
+	public String byte2File(final byte data[]) {
 		File f = null;
-		FileOutputStream o = null;
+		FileOutputStream output = null;
 		try {
 			f = File.createTempFile(tempFileName, suffix);
 			System.out.println("f :"+f .getCanonicalPath());
-			o = new FileOutputStream(f);
-			o.write(data);
-			o.close();
+			output = new FileOutputStream(f);
+			output.write(data);
+			output.close();
 			return f.getAbsolutePath();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
-			if (o != null) {
+			if (output != null) {
 				try {
-					o.close();
+					output.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
