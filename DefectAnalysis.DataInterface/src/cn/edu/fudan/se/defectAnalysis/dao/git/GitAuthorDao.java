@@ -14,35 +14,29 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
  * 
  */
 public class GitAuthorDao {
-	private String hibernateConf = null;
-	
+
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		System.out.println(new GitAuthorDao(DaoConstants.HIBERNATE_LOCATION_PATH).listAllAuthors().size());
+		System.out.println(new GitAuthorDao().listAllAuthors().size());
 	}
-
-	/**
-	 * @param hibernateConf
-	 * @throws Exception 
-	 */
-	public GitAuthorDao(String hibernateConf) throws Exception {
-		super();
-		if(hibernateConf==null){
-			throw new Exception("The hibernate configuration file is null.");
-		}
-		this.hibernateConf = hibernateConf;
-	}
-
-
 
 	@SuppressWarnings("unchecked")
 	public List<GitAuthor> listAllAuthors() {
-		if(hibernateConf==null||hibernateConf.isEmpty()){
+		return HibernateUtils.retrieveAll(GitAuthor.class,
+				DaoConstants.HIBERNATE_LOCATION_PATH);
+	}
+
+	@SuppressWarnings("unchecked")
+	public GitAuthor loadAuthorById(String authorId) {
+		if (authorId == null) {
 			return null;
 		}
-		return HibernateUtils.retrieveAll(GitAuthor.class,hibernateConf);
+		String hql = "from GitAuthor where authorId = '" + authorId + "'";
+		List<GitAuthor> authors = HibernateUtils.retrieveObjects(hql,
+				DaoConstants.HIBERNATE_LOCATION_PATH);
+		return authors == null || authors.size() != 1 ? null : authors.get(0);
 	}
 }
