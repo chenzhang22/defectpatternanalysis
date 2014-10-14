@@ -54,7 +54,6 @@ public class GitFileReader {
 					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
 			git = new Git(repo);
 			treeWalk = new TreeWalk(repo);
-			System.out.println("block");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
