@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defect.track.link;
+package cn.edu.fudan.se.defect.track.file;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import cn.edu.fudan.se.defectAnalysis.dao.link.LinkDao;
  * @author Lotay
  * 
  */
-public class SourceFileTracker {
+public class BugFixFileTracker {
 
 	public void track2SourceFile() {
 		LinkDao linkDao = new LinkDao();

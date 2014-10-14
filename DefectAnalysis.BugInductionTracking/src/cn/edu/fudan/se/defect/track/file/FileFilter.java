@@ -1,13 +1,13 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defect.track.link;
+package cn.edu.fudan.se.defect.track.file;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import cn.edu.fudan.se.defect.track.git.constants.BugTrackingConstants;
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
 /**
