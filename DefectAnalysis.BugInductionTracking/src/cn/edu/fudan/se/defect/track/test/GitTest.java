@@ -1,4 +1,4 @@
-package cn.edu.fudan.se.defect.track.git.test;
+package cn.edu.fudan.se.defect.track.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,7 +34,7 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.WorkingTreeOptions;
 import org.eclipse.jgit.util.io.AutoCRLFInputStream;
 
-import cn.edu.fudan.se.defect.track.git.constants.BugTrackingConstants;
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 
 public class GitTest {
 
@@ -71,9 +71,11 @@ public class GitTest {
 			repo = new FileRepository(new File(
 					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
 			git = new Git(repo);
-
-			gitBlame();
-		} catch (IOException | GitAPIException e1) {
+			RevWalk walk = new RevWalk(repo);
+			System.out.println(walk.parseCommit(repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803")).getShortMessage());
+			track();
+//			gitBlame();
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -92,7 +94,7 @@ public class GitTest {
 			Ref branch = branches.get(0);
 			String branchName = branch.getName();
 			System.out.println("Commits of branch: " + branch.getName());
-			
+			System.out.println(walk.parseCommit(repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803")).getShortMessage());
 			for (RevCommit commit : git.log().all().call()) {
 				boolean foundInThisBranch = false;
 
@@ -118,11 +120,11 @@ public class GitTest {
 				treeWalk.setRecursive(true);
 
 				
-					System.out.println("found: " + treeWalk.getPathString());
 					@SuppressWarnings("static-access")
 					TreeWalk w = treeWalk.forPath(repo,
 							"", tree);
-					
+					System.out.println("found: " + w.getPathString());
+
 					ObjectId id = w.getObjectId(0);
 					InputStream is = open(id, repo);
 					byte[] byteArray = IOUtils.toByteArray(is);
