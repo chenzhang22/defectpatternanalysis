@@ -11,17 +11,12 @@ import cn.edu.fudan.se.defectAnalysis.dao.bugzilla.BugzillaBugDao;
  * 
  */
 public class BugzillaBugExtractor {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public BugzillaBug loadBug(int bugId) {
 		BugzillaBugDao dao = new BugzillaBugDao();
-		return dao.loadBugzillaBugsByBugId(bugId);
+		BugzillaBug bug = dao.loadBugzillaBugsByBugId(bugId);
+		if (bug != null && BugzillaBugFilter.filteBug(bug)) {
+			return bug;
+		}
+		return null;
 	}
 }
