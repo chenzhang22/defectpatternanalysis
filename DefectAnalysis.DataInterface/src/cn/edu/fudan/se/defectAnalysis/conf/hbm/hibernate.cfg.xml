@@ -37,5 +37,8 @@
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitfiltedlink.hbm.xml" />
 
+		<!-- OR Mapping for diff -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/diff_entity.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

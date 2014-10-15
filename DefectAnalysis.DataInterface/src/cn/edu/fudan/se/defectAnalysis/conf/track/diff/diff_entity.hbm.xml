@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track.diff">
+	<class name="DiffEntity" table="diff_entity">
+		<composite-id>
+			<key-property name="bugId" column="bugId" type="integer" />
+			<key-property name="inducedRevisionId" column="inducedRevisionId"
+				type="string" />
+			<key-property name="fixedRevisionId" column="fixedRevisionId"
+				type="string" />
+			<key-property name="fileName" column="fileName" type="string" />
+			<key-property name="basicType" column="basicType" type="string" />
+			<key-property name="inducedStartLineNumber" column="inducedStartLineNumber"
+				type="integer" />
+			<key-property name="inducedStartcolumnNumber" column="inducedStartcolumnNumber"
+				type="integer" />
+			<key-property name="inducedEndLineNumber" column="inducedEndLineNumber"
+				type="integer" />
+			<key-property name="inducedEndcolumnNumber" column="inducedEndcolumnNumber"
+				type="integer" />
+		</composite-id>
+
+		<property column="changeType" name="changeType" type="string" />
+		<property column="message" name="message" type="string" />
+		<property name="fixedStartLineNumber" column="fixedStartLineNumber"
+			type="integer" />
+		<property name="fixedStartcolumnNumber" column="fixedStartcolumnNumber"
+			type="integer" />
+		<property name="fixedEndLineNumber" column="fixedEndLineNumber"
+			type="integer" />
+		<property name="fixedEndcolumnNumber" column="fixedEndcolumnNumber"
+			type="integer" />
+	</class>
+</hibernate-mapping>
