@@ -14,13 +14,15 @@ import java.io.IOException;
 public class TempFileOperator {
 	private static final String suffix = ".java";
 	private static final String tempFileName = "tempFileName";
-	public static void main(String[] args){
-		byte[] data =tempFileName.getBytes();
-		
+
+	public static void main(String[] args) {
+		byte[] data = tempFileName.getBytes();
+
 		System.out.println(new TempFileOperator().byte2File(data));
-		new TempFileOperator().deleteTempFile("C:\\Users\\Lotay\\AppData\\Local\\Temp\\tempFileName8890886761654397178java");
+		new TempFileOperator()
+				.deleteTempFile("C:\\Users\\Lotay\\AppData\\Local\\Temp\\tempFileName8890886761654397178java");
 	}
-		
+
 	public String byte2File(final byte data[]) {
 		File f = null;
 		FileOutputStream output = null;

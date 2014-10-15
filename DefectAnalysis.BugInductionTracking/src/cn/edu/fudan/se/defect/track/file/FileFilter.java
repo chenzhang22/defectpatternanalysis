@@ -35,7 +35,7 @@ public class FileFilter {
 	public static void main(String[] args) {
 		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/SyntheticMethodBinding.java";
 		Matcher matcher = BugTrackingConstants.FILTED_SOURCEFILE_PATTERN
-		.matcher(fileName);
+				.matcher(fileName);
 		System.out.println((matcher.find()));
 	}
 }

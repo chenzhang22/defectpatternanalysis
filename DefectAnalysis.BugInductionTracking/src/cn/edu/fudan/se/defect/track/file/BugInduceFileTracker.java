@@ -51,7 +51,8 @@ public class BugInduceFileTracker {
 	 * @param bugReportTime
 	 * @param fixedBugCommitInfo
 	 * @param fileName
-	 * @param bugInduceFixedCommits: to store the commit between bug-report and bug-fix
+	 * @param bugInduceFixedCommits
+	 *            : to store the commit between bug-report and bug-fix
 	 * @return
 	 */
 	public GitCommitInfo bugInduceTrack(Timestamp bugReportTime,
@@ -71,7 +72,7 @@ public class BugInduceFileTracker {
 			GitCommitInfo gitCommitInfo = gitCommitDao
 					.loadGitCommitInfoByRevisionId(gsf.getRevisionId());
 			if (gitCommitInfo != null) {
-				//The commit should be the last commit before the report time  
+				// The commit should be the last commit before the report time
 				if (gitCommitInfo.getTime().before(bugReportTime)) {
 					if (lastestGitCommitInfo == null
 							|| gitCommitInfo.getTime().after(
@@ -82,7 +83,7 @@ public class BugInduceFileTracker {
 				changeFileCommits.add(gitCommitInfo);
 			}
 		}
-		
+
 		/**
 		 * Search the bug list to find the bug between bug-report and bug-fixed.
 		 * */

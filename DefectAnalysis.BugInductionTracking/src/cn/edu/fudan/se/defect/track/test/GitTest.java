@@ -72,9 +72,11 @@ public class GitTest {
 					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
 			git = new Git(repo);
 			RevWalk walk = new RevWalk(repo);
-			System.out.println(walk.parseCommit(repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803")).getShortMessage());
+			System.out.println(walk.parseCommit(
+					repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803"))
+					.getShortMessage());
 			track();
-//			gitBlame();
+			// gitBlame();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -94,7 +96,9 @@ public class GitTest {
 			Ref branch = branches.get(0);
 			String branchName = branch.getName();
 			System.out.println("Commits of branch: " + branch.getName());
-			System.out.println(walk.parseCommit(repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803")).getShortMessage());
+			System.out.println(walk.parseCommit(
+					repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803"))
+					.getShortMessage());
 			for (RevCommit commit : git.log().all().call()) {
 				boolean foundInThisBranch = false;
 
@@ -119,18 +123,16 @@ public class GitTest {
 				treeWalk.addTree(tree);
 				treeWalk.setRecursive(true);
 
-				
-					@SuppressWarnings("static-access")
-					TreeWalk w = treeWalk.forPath(repo,
-							"", tree);
-					System.out.println("found: " + w.getPathString());
+				@SuppressWarnings("static-access")
+				TreeWalk w = treeWalk.forPath(repo, "", tree);
+				System.out.println("found: " + w.getPathString());
 
-					ObjectId id = w.getObjectId(0);
-					InputStream is = open(id, repo);
-					byte[] byteArray = IOUtils.toByteArray(is);
-					String str = new String(byteArray);
-					System.out.println(str);
-				
+				ObjectId id = w.getObjectId(0);
+				InputStream is = open(id, repo);
+				byte[] byteArray = IOUtils.toByteArray(is);
+				String str = new String(byteArray);
+				System.out.println(str);
+
 				if (foundInThisBranch) {
 					RevCommit prevTargetCommit = targetCommit.getParents()[0];
 					if (prevTargetCommit != null) {
@@ -179,17 +181,22 @@ public class GitTest {
 		bcmd.setStartCommit(git.log().all().call().iterator().next());
 		bcmd.setFilePath("org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/ReadManager.java");
 		BlameResult bresult = bcmd.call();
-		System.out.println("getResultContents:"+bresult.getResultContents().size());
+		System.out.println("getResultContents:"
+				+ bresult.getResultContents().size());
 
 		bresult.computeAll();
-		System.out.println("getResultContents:"+bresult.getResultContents().size());
+		System.out.println("getResultContents:"
+				+ bresult.getResultContents().size());
 
-		for(int i=0;i<bresult.getResultContents().size();i++){
+		for (int i = 0; i < bresult.getResultContents().size(); i++) {
 			System.out.println();
-			System.out.println("getSourceLine:"+i+">>"+bresult.getSourceLine(i));
-			System.out.println("getSourceCommit:"+bresult.getSourceCommit(i).getName()+"\t"+bresult.getSourceCommit(i).getShortMessage());
+			System.out.println("getSourceLine:" + i + ">>"
+					+ bresult.getSourceLine(i));
+			System.out.println("getSourceCommit:"
+					+ bresult.getSourceCommit(i).getName() + "\t"
+					+ bresult.getSourceCommit(i).getShortMessage());
 		}
-		
+
 		System.out.println(bresult);
 	}
 }
