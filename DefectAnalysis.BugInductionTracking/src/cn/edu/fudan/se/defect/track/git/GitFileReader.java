@@ -87,7 +87,6 @@ public class GitFileReader {
 				byte[] byteArray = IOUtils.toByteArray(is);
 				return byteArray;
 			}else{
-
 				System.err.println("Cannot found file(" + fileName + ") in revision("
 						+ revisionId + "): " + treeWalk.getPathString());
 			}
