@@ -15,4 +15,5 @@ public class BugTrackingConstants {
 	public static final Pattern FILTED_SOURCEFILE_PATTERN = Pattern.compile(
 			FILTED_SOURCEFILE_STRING, Pattern.CASE_INSENSITIVE);
 	public static final String BUG_FIXED_STATUS[] = { "RESOLVED", "VERIFIED" };
+	public static final String HIBERNATE_CONF_PATH = "src/cn/edu/fudan/se/defectAnalysis/conf/hbm/hibernate.cfg.xml";
 }
