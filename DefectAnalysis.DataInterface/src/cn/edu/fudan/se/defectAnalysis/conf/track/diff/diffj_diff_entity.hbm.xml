@@ -3,8 +3,9 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track.diff">
-	<class name="DiffEntity" table="diff_entity">
+	<class name="DiffJDiffEntity" table="fixed_diffj_diff_entity">
 		<composite-id>
+			<key-property name="diffMethod" column="diffMethod" type="string" />
 			<key-property name="bugId" column="bugId" type="integer" />
 			<key-property name="inducedRevisionId" column="inducedRevisionId"
 				type="string" />

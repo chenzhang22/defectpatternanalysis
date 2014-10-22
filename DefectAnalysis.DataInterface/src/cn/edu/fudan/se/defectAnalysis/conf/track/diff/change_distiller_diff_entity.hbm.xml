@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track.diff">
+	<class name="ChangeDistillerDiffEntity" table="fixed_change_distiller_diff_entity">
+		<composite-id>
+			<key-property name="diffMethod" column="diffMethod" type="string" />
+			<key-property name="bugId" column="bugId" type="integer" />
+			<key-property name="inducedRevisionId" column="inducedRevisionId"
+				type="string" />
+			<key-property name="fixedRevisionId" column="fixedRevisionId"
+				type="string" />
+			<key-property name="fileName" column="fileName" type="string" />
+			<key-property name="basicChangeType" column="basicChangeType" type="string" />
+			<key-property name="changeEntityType" column="changeEntityType" type="string" />
+			<key-property name="startCode" column="startCode"
+				type="integer" />
+			<key-property name="endCode" column="endCode"
+				type="integer" />
+		</composite-id>
+	<!-- 	
+	private int modifiers;
+	private int startLine;
+	private int startColumn;
+	private int endLine;
+	private int endColumn;
+	private int startNewCode;
+	private int endNewCode;
+	private int startNewLine;
+	private int startNewColumn;
+	private int endNewLine;
+	private int endNewColumn;
+	 -->
+	<property name="modifiers" column="modifiers"
+			type="integer" />
+	<property name="startLine" column="startLine"
+			type="integer" />
+	<property name="startColumn" column="startColumn"
+			type="integer" />
+	<property name="endLine" column="endLine"
+			type="integer" />
+	<property name="endColumn" column="endColumn"
+			type="integer" />
+	<property name="startNewCode" column="startNewCode"
+			type="integer" />
+	<property name="startNewLine" column="startNewLine"
+			type="integer" />
+	<property name="startNewColumn" column="startNewColumn"
+			type="integer" />
+	<property name="endNewCode" column="endNewCode"
+			type="integer" />
+	<property name="endNewLine" column="endNewLine"
+			type="integer" />
+	<property name="endNewColumn" column="endNewColumn"
+			type="integer" />	
+			
+
+			
+			<!-- 
+	private String uniqueName;
+	private String changeType;
+	private boolean isBodyChange;
+	private String significance;
+			 -->
+		
+		<property column="uniqueName" name="uniqueName" type="string" />
+		<property column="newUniqueName" name="newUniqueName" type="string" />
+		<property column="changeType" name="changeType" type="string" />
+		<property column="newEntityType" name="newEntityType" type="string" />
+		
+		<property column="bodyChange" name="bodyChange" type="boolean" />
+		<property column="declarationChange" name="declarationChange" type="boolean" />
+		<property column="significance" name="significance" type="string" />
+		
+		<!-- -	
+	private String parentEntity;
+	private String pType;
+	private String pUniqueName; -->
+		
+		<property column="parentEntity" name="parentEntity" type="string" />
+		<property column="pType" name="pType" type="string" />
+		<property column="pUniqueName" name="pUniqueName" type="string" />
+		
+		
+		
+		
+					
+			<!-- 
+	private int pStartCode;
+	private int pEndCode;
+	private int pStartLine;
+	private int pStartColumn;
+	private int pEndLine;
+	private int pEndColumn;
+	private int pStartNewCode;
+	private int pEndNewCode;
+	private int pStartNewLine;
+	private int pStartNewColumn;
+	private int pEndNewLine;
+	private int pEndNewColumn;
+ -->
+ 
+ 
+ 		<property name="newModifiers" column="newModifiers"
+			type="integer" />
+		<property name="pStartCode" column="pStartCode"
+			type="integer" />
+	<property name="pEndCode" column="pEndCode"
+			type="integer" />
+	<property name="pStartLine" column="pStartLine"
+			type="integer" />
+	<property name="pStartColumn" column="pStartColumn"
+			type="integer" />
+	<property name="pEndLine" column="pEndLine"
+			type="integer" />
+	<property name="pEndColumn" column="pEndColumn"
+			type="integer" />
+	<property name="pStartNewCode" column="pStartNewCode"
+			type="integer" />
+	<property name="pEndNewCode" column="pEndNewCode"
+			type="integer" />
+	<property name="pStartNewLine" column="pStartNewLine"
+			type="integer" />
+	<property name="pStartNewColumn" column="pStartNewColumn"
+			type="integer" />
+	<property name="pEndNewLine" column="pEndNewLine"
+			type="integer" />	
+	<property name="pEndNewColumn" column="pEndNewColumn"
+			type="integer" />	
+	</class>
+</hibernate-mapping>
