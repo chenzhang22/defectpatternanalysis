@@ -4,8 +4,8 @@
 package cn.edu.fudan.se.defect.track.file;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
@@ -41,7 +41,7 @@ public class BugInduceFileTracker {
 
 		BugInduceFileTracker track = new BugInduceFileTracker();
 		GitCommitInfo commitInfo = track.bugInduceTrack(bugReportTime, null,
-				fileName, new ArrayList<GitCommitInfo>());
+				fileName, null);
 		System.out.println("commitInfo:" + commitInfo);
 	}
 
@@ -51,13 +51,13 @@ public class BugInduceFileTracker {
 	 * @param bugReportTime
 	 * @param fixedBugCommitInfo
 	 * @param fileName
-	 * @param bugInduceFixedCommits
+	 * @param bugReportFixedCommits
 	 *            : to store the commit between bug-report and bug-fix
 	 * @return
 	 */
 	public GitCommitInfo bugInduceTrack(Timestamp bugReportTime,
 			GitCommitInfo fixedBugCommitInfo, String fileName,
-			List<GitCommitInfo> bugInduceFixedCommits) {
+			Map<String,GitCommitInfo> bugReportFixedCommits) {
 		if (bugReportTime == null || fileName == null) {
 			return null;
 		}
@@ -67,34 +67,27 @@ public class BugInduceFileTracker {
 		GitCommitDao gitCommitDao = new GitCommitDao();
 		GitCommitInfo lastestGitCommitInfo = null;
 
-		List<GitCommitInfo> changeFileCommits = new ArrayList<GitCommitInfo>();
+		bugReportFixedCommits.clear();
+
 		for (GitSourceFile gsf : srcFiles) {
 			GitCommitInfo gitCommitInfo = gitCommitDao
 					.loadGitCommitInfoByRevisionId(gsf.getRevisionId());
-			if (gitCommitInfo != null) {
+			if (gitCommitInfo != null) {	
 				// The commit should be the last commit before the report time
-				if (gitCommitInfo.getTime().before(bugReportTime)) {
+				if (gitCommitInfo.getTime()
+						.before(fixedBugCommitInfo.getTime())) {
 					if (lastestGitCommitInfo == null
 							|| gitCommitInfo.getTime().after(
 									lastestGitCommitInfo.getTime())) {
 						lastestGitCommitInfo = gitCommitInfo;
 					}
-				}
-				changeFileCommits.add(gitCommitInfo);
-			}
-		}
-
-		/**
-		 * Search the bug list to find the bug between bug-report and bug-fixed.
-		 * */
-		if (bugInduceFixedCommits != null && lastestGitCommitInfo != null) {
-			bugInduceFixedCommits.clear();
-			Timestamp fixedTime = fixedBugCommitInfo.getTime();
-			for (GitCommitInfo gitCommitInfo : changeFileCommits) {
-				Timestamp commitTime = gitCommitInfo.getTime();
-				if (commitTime.after(bugReportTime)
-						&& commitTime.before(fixedTime)) {
-					bugInduceFixedCommits.add(gitCommitInfo);
+					/**
+					 * Search the bug list to find the bug between bug-report
+					 * and bug-fixed.
+					 * */
+					if (gitCommitInfo.getTime().after(bugReportTime)) {
+						bugReportFixedCommits.put(gitCommitInfo.getRevisionID(),gitCommitInfo);
+					}
 				}
 			}
 		}
