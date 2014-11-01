@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defect.track.extract;
+package cn.edu.fudan.se.defect.track.blame.extract;
 
 import java.util.HashMap;
 import java.util.HashSet;
