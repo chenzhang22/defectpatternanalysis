@@ -11,10 +11,10 @@
 			<key-property name="fixedRevisionId" column="fixedRevisionId"
 				type="string" />
 			<key-property name="fileName" column="fileName" type="string" />
-			<key-property name="inducedlineNumber" column="inducedlineNumber"
+			<key-property name="fixedLineNumber" column="fixedLineNumber"
 				type="integer" />
 		</composite-id>
-		<property name='fixedLineNumber' column='fixedLineNumber' type='integer'/>
+		<property name='inducedlineNumber' column='inducedlineNumber' type='integer'/>
 		<property name='inducedTime' column='inducedTime' type='timestamp'/>
 		<property name='fixedTime' column='fixedTime' type='timestamp'/>
 	</class>

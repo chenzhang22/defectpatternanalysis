@@ -24,8 +24,10 @@ public class GitSourceFileDao {
 				.println(new GitSourceFileDao()
 						.loadSourceFileByRevisionId("00000b60f562c2a527973770ffa6c4e4b7e3b76a"));
 		System.out
-		.println(new GitSourceFileDao()
-				.loadSourceFileByFileName("org.eclipse.jdt.core/dom/org/eclipse/jdt/core/dom/ASTConverter.java").size());
+				.println(new GitSourceFileDao()
+						.loadSourceFileByFileName(
+								"org.eclipse.jdt.core/dom/org/eclipse/jdt/core/dom/ASTConverter.java")
+						.size());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,9 +44,18 @@ public class GitSourceFileDao {
 	public List<GitSourceFile> loadSourceFileByFileName(String fileName) {
 		if (fileName == null) {
 			return null;
-		}	
+		}
 		String hql = "from GitSourceFile where fileName='" + fileName + "'";
 		return HibernateUtils.retrieveObjects(hql,
 				DaoConstants.HIBERNATE_LOCATION_PATH);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GitSourceFile> loadSourceFileNoTest(String hbmPath) {
+		if (hbmPath == null) {
+			return null;
+		}
+		String hql = "from GitSourceFile where fileName not like '%test%' order by fileName,time";
+		return HibernateUtils.retrieveObjects(hql, hbmPath);
 	}
 }

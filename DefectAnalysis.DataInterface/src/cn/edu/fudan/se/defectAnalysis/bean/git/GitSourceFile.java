@@ -136,8 +136,9 @@ public class GitSourceFile implements Serializable{
 
 	@Override
 	public String toString() {
-		return "GitChange [revisionId=" + revisionId + ", newPath=" + newPath
-				+ ", oldPath=" + oldPath + ", changeType=" + changeType
-				+ ", score=" + score + "]";
+		return "GitSourceFile [revisionId=" + revisionId + ", fileName="
+				+ fileName + ", newPath=" + newPath + ", oldPath=" + oldPath
+				+ ", changeType=" + changeType + ", score=" + score + ", time="
+				+ time + "]";
 	}
 }

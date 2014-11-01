@@ -109,13 +109,13 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		result = prime * result + bugId;
 		result = prime * result
 				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + fixedLineNumber;
 		result = prime * result
 				+ ((fixedRevisionId == null) ? 0 : fixedRevisionId.hashCode());
 		result = prime
 				* result
 				+ ((inducedRevisionId == null) ? 0 : inducedRevisionId
 						.hashCode());
-		result = prime * result + inducedlineNumber;
 		return result;
 	}
 
@@ -141,6 +141,9 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		} else if (!fileName.equals(other.fileName)) {
 			return false;
 		}
+		if (fixedLineNumber != other.fixedLineNumber) {
+			return false;
+		}
 		if (fixedRevisionId == null) {
 			if (other.fixedRevisionId != null) {
 				return false;
@@ -153,9 +156,6 @@ public class BugInduceBlameLine implements java.io.Serializable{
 				return false;
 			}
 		} else if (!inducedRevisionId.equals(other.inducedRevisionId)) {
-			return false;
-		}
-		if (inducedlineNumber != other.inducedlineNumber) {
 			return false;
 		}
 		return true;
