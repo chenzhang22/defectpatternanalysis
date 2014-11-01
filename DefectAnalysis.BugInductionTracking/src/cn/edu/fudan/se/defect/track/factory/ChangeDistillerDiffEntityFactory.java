@@ -14,7 +14,7 @@ import cn.edu.fudan.se.defectAnalysis.bean.track.diff.ChangeDistillerDiffEntity;
 import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
 
 public class ChangeDistillerDiffEntityFactory {
-	public List<DiffEntity> build(int bugId, String induceRevisionId,
+	public List<DiffEntity> build(int bugId, String lastRevisionId,
 			String fixedRevisionId, String fileName, FileDistiller distiller, String leftFileName,
 			String rightFileName) {
 		List<DiffEntity> diffEntities = new ArrayList<DiffEntity>();
@@ -29,9 +29,13 @@ public class ChangeDistillerDiffEntityFactory {
 			return diffEntities;
 		}
 		for (SourceCodeChange change : sourceCodeChanges) {
+			if(change instanceof Insert){	// ignore the 
+				continue;
+			}
 			ChangeDistillerDiffEntity chDiffEntity = new ChangeDistillerDiffEntity();
+			
 			chDiffEntity.setBugId(bugId);
-			chDiffEntity.setInduceRevisionId(induceRevisionId);
+			chDiffEntity.setLastRevisionId(lastRevisionId);
 			chDiffEntity.setFixedRevisionId(fixedRevisionId);
 			chDiffEntity.setFileName(fileName);
 
@@ -152,4 +156,5 @@ public class ChangeDistillerDiffEntityFactory {
 
 		return diffEntities;
 	}
+//	private boolean hasChangedByBlame(Set<Integer> changeLines,Change)
 }

@@ -1,16 +1,22 @@
 package cn.edu.fudan.se.defect.track.main;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defect.track.execute.BugFileTracker;
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitFiltedLink;
+import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
 import cn.edu.fudan.se.defectAnalysis.dao.link.LinkDao;
+import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
 public class BugTrackMain {
 	public static void main(String[] args) {
-		int start =5000;
-		int length = 1000;
+		int start = 4780;//4530
+		int length = 220;
 		run(start,length);
 	}
 	
@@ -23,7 +29,15 @@ public class BugTrackMain {
 		for(int i=start;i<start+length&&i<size;i++){
 			int bugId = bugIds.get(i);
 			System.out.println("Bug Tracking for bugId:" + bugId+" index:"+i+"/"+size);
-			tracker.diffJTrack(bugId);
+			Collection<BugInduceBlameLine> inducedBlameLines =new ArrayList<BugInduceBlameLine>();
+
+			Set<DiffEntity> diffEntities = tracker.changeDistillerTrack(bugId,inducedBlameLines);
+			if(!diffEntities.isEmpty()){
+				HibernateUtils.saveAll(diffEntities, BugTrackingConstants.HIBERNATE_CONF_PATH);
+			}
+			if(!inducedBlameLines.isEmpty()){
+				HibernateUtils.saveAll(inducedBlameLines, BugTrackingConstants.HIBERNATE_CONF_PATH);
+			}
 		}
 	}
 

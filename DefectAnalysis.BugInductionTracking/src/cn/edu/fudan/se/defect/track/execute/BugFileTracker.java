@@ -5,6 +5,7 @@ package cn.edu.fudan.se.defect.track.execute;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 
 import cn.edu.fudan.se.defect.track.bugzilla.BugzillaBugExtractor;
-import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defect.track.file.BugFixFileTracker;
 import cn.edu.fudan.se.defect.track.file.BugInduceFileTracker;
 import cn.edu.fudan.se.defect.track.fileop.TempFileOperator;
@@ -24,9 +24,9 @@ import cn.edu.fudan.se.defect.track.git.GitFileReader;
 import cn.edu.fudan.se.defectAnalysis.bean.bugzilla.BugzillaBug;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
+import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
 import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitCommitDao;
-import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
 /**
  * @author Lotay
@@ -36,48 +36,59 @@ public class BugFileTracker {
 	private static final TempFileOperator tempFileOperator = new TempFileOperator();
 	private static final GitFileReader gitFileReader = new GitFileReader();
 
-	public void diffJTrack(int bugId) {
-		diffExecute(bugId, new DiffJDiffExecutor());
+	public Set<DiffEntity> diffJTrack(int bugId,
+			Collection<BugInduceBlameLine> inducedBlameLines) {
+		return diffExecute(bugId, new DiffJDiffExecutor(), inducedBlameLines);
 	}
 
-	public void changeDistillerTrack(int bugId) {
-		diffExecute(bugId, new ChangeDistillerExecutor());
+	public Set<DiffEntity> changeDistillerTrack(int bugId,
+			Collection<BugInduceBlameLine> inducedBlameLines) {
+		return diffExecute(bugId, new ChangeDistillerExecutor(),
+				inducedBlameLines);
 	}
 
 	/**
 	 * @param bugId
 	 */
-	private void diffExecute(int bugId, DiffExecutor executor) {
+	private Set<DiffEntity> diffExecute(int bugId, DiffExecutor executor,
+			Collection<BugInduceBlameLine> inducedBlameLines) {
 		BugzillaBugExtractor bugExtractor = new BugzillaBugExtractor();
 		BugzillaBug bug = bugExtractor.loadBug(bugId);
+		Set<DiffEntity> diffJDiffEntities = new HashSet<DiffEntity>();
+
 		if (bug == null || executor == null) {
-			return;
+			return diffJDiffEntities;
 		}
 
 		BugFixFileTracker tracker = new BugFixFileTracker();
 		Set<GitSourceFile> sourceFiles = tracker.track2SourceFile(bugId);
 
 		if (sourceFiles == null) {
-			return;
+			return diffJDiffEntities;
 		}
 		Timestamp bugReportTime = bug.getCreation_time();
 
 		BugInduceFileTracker bugInduceFileTracker = new BugInduceFileTracker();
 		GitCommitDao gitCommitDao = new GitCommitDao();
-		Map<String,GitCommitInfo> bugReportFixedCommits = new HashMap<String,GitCommitInfo>();
+		Map<String, GitCommitInfo> bugReportFixedCommits = new HashMap<String, GitCommitInfo>();
 
-		Set<DiffEntity> diffJDiffEntities = new HashSet<DiffEntity>();
+		Set<BugInduceBlameLine> tmpInducedBlameLines = new HashSet<BugInduceBlameLine>();
 
 		for (GitSourceFile srcFile : sourceFiles) {
-			String fileName = srcFile.getFileName();
+			String fileName = srcFile.getNewPath();
 			String fixedRevisionId = srcFile.getRevisionId();
 
 			GitCommitInfo fixedBugCommitInfo = gitCommitDao
-					.loadGitCommitInfoByRevisionId(srcFile.getRevisionId());
+					.loadGitCommitInfoByRevisionId(fixedRevisionId);
 
+			String previousRevisionId = fixedBugCommitInfo.getPreviousRID();
+			if(previousRevisionId==null){
+				continue;
+			}
 			GitCommitInfo lastCommitInfo = bugInduceFileTracker.bugInduceTrack(
 					bugReportTime, fixedBugCommitInfo, fileName,
 					bugReportFixedCommits);
+			
 
 			if (lastCommitInfo != null) {
 				String lastRevisionId = lastCommitInfo.getRevisionID();
@@ -97,23 +108,22 @@ public class BugFileTracker {
 				}
 
 				List<DiffEntity> fileDiffs = executor.execute(bugId,
-						lastRevisionId, fixedRevisionId, fileName,
+						previousRevisionId, fixedRevisionId, fileName,
 						bugInducedFileName, bugFixedFileName);
-				if (bugReportFixedCommits != null
-						&& !bugReportFixedCommits.isEmpty()) {
-//					System.out
-//							.println("fileDiffs (before):" + fileDiffs.size());
-					try {
-						GitBlameDiffFilter blameFilter = new GitBlameDiffFilter();
-						fileDiffs = blameFilter.blameFilte(fileDiffs,
-								bugReportFixedCommits.keySet(), lastRevisionId,
-								fileName);
-					} catch (RevisionSyntaxException | IOException
-							| GitAPIException e) {
-						System.out.println("Class:" + this.getClass().getName()
-								+ ", message:" + e.getMessage());
-					}
-//					System.out.println("fileDiffs (after):" + fileDiffs.size());
+				GitBlameDiffFilter blameFilter = new GitBlameDiffFilter();
+
+				try {
+					tmpInducedBlameLines.clear();
+
+					fileDiffs = blameFilter.blameFilte(fileDiffs,
+							bugReportFixedCommits.keySet(), lastRevisionId,
+							fileName, tmpInducedBlameLines);
+					inducedBlameLines.addAll(tmpInducedBlameLines);
+
+				} catch (RevisionSyntaxException | IOException
+						| GitAPIException e) {
+					System.out.println("Class:" + this.getClass().getName()
+							+ ", message:" + e.getMessage());
 				}
 
 				if (fileDiffs != null) {
@@ -123,9 +133,7 @@ public class BugFileTracker {
 				tempFileOperator.deleteTempFile(bugFixedFileName);
 			}
 		}
-//		System.out.println("Saving Tracking Diff-Entities for Bug:" + bugId);
-//		HibernateUtils.saveAll(diffJDiffEntities,
-//				BugTrackingConstants.HIBERNATE_CONF_PATH);
+		return diffJDiffEntities;
 	}
 
 	private String saveTempFile(String fixedRevisionId, String fileName) {

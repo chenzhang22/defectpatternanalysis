@@ -24,8 +24,6 @@ public class ChangeDistillerExecutor implements DiffExecutor {
 
 		FileDistiller distiller = ChangeDistiller
 				.createFileDistiller(Language.JAVA);
-		System.out.println("leftFileName:" + leftFileName);
-		System.out.println("rightFileName:" + rightFileName);
 		File left = new File(leftFileName);
 		File right = new File(rightFileName);
 		distiller.extractClassifiedSourceCodeChanges(left, right);

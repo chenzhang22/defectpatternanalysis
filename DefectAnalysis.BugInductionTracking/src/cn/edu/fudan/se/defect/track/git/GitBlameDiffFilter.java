@@ -4,7 +4,9 @@
 package cn.edu.fudan.se.defect.track.git;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,12 +18,12 @@ import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.revwalk.RevCommit;
 
-import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.diff.ChangeDistillerDiffEntity;
 import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
 import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffJDiffEntity;
-import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
 /**
  * @author Lotay
@@ -45,15 +47,20 @@ public class GitBlameDiffFilter {
 		String startRevisionId = "bfaf9d23a02d05c466f9843a8f1857a7dba35c49";
 		String fileName = "org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/util/HandleFactory.java";
 		new GitBlameDiffFilter().blameFilte(null, null, startRevisionId,
-				fileName);
+				fileName, null);
 	}
 
 	public List<DiffEntity> blameFilte(List<DiffEntity> entities,
-			Set<String> filtedCommits, String lastRevisionId, String fileName)
-			throws RevisionSyntaxException, MissingObjectException,
-			IncorrectObjectTypeException, AmbiguousObjectException,
-			IOException, GitAPIException {
-		if (filtedCommits == null || filtedCommits.isEmpty()) {
+			Set<String> filtedCommits, String lastRevisionId, String fileName,
+			Set<BugInduceBlameLine> blameLines) throws RevisionSyntaxException,
+			MissingObjectException, IncorrectObjectTypeException,
+			AmbiguousObjectException, IOException, GitAPIException {
+		if (filtedCommits == null) {
+			return entities;
+		}
+		if (blameLines != null) {
+			blameLines.clear();
+		} else {
 			return entities;
 		}
 		BlameCommand bcmd = GitUtils.git.blame();
@@ -64,9 +71,7 @@ public class GitBlameDiffFilter {
 		bresult.computeAll();
 
 		List<DiffEntity> filtedEntities = new ArrayList<DiffEntity>();
-		
-		Set<BugInduceBlameLine> blameLines = new HashSet<BugInduceBlameLine>();
-		
+
 		for (DiffEntity diffEntity : entities) {
 			if (diffEntity instanceof DiffJDiffEntity) {
 				DiffJDiffEntity diffjEntity = (DiffJDiffEntity) diffEntity;
@@ -79,17 +84,62 @@ public class GitBlameDiffFilter {
 				}
 				int count = 0;
 				for (int line = startLine - 1; line >= 0 && line < endLine; line++) {
-					String revisionName = bresult.getSourceCommit(line)
-							.getName();
+					RevCommit commit = (bresult.getSourceCommit(line));
+					if (commit == null) {
+						continue;
+					}
+					String revisionName = commit.getName();
 					if (filtedCommits.contains(revisionName)) {
 						count++;
 					} else {
 						BugInduceBlameLine blameLine = new BugInduceBlameLine();
 						blameLine.setBugId(diffjEntity.getBugId());
 						blameLine.setInducedRevisionId(revisionName);
-						blameLine.setFixedRevisionId(diffjEntity.getFixedRevisionId());
+						blameLine.setFixedRevisionId(diffjEntity
+								.getFixedRevisionId());
 						blameLine.setFileName(diffjEntity.getFileName());
-						blameLine.setInducedlineNumber(bresult.getSourceLine(line));
+						blameLine.setInducedlineNumber(bresult
+								.getSourceLine(line));
+						blameLines.add(blameLine);
+					}
+				}
+				if (count == endLine - startLine + 1) {
+					filtedEntities.add(diffEntity);
+				}
+			} else if (diffEntity instanceof ChangeDistillerDiffEntity) {
+				ChangeDistillerDiffEntity changeDistillerDiff = (ChangeDistillerDiffEntity) diffEntity;
+				String changeType = changeDistillerDiff.getChangeType();
+//				 Set<Integer>  changelines = this.changeLines(fileName, changeDistillerDiff.getFixedRevisionId());
+				if (changeType == null) {
+					continue;
+				}
+				if ("LINE_COMMENT".equals(changeType)) {
+					filtedEntities.add(diffEntity);
+					continue;
+				}
+				int startLine = changeDistillerDiff.getStartLine();
+				int endLine = changeDistillerDiff.getEndLine();
+				int count = 0;
+				for (int line = startLine - 1; line >= 0 && line < endLine; line++) {
+					RevCommit commit = (bresult.getSourceCommit(line));
+					if (commit == null) {
+						continue;
+					}
+					String revisionName = commit.getName();
+					if (filtedCommits.contains(revisionName)) {
+						count++;
+					} else {
+						BugInduceBlameLine blameLine = new BugInduceBlameLine();
+						blameLine.setBugId(changeDistillerDiff.getBugId());
+						blameLine.setInducedRevisionId(revisionName);
+						blameLine.setFixedRevisionId(changeDistillerDiff
+								.getFixedRevisionId());
+						blameLine.setFileName(fileName);
+						blameLine.setInducedlineNumber(bresult
+								.getSourceLine(line) + 1);
+						blameLine.setInducedTime(new Timestamp(new Date(bresult
+								.getSourceCommit(line).getCommitTime())
+								.getTime()));
 						blameLines.add(blameLine);
 					}
 				}
@@ -98,13 +148,7 @@ public class GitBlameDiffFilter {
 				}
 			}
 		}
-		
-		
-		//save blame line;
-//		System.out.println("Saving blame lines:"+blameLines.size());
-		HibernateUtils.saveAll(blameLines,
-				BugTrackingConstants.HIBERNATE_CONF_PATH);
-		
+
 		for (DiffEntity entity : filtedEntities) {
 			if (entities.contains(entity)) {
 				entities.remove(entity);
@@ -113,4 +157,29 @@ public class GitBlameDiffFilter {
 		return entities;
 	}
 
+	public Set<Integer> changeLines(String fileName, String revisionId)
+			throws RevisionSyntaxException, MissingObjectException,
+			IncorrectObjectTypeException, AmbiguousObjectException,
+			IOException, GitAPIException {
+		Set<Integer> changeLines = new HashSet<Integer>();
+		if(revisionId==null||fileName==null){
+			return changeLines;
+		}
+		BlameCommand bcmd = GitUtils.git.blame();
+		bcmd.setStartCommit(GitUtils.revWalk.parseCommit(GitUtils.repo
+				.resolve(revisionId)));
+		bcmd.setFilePath(fileName);
+		BlameResult bresult = bcmd.call();
+		bresult.computeAll();
+		
+		int line =0;
+		for(;line< bresult.getResultContents().size();line++){
+			String revision = bresult.getSourceCommit(line).getName();
+			if(revisionId.equals(revision)){
+				changeLines.add(line+1);
+			}
+		}
+		
+		return changeLines;
+	}
 }

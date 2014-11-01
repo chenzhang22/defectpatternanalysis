@@ -18,7 +18,7 @@ public class FileFilter {
 	public static List<GitSourceFile> filter(List<GitSourceFile> files) {
 		List<GitSourceFile> gitSourceFiles = new ArrayList<GitSourceFile>();
 		for (GitSourceFile file : files) {
-			String fileName = file.getFileName();
+			String fileName = file.getNewPath();
 			Matcher matcher = BugTrackingConstants.FILTED_SOURCEFILE_PATTERN
 					.matcher(fileName);
 			if (matcher.find()) {

@@ -65,18 +65,22 @@ public class GitTest {
 
 	static Repository repo;
 	static Git git;
+	static RevWalk walk;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoHeadException,
+			GitAPIException {
 		try {
 			repo = new FileRepository(new File(
 					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
 			git = new Git(repo);
-			RevWalk walk = new RevWalk(repo);
+			walk = new RevWalk(repo);
+
 			System.out.println(walk.parseCommit(
 					repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803"))
 					.getShortMessage());
-			track();
-			// gitBlame();
+
+			// track();
+			gitBlame();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -88,8 +92,6 @@ public class GitTest {
 	 */
 	static void track() throws RevisionSyntaxException {
 		try {
-
-			RevWalk walk = new RevWalk(repo);
 
 			List<Ref> branches = git.branchList().setListMode(ListMode.ALL)
 					.call();
@@ -178,8 +180,9 @@ public class GitTest {
 	public static void gitBlame() throws NoHeadException, GitAPIException,
 			IOException {
 		BlameCommand bcmd = git.blame();
-		bcmd.setStartCommit(git.log().all().call().iterator().next());
-		bcmd.setFilePath("org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/ReadManager.java");
+		bcmd.setStartCommit(walk.parseCommit(repo
+				.resolve("447c4a3138b0e8356dbfa24777955b13411dcda3")));
+		bcmd.setFilePath("org.eclipse.jdt.apt.core/src/org/eclipse/jdt/apt/core/internal/type/PrimitiveTypeImpl.java");
 		BlameResult bresult = bcmd.call();
 		System.out.println("getResultContents:"
 				+ bresult.getResultContents().size());

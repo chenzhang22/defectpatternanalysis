@@ -32,7 +32,7 @@ public class GitFileReader {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String revisionId = "1b76d1263c31e5c68d443b5403fb264d42f38984", fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/ast/Annotation.java";
+		String revisionId = "bba53a7d9b86041ddcc96b8e42826ecbf3c21464", fileName = "org.eclipse.jdt.compiler.apt/src/org/eclipse/jdt/internal/compiler/apt/dispatch/HookedJavaFileObject.java";
 		GitFileReader reader = new GitFileReader();
 		String value = new String(reader.readGitFile(revisionId, fileName));
 		System.out.println(value);
