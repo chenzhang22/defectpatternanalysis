@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitFiltedLink;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitSourceFileDao;
@@ -22,7 +23,7 @@ public class BugFixFileTracker {
 
 	public void track2SourceFile() {
 		LinkDao linkDao = new LinkDao();
-		List<FixedBugCommitFiltedLink> filtedLinks = linkDao.listLinks();
+		List<FixedBugCommitFiltedLink> filtedLinks = linkDao.listLinks(BugTrackingConstants.HIBERNATE_CONF_PATH);
 		Map<Integer, Set<String>> mergedLinks = this.mergeLinks(filtedLinks);
 		if (mergedLinks == null) {
 			return;

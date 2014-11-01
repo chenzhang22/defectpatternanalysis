@@ -43,7 +43,7 @@ public class BugTrackMain {
 
 	private static List<FixedBugCommitFiltedLink> filtedLink(){
 		LinkDao linkDao = new LinkDao();
-		return linkDao.listLinks();
+		return linkDao.listLinks(BugTrackingConstants.HIBERNATE_CONF_PATH);
 	}
 	
 	private static List<Integer> filtedBugs(List<FixedBugCommitFiltedLink> links){

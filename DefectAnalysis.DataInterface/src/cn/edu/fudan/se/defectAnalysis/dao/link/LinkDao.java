@@ -20,7 +20,7 @@ public class LinkDao {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(new LinkDao().listLinks().get(0));
+		System.out.println(new LinkDao().listLinks(DaoConstants.HIBERNATE_LOCATION_PATH).get(0));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -30,8 +30,11 @@ public class LinkDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FixedBugCommitFiltedLink> listLinks(){
+	public List<FixedBugCommitFiltedLink> listLinks(String hbmPath){
+		if(hbmPath==null){
+			return null;
+		}
 		String hql = "from FixedBugCommitFiltedLink order by bugId";
-		return HibernateUtils.retrieveObjects(hql, DaoConstants.HIBERNATE_LOCATION_PATH);
+		return HibernateUtils.retrieveObjects(hql, hbmPath);
 	}
 }
