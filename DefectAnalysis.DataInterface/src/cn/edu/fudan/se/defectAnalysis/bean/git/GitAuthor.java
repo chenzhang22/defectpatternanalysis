@@ -3,6 +3,8 @@
  */
 package cn.edu.fudan.se.defectAnalysis.bean.git;
 
+import java.sql.Timestamp;
+
 /**
  * @author Lotay
  *
@@ -10,6 +12,7 @@ package cn.edu.fudan.se.defectAnalysis.bean.git;
 public class GitAuthor {
 	private String authorID;
 	private String authorName;
+	private Timestamp when;
 	/**
 	 * @return the authorID
 	 */
@@ -33,6 +36,18 @@ public class GitAuthor {
 	 */
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+	/**
+	 * @return the when
+	 */
+	public Timestamp getWhen() {
+		return when;
+	}
+	/**
+	 * @param when the when to set
+	 */
+	public void setWhen(Timestamp when) {
+		this.when = when;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

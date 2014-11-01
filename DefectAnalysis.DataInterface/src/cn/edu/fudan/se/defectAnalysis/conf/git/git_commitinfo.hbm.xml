@@ -10,8 +10,11 @@
 		<property column="previousRID" name="previousRID" type="string" />
 		<property column="postRID" name="postRID" type="string" />
 		<property column="authorID" name="authorID" type="string" />
+		<property column="committerId" name="committerId" type="string" />
 		<property column="log" name="log" type="string" />
+		<property column="shortMsg" name="shortMsg" type="string" />
 		<property column="time" name="time" type="timestamp" />
 		<property column="component" name="component" type="string" />
+		<property column="branchName" name="branchName" type="string" />
 	</class>
 </hibernate-mapping>

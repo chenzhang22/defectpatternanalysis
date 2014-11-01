@@ -3,12 +3,11 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.git">
-	<class name="GitAuthor" table="git_author">
-		<id column="authorID" name="authorID" type="string">
+	<class name="GitCommiter" table="git_committer">
+		<id column="committerId" name="committerId" type="string">
 			<generator class="assigned" />
 		</id>
-		
-		<property column="authorName" name="authorName" type="string"/>
+		<property column="committerName" name="committerName" type="string"/>
 		<property column="when1" name="when" type="timestamp"/>
 	</class>
 </hibernate-mapping>

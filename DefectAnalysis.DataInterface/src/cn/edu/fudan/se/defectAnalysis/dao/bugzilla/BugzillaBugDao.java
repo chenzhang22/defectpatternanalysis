@@ -3,6 +3,7 @@
  */
 package cn.edu.fudan.se.defectAnalysis.dao.bugzilla;
 
+import java.util.Collection;
 import java.util.List;
 
 import cn.edu.fudan.se.defectAnalysis.bean.bugzilla.BugzillaBug;
@@ -18,15 +19,15 @@ public class BugzillaBugDao {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		BugzillaBugDao bugDao = new BugzillaBugDao();
 		String product = "Platform";
-		List<BugzillaBug> bugs = bugDao.loadBugzillaBugsByProduct(product);
-		System.out.println(bugs.get(0) + "\n\n" + bugs.size());
+		Collection<BugzillaBug> bugs = bugDao.loadBugZillaBugs(DaoConstants.HIBERNATE_LOCATION_PATH);
+		System.out.println(bugs.size());
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BugzillaBug> loadBugzillaBugsByProduct(String product){
+	public List<BugzillaBug> loadBugzillaBugsByProduct(String product) {
 		if (product == null) {
 			return null;
 		}
@@ -51,7 +52,7 @@ public class BugzillaBugDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaBug loadBugzillaBugsByBugId(int bugId){
+	public BugzillaBug loadBugzillaBugsByBugId(int bugId) {
 		String hql = "from BugzillaBug where id = " + bugId;
 		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
 				DaoConstants.HIBERNATE_LOCATION_PATH);
@@ -59,5 +60,10 @@ public class BugzillaBugDao {
 			return null;
 		}
 		return bugzillaBugs.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<BugzillaBug> loadBugZillaBugs(String conFile) {
+		return HibernateUtils.retrieveAll(BugzillaBug.class,conFile);
 	}
 }

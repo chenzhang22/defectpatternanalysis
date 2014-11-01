@@ -14,9 +14,12 @@ public class GitCommitInfo {
 	private String previousRID;
 	private String postRID;
 	private String authorID;
+	private String committerId;
 	private String log;
+	private String shortMsg;
 	private Timestamp time;
 	private String component;
+	private String branchName;
 	/**
 	 * @return the revisionID
 	 */
@@ -66,6 +69,18 @@ public class GitCommitInfo {
 		this.authorID = authorID;
 	}
 	/**
+	 * @return the commiterId
+	 */
+	public String getCommitterId() {
+		return committerId;
+	}
+	/**
+	 * @param commiterId the commiterId to set
+	 */
+	public void setCommitterId(String commiterId) {
+		this.committerId = commiterId;
+	}
+	/**
 	 * @return the log
 	 */
 	public String getLog() {
@@ -76,6 +91,12 @@ public class GitCommitInfo {
 	 */
 	public void setLog(String log) {
 		this.log = log;
+	}
+	public String getShortMsg() {
+		return shortMsg;
+	}
+	public void setShortMsg(String shortMsg) {
+		this.shortMsg = shortMsg;
 	}
 	/**
 	 * @return the time
@@ -100,6 +121,18 @@ public class GitCommitInfo {
 	 */
 	public void setComponent(String component) {
 		this.component = component;
+	}
+	/**
+	 * @return the branchName
+	 */
+	public String getBranchName() {
+		return branchName;
+	}
+	/**
+	 * @param branchName the branchName to set
+	 */
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

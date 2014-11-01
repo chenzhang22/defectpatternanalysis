@@ -14,5 +14,8 @@
 			<key-property name="inducedlineNumber" column="inducedlineNumber"
 				type="integer" />
 		</composite-id>
+		<property name='fixedLineNumber' column='fixedLineNumber' type='integer'/>
+		<property name='inducedTime' column='inducedTime' type='timestamp'/>
+		<property name='fixedTime' column='fixedTime' type='timestamp'/>
 	</class>
 </hibernate-mapping>

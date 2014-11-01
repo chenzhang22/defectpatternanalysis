@@ -3,6 +3,8 @@
  */
 package cn.edu.fudan.se.defectAnalysis.bean.track.diff;
 
+import java.sql.Timestamp;
+
 /**
  * @author Lotay
  * 
@@ -14,7 +16,10 @@ public class BugInduceBlameLine implements java.io.Serializable{
 	private String fixedRevisionId;
 	private String fileName;
 	private int inducedlineNumber;
-
+	private Timestamp inducedTime;
+	private int fixedLineNumber;
+	private Timestamp fixedTime;
+	
 	public int getBugId() {
 		return bugId;
 	}
@@ -53,6 +58,48 @@ public class BugInduceBlameLine implements java.io.Serializable{
 
 	public void setInducedlineNumber(int inducedlineNumber) {
 		this.inducedlineNumber = inducedlineNumber;
+	}
+
+	/**
+	 * @return the inducedTime
+	 */
+	public Timestamp getInducedTime() {
+		return inducedTime;
+	}
+
+	/**
+	 * @param inducedTime the inducedTime to set
+	 */
+	public void setInducedTime(Timestamp inducedTime) {
+		this.inducedTime = inducedTime;
+	}
+
+	/**
+	 * @return the fixedLineNumber
+	 */
+	public int getFixedLineNumber() {
+		return fixedLineNumber;
+	}
+
+	/**
+	 * @param fixedLineNumber the fixedLineNumber to set
+	 */
+	public void setFixedLineNumber(int fixedLineNumber) {
+		this.fixedLineNumber = fixedLineNumber;
+	}
+
+	/**
+	 * @return the fixedTime
+	 */
+	public Timestamp getFixedTime() {
+		return fixedTime;
+	}
+
+	/**
+	 * @param fixedTime the fixedTime to set
+	 */
+	public void setFixedTime(Timestamp fixedTime) {
+		this.fixedTime = fixedTime;
 	}
 
 	@Override

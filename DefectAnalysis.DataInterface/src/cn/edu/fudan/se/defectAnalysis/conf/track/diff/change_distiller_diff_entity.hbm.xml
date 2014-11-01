@@ -7,7 +7,7 @@
 		<composite-id>
 			<key-property name="diffMethod" column="diffMethod" type="string" />
 			<key-property name="bugId" column="bugId" type="integer" />
-			<key-property name="inducedRevisionId" column="inducedRevisionId"
+			<key-property name="lastRevisionId" column="lastRevisionId"
 				type="string" />
 			<key-property name="fixedRevisionId" column="fixedRevisionId"
 				type="string" />

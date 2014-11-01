@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ChangeDistillerDiffEntity extends DiffEntity implements
 		Serializable {
 	private int bugId = -1; // primary keys
-	private String induceRevisionId; // primary keys
+	private String lastRevisionId; // primary keys	inducedRevisionId
 	private String fixedRevisionId; // primary keys
 	private String fileName; // primary keys
 	private String basicChangeType; // primary keys
@@ -57,14 +57,6 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 	private String pUniqueName;
 	private String pNewUniqueName;
 
-	public String getDiffMethod() {
-		return this.getClass().getSimpleName();
-	}
-
-	public void setDiffMethod(String diffMethod) {
-		this.diffMethod = diffMethod;
-	}
-
 	public int getBugId() {
 		return bugId;
 	}
@@ -73,12 +65,12 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.bugId = bugId;
 	}
 
-	public String getInduceRevisionId() {
-		return induceRevisionId;
+	public String getLastRevisionId() {
+		return lastRevisionId;
 	}
 
-	public void setInduceRevisionId(String induceRevisionId) {
-		this.induceRevisionId = induceRevisionId;
+	public void setLastRevisionId(String inducedRevisionId) {
+		this.lastRevisionId = inducedRevisionId;
 	}
 
 	public String getFixedRevisionId() {
@@ -113,14 +105,6 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.changeEntityType = changeEntityType;
 	}
 
-	public int getModifiers() {
-		return modifiers;
-	}
-
-	public void setModifiers(int modifiers) {
-		this.modifiers = modifiers;
-	}
-
 	public int getStartCode() {
 		return startCode;
 	}
@@ -135,6 +119,14 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 
 	public void setEndCode(int endCode) {
 		this.endCode = endCode;
+	}
+
+	public int getModifiers() {
+		return modifiers;
+	}
+
+	public void setModifiers(int modifiers) {
+		this.modifiers = modifiers;
 	}
 
 	public int getStartLine() {
@@ -225,16 +217,10 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.uniqueName = uniqueName;
 	}
 
-	/**
-	 * @return the newUniqueName
-	 */
 	public String getNewUniqueName() {
 		return newUniqueName;
 	}
 
-	/**
-	 * @param newUniqueName the newUniqueName to set
-	 */
 	public void setNewUniqueName(String newUniqueName) {
 		this.newUniqueName = newUniqueName;
 	}
@@ -247,16 +233,10 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.changeType = changeType;
 	}
 
-	/**
-	 * @return the newEntityType
-	 */
 	public String getNewEntityType() {
 		return newEntityType;
 	}
 
-	/**
-	 * @param newEntityType the newEntityType to set
-	 */
 	public void setNewEntityType(String newEntityType) {
 		this.newEntityType = newEntityType;
 	}
@@ -265,8 +245,8 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		return bodyChange;
 	}
 
-	public void setBodyChange(boolean isBodyChange) {
-		this.bodyChange = isBodyChange;
+	public void setBodyChange(boolean bodyChange) {
+		this.bodyChange = bodyChange;
 	}
 
 	public boolean isDeclarationChange() {
@@ -285,16 +265,10 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.significance = significance;
 	}
 
-	/**
-	 * @return the newModifiers
-	 */
 	public int getNewModifiers() {
 		return newModifiers;
 	}
 
-	/**
-	 * @param newModifiers the newModifiers to set
-	 */
 	public void setNewModifiers(int newModifiers) {
 		this.newModifiers = newModifiers;
 	}
@@ -411,16 +385,10 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.pType = pType;
 	}
 
-	/**
-	 * @return the pNewType
-	 */
 	public String getpNewType() {
 		return pNewType;
 	}
 
-	/**
-	 * @param pNewType the pNewType to set
-	 */
 	public void setpNewType(String pNewType) {
 		this.pNewType = pNewType;
 	}
@@ -433,16 +401,10 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		this.pUniqueName = pUniqueName;
 	}
 
-	/**
-	 * @return the pNewUniqueName
-	 */
 	public String getpNewUniqueName() {
 		return pNewUniqueName;
 	}
 
-	/**
-	 * @param pNewUniqueName the pNewUniqueName to set
-	 */
 	public void setpNewUniqueName(String pNewUniqueName) {
 		this.pNewUniqueName = pNewUniqueName;
 	}
@@ -466,7 +428,7 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 				+ ((fixedRevisionId == null) ? 0 : fixedRevisionId.hashCode());
 		result = prime
 				* result
-				+ ((induceRevisionId == null) ? 0 : induceRevisionId.hashCode());
+				+ ((lastRevisionId == null) ? 0 : lastRevisionId.hashCode());
 		result = prime * result + startCode;
 		return result;
 	}
@@ -524,11 +486,11 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 		} else if (!fixedRevisionId.equals(other.fixedRevisionId)) {
 			return false;
 		}
-		if (induceRevisionId == null) {
-			if (other.induceRevisionId != null) {
+		if (lastRevisionId == null) {
+			if (other.lastRevisionId != null) {
 				return false;
 			}
-		} else if (!induceRevisionId.equals(other.induceRevisionId)) {
+		} else if (!lastRevisionId.equals(other.lastRevisionId)) {
 			return false;
 		}
 		if (startCode != other.startCode) {
@@ -540,7 +502,7 @@ public class ChangeDistillerDiffEntity extends DiffEntity implements
 	@Override
 	public String toString() {
 		return "ChangeDistillerDiffEntity [diffMethod=" + diffMethod
-				+ ", bugId=" + bugId + ", induceRevisionId=" + induceRevisionId
+				+ ", bugId=" + bugId + ", induceRevisionId=" + lastRevisionId
 				+ ", fixedRevisionId=" + fixedRevisionId + ", fileName="
 				+ fileName + ", basicChangeType=" + basicChangeType
 				+ ", changeEntityType=" + changeEntityType + ", modifiers="
