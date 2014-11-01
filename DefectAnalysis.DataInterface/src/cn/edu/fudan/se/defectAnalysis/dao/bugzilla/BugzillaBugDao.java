@@ -19,6 +19,7 @@ public class BugzillaBugDao {
 	 * @param args
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		BugzillaBugDao bugDao = new BugzillaBugDao();
 		String product = "Platform";
