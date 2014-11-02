@@ -13,6 +13,7 @@ public class BugzillaComment {
 	private int commentId;
 	private String commentText;
 	private int bugId;
+	private int attachmentId;
 	private String author;
 	private Timestamp time;
 	private int count;
@@ -28,7 +29,8 @@ public class BugzillaComment {
 	}
 
 	/**
-	 * @param commentId the commentId to set
+	 * @param commentId
+	 *            the commentId to set
 	 */
 	public void setCommentId(int commentId) {
 		this.commentId = commentId;
@@ -62,6 +64,21 @@ public class BugzillaComment {
 	 */
 	public void setBugId(int bugId) {
 		this.bugId = bugId;
+	}
+
+	/**
+	 * @return the attachmentId
+	 */
+	public int getAttachmentId() {
+		return attachmentId;
+	}
+
+	/**
+	 * @param attachmentId
+	 *            the attachmentId to set
+	 */
+	public void setAttachmentId(int attachmentId) {
+		this.attachmentId = attachmentId;
 	}
 
 	/**
@@ -154,7 +171,9 @@ public class BugzillaComment {
 		this.creator = creator;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
