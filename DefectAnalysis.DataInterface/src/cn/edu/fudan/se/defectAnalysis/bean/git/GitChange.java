@@ -100,7 +100,10 @@ public class GitChange implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result
+				+ ((changeType == null) ? 0 : changeType.hashCode());
+		result = prime * result
+				+ ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result
 				+ ((revisionId == null) ? 0 : revisionId.hashCode());
 		return result;
@@ -118,6 +121,13 @@ public class GitChange implements Serializable {
 			return false;
 		}
 		GitChange other = (GitChange) obj;
+		if (changeType == null) {
+			if (other.changeType != null) {
+				return false;
+			}
+		} else if (!changeType.equals(other.changeType)) {
+			return false;
+		}
 		if (fileName == null) {
 			if (other.fileName != null) {
 				return false;

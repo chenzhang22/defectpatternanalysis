@@ -95,11 +95,15 @@ public class GitSourceFile implements Serializable{
 		this.time = time;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result
+				+ ((changeType == null) ? 0 : changeType.hashCode());
+		result = prime * result
+				+ ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result
 				+ ((revisionId == null) ? 0 : revisionId.hashCode());
 		return result;
@@ -117,6 +121,13 @@ public class GitSourceFile implements Serializable{
 			return false;
 		}
 		GitSourceFile other = (GitSourceFile) obj;
+		if (changeType == null) {
+			if (other.changeType != null) {
+				return false;
+			}
+		} else if (!changeType.equals(other.changeType)) {
+			return false;
+		}
 		if (fileName == null) {
 			if (other.fileName != null) {
 				return false;

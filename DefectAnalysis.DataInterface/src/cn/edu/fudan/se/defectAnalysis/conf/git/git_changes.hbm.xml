@@ -8,10 +8,10 @@
 			<key-property name="revisionId" column="revisionID"
 				type="string" />
 			<key-property name="fileName" column="fileName" type="string" />
+			<key-property name="changeType" column="changeType" type="string" />
 		</composite-id>
 		<property name="newPath" column="newPath" type="string" />
 		<property name="oldPath" column="oldPath" type="string" />
-		<property name="changeType" column="changeType" type="string" />
 		<property name="score" column="score" type="integer" />
 		<property name="time" column="time" type="timestamp" />
 	</class>
