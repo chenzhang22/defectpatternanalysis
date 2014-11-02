@@ -17,8 +17,12 @@ public class BugInduceBlameLine implements java.io.Serializable{
 	private String fileName;
 	private int inducedlineNumber;
 	private Timestamp inducedTime;
-	private int fixedLineNumber;
+	private int fixedLineStart;
+	private int fixedLineEnd;
+	private boolean shouldCurCare;
+	private boolean shouldPreCare;
 	private Timestamp fixedTime;
+	private String changeType;
 	
 	public int getBugId() {
 		return bugId;
@@ -74,18 +78,38 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		this.inducedTime = inducedTime;
 	}
 
-	/**
-	 * @return the fixedLineNumber
-	 */
-	public int getFixedLineNumber() {
-		return fixedLineNumber;
+
+	public int getFixedLineStart() {
+		return fixedLineStart;
 	}
 
-	/**
-	 * @param fixedLineNumber the fixedLineNumber to set
-	 */
-	public void setFixedLineNumber(int fixedLineNumber) {
-		this.fixedLineNumber = fixedLineNumber;
+	public void setFixedLineStart(int fixedLineStart) {
+		this.fixedLineStart = fixedLineStart;
+	}
+
+	public int getFixedLineEnd() {
+		return fixedLineEnd;
+	}
+
+	public void setFixedLineEnd(int fixedLineEnd) {
+		this.fixedLineEnd = fixedLineEnd;
+	}
+
+
+	public boolean isShouldCurCare() {
+		return shouldCurCare;
+	}
+
+	public void setShouldCurCare(boolean shouldCurCare) {
+		this.shouldCurCare = shouldCurCare;
+	}
+
+	public boolean isShouldPreCare() {
+		return shouldPreCare;
+	}
+
+	public void setShouldPreCare(boolean shouldPreCare) {
+		this.shouldPreCare = shouldPreCare;
 	}
 
 	/**
@@ -102,6 +126,20 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		this.fixedTime = fixedTime;
 	}
 
+	/**
+	 * @return the changeType
+	 */
+	public String getChangeType() {
+		return changeType;
+	}
+
+	/**
+	 * @param changeType the changeType to set
+	 */
+	public void setChangeType(String changeType) {
+		this.changeType = changeType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -109,7 +147,7 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		result = prime * result + bugId;
 		result = prime * result
 				+ ((fileName == null) ? 0 : fileName.hashCode());
-		result = prime * result + fixedLineNumber;
+		result = prime * result + inducedlineNumber;
 		result = prime * result
 				+ ((fixedRevisionId == null) ? 0 : fixedRevisionId.hashCode());
 		result = prime
@@ -141,7 +179,7 @@ public class BugInduceBlameLine implements java.io.Serializable{
 		} else if (!fileName.equals(other.fileName)) {
 			return false;
 		}
-		if (fixedLineNumber != other.fixedLineNumber) {
+		if (inducedlineNumber != other.inducedlineNumber) {
 			return false;
 		}
 		if (fixedRevisionId == null) {
@@ -159,5 +197,17 @@ public class BugInduceBlameLine implements java.io.Serializable{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "BugInduceBlameLine [bugId=" + bugId + ", inducedRevisionId="
+				+ inducedRevisionId + ", fixedRevisionId=" + fixedRevisionId
+				+ ", fileName=" + fileName + ", inducedlineNumber="
+				+ inducedlineNumber + ", inducedTime=" + inducedTime
+				+ ", fixedLineStart=" + fixedLineStart + ", fixedLineEnd="
+				+ fixedLineEnd + ", shouldCurCare=" + shouldCurCare
+				+ ", shouldPreCare=" + shouldPreCare + ", fixedTime="
+				+ fixedTime + "]";
 	}
 }
