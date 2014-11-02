@@ -9,7 +9,7 @@ import cn.edu.fudan.se.git.explore.constants.GitExploreConstants;
 
 public class BugMatcher {
 	private static final Pattern pattern = Pattern
-			.compile(GitExploreConstants.BUG_PATTERN_MATCH);
+			.compile(GitExploreConstants.TOMCAT_BUG_PATTERN_MATCH);
 	private static final Pattern NumberPattern = Pattern.compile("[0-9]+");
 
 	public static Set<Integer> fixedBugLink(String log) {

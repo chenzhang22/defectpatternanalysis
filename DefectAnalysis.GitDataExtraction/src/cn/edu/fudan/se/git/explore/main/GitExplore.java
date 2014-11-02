@@ -47,13 +47,13 @@ public class GitExplore {
 	static Repository repo;
 	static Git git;
 	static RevWalk walk;
-	static String component = "JDT.CORE";
+	static String component = "APACHE_TOMCAT";
 
 	public static void main(String[] args) throws NoHeadException,
 			GitAPIException {
 		try {
 			repo = new FileRepository(new File(
-					GitExploreConstants.ECLIPSE_CORE_GIT_REPO_PATH));
+					GitExploreConstants.TOMCAT_GIT_REPO_PATH));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
 			allBugIds = loadBugIDs();
@@ -81,14 +81,17 @@ public class GitExplore {
 			boolean hasStarted = false;
 			for (RevCommit commit : git.log().all().call()) {
 				if (commit.getName().equals(
-						"0bc94ed2d40b4d8ab70b9c05eb298350c8183e79")) {
+						"f21fddc0e389caaee80e720c589d25371bc81c8f")) {
 					hasStarted = true;
+				}if(commit.getName().equals(
+						"4f76ecdb94cd5d0b6d0ed8aefd766a01bed06900")){
+					break;
 				}
 				if (hasStarted) {
 					Set<Object> gitObjects = extractCommit(commit, postCommit,
 							component);
 					HibernateUtils.saveAll(gitObjects,
-							GitExploreConstants.HIBERNATE_CONF_PATH);
+							GitExploreConstants.TOMCAT_HIBERNATE_CONF_PATH);
 				}
 				postCommit = commit.getName();
 			}
@@ -107,7 +110,7 @@ public class GitExplore {
 	static Set<Integer> loadBugIDs() {
 		BugzillaBugDao dao = new BugzillaBugDao();
 		Collection<BugzillaBug> bugs = dao
-				.loadBugZillaBugs(GitExploreConstants.HIBERNATE_CONF_PATH);
+				.loadBugZillaBugs(GitExploreConstants.TOMCAT_HIBERNATE_CONF_PATH);
 		Set<Integer> bugIds = new HashSet<Integer>();
 		for (BugzillaBug bug : bugs) {
 			bugIds.add(bug.getId());
@@ -183,12 +186,12 @@ public class GitExplore {
 			Set<Integer> bugIds = BugMatcher.fixedBugLink(commit
 					.getFullMessage());
 			for (Integer id : bugIds) {
-				if (allBugIds.contains(id)) {
+//				if (allBugIds.contains(id)) {
 					FixedBugCommitLink link = new FixedBugCommitLink();
 					link.setBugId(id);
 					link.setRevisionId(revisionId);
 					gitObjs.add(link);
-				}
+//				}
 			}
 			if (prevTargetCommit != null) {
 				Set<Object> changeObjs = extractChange(commit, revisionId,
