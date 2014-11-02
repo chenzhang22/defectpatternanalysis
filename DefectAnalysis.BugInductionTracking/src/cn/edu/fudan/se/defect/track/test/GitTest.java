@@ -75,10 +75,6 @@ public class GitTest {
 			git = new Git(repo);
 			walk = new RevWalk(repo);
 
-			System.out.println(walk.parseCommit(
-					repo.resolve("1b64b56ccf1417b4beca7bed7d97dae59a8cc803"))
-					.getShortMessage());
-
 			// track();
 			gitBlame();
 		} catch (IOException e1) {
@@ -181,8 +177,8 @@ public class GitTest {
 			IOException {
 		BlameCommand bcmd = git.blame();
 		bcmd.setStartCommit(walk.parseCommit(repo
-				.resolve("447c4a3138b0e8356dbfa24777955b13411dcda3")));
-		bcmd.setFilePath("org.eclipse.jdt.apt.core/src/org/eclipse/jdt/apt/core/internal/type/PrimitiveTypeImpl.java");
+				.resolve("15c06de7002d8ed32fc40a1830b1a71e0fcb86e6")));
+		bcmd.setFilePath("org.eclipse.jdt.apt.core/src/org/eclipse/jdt/apt/core/internal/AnnotationProcessorFactoryLoader.java");
 		BlameResult bresult = bcmd.call();
 		System.out.println("getResultContents:"
 				+ bresult.getResultContents().size());
@@ -192,14 +188,7 @@ public class GitTest {
 				+ bresult.getResultContents().size());
 
 		for (int i = 0; i < bresult.getResultContents().size(); i++) {
-			System.out.println();
-			System.out.println("getSourceLine:" + i + ">>"
-					+ bresult.getSourceLine(i));
-			System.out.println("getSourceCommit:"
-					+ bresult.getSourceCommit(i).getName() + "\t"
-					+ bresult.getSourceCommit(i).getShortMessage());
+			System.out.println( i+":"+bresult.getSourceCommit(i).getName());
 		}
-
-		System.out.println(bresult);
 	}
 }

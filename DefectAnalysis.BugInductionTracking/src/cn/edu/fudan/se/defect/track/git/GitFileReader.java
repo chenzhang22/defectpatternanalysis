@@ -32,10 +32,10 @@ public class GitFileReader {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String revisionId = "bba53a7d9b86041ddcc96b8e42826ecbf3c21464", fileName = "org.eclipse.jdt.compiler.apt/src/org/eclipse/jdt/internal/compiler/apt/dispatch/HookedJavaFileObject.java";
+		String revisionId = "181da9b71c249919f063d19e5fd4f3106711e839", fileName = "org.eclipse.jdt.apt.core/src/com/sun/mirror/apt/RoundCompleteEvent.java";
 		GitFileReader reader = new GitFileReader();
 		String value = new String(reader.readGitFile(revisionId, fileName));
-		System.out.println(value);
+		System.out.print(value);
 	}
 
 
