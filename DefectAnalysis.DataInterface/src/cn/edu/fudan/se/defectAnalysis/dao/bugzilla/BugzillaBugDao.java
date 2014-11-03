@@ -23,29 +23,27 @@ public class BugzillaBugDao {
 	public static void main(String[] args) {
 		BugzillaBugDao bugDao = new BugzillaBugDao();
 		String product = "Platform";
-		Collection<BugzillaBug> bugs = bugDao.loadBugZillaBugs(DaoConstants.HIBERNATE_LOCATION_PATH);
+		Collection<BugzillaBug> bugs = bugDao.loadBugZillaBugs(DaoConstants.TOMCAT_HIBERNATE_LOCATION_PATH);
 		System.out.println(bugs.size());
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BugzillaBug> loadBugzillaBugsByProduct(String product) {
-		if (product == null) {
+	public List<BugzillaBug> loadBugzillaBugsByProduct(String product,final String hbmConf) {
+		if (product == null||hbmConf==null) {
 			return null;
 		}
 		String hql = "from BugzillaBug where product = '" + product + "'";
-		return HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		return HibernateUtils.retrieveObjects(hql,hbmConf);
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaBug loadBugzillaBugsByBugId(String product, int bugId) {
+	public BugzillaBug loadBugzillaBugsByBugId(String product, int bugId,final String hbmConf) {
 		if (product == null) {
 			return null;
 		}
 		String hql = "from BugzillaBug where product = '" + product
 				+ "' and id = " + bugId;
-		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,hbmConf);
 		if (bugzillaBugs == null || bugzillaBugs.size() != 1) {
 			return null;
 		}
@@ -53,10 +51,9 @@ public class BugzillaBugDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaBug loadBugzillaBugsByBugId(int bugId) {
+	public BugzillaBug loadBugzillaBugsByBugId(int bugId,final String hbmConf) {
 		String hql = "from BugzillaBug where id = " + bugId;
-		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		List<BugzillaBug> bugzillaBugs = HibernateUtils.retrieveObjects(hql,hbmConf);
 		if (bugzillaBugs == null || bugzillaBugs.size() != 1) {
 			return null;
 		}

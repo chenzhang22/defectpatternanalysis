@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="sessionFactory">
+		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/eclipse_jdt_log</property>
+		<!-- 10.131.252.160 <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/huaweidata</property> -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.connection.username">lotay</property>
+		<property name="hibernate.connection.password">lotay</property>
+		<property name="hibernate.connection.characterEncoding">utf-8</property>
+
+
+		<!-- OR Mappings for git.. -->
+		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_author.hbm.xml" />
+		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_changes.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_commitinfo.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_sourcefile.hbm.xml" />
+
+		<!-- OR Mappings for bugzilla -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_attachment.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_bug.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_comment.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/bugzilla/bugzilla_history.hbm.xml" />
+
+		<!-- OR Mappings for link -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitfiltedlink.hbm.xml" />
+
+		<!-- OR Mapping for diff -->
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/diffj_diff_entity.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/bug_induce_blame_line.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/change_distiller_diff_entity.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/code_line_change.hbm.xml" />
+
+	</session-factory>
+</hibernate-configuration>

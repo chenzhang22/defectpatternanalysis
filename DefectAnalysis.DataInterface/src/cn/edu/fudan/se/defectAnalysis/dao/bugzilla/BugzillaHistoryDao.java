@@ -20,14 +20,17 @@ public class BugzillaHistoryDao {
 	 */
 	public static void main(String[] args) {
 		int bugId = 10;
-		System.out.println(new BugzillaHistoryDao()
-				.loadBugzillaHistoryByBugId(bugId));
+		System.out.println(new BugzillaHistoryDao().loadBugzillaHistoryByBugId(
+				bugId, DaoConstants.TOMCAT_HIBERNATE_LOCATION_PATH));
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BugzillaHistory> loadBugzillaHistoryByBugId(int bugId) {
+	public List<BugzillaHistory> loadBugzillaHistoryByBugId(int bugId,
+			final String hbmConf) {
+		if (hbmConf == null) {
+			return null;
+		}
 		String hql = "from BugzillaHistory where bug_id = " + bugId;
-		return HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		return HibernateUtils.retrieveObjects(hql, hbmConf);
 	}
 }

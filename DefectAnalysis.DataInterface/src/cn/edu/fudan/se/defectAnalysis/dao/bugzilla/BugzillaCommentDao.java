@@ -19,21 +19,29 @@ public class BugzillaCommentDao {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println(new BugzillaCommentDao().loadBugzillaCommentByBugId(10));
+		System.out.println(new BugzillaCommentDao().loadBugzillaCommentByBugId(
+				10, DaoConstants.TOMCAT_HIBERNATE_LOCATION_PATH));
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BugzillaComment> loadBugzillaCommentByBugId(int bugId) {
+	public List<BugzillaComment> loadBugzillaCommentByBugId(int bugId,
+			final String hbmConf) {
+		if (hbmConf == null) {
+			return null;
+		}
 		String hql = "from BugzillaComment where bugId =" + bugId;
-		return HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+		return HibernateUtils.retrieveObjects(hql, hbmConf);
 	}
 
 	@SuppressWarnings("unchecked")
-	public BugzillaComment loadBugzillaCommentByCommentId(int commentId) {
+	public BugzillaComment loadBugzillaCommentByCommentId(int commentId,
+			final String hbmConf) {
+		if (hbmConf == null) {
+			return null;
+		}
 		String hql = "from BugzillaComment where commentId =" + commentId;
 		List<BugzillaComment> comments = HibernateUtils.retrieveObjects(hql,
-				DaoConstants.HIBERNATE_LOCATION_PATH);
+				hbmConf);
 		return comments == null || comments.size() != 1 ? null : comments
 				.get(0);
 	}
