@@ -14,12 +14,12 @@
 			<key-property name="inducedlineNumber" column="inducedlineNumber"
 				type="integer" />
 		</composite-id>
-		<property name='fixedLineStart' column='fixedLineStart' type='integer'/>
-		<property name='fixedLineEnd' column='fixedLineEnd' type='integer'/>
-		<property name='shouldPreCare' column='shouldPreCare' type='boolean'/>
-		<property name='shouldCurCare' column='shouldCurCare' type='boolean'/>
-		<property name='inducedTime' column='inducedTime' type='timestamp'/>
-		<property name='fixedTime' column='fixedTime' type='timestamp'/> 
-		<property name='changeType' column='changeType' type='string'/>
+		<property name="fixedLineStart" column="fixedLineStart" type="integer"/>
+		<property name="fixedLineEnd" column="fixedLineEnd" type="integer"/>
+		<property name="shouldPreCare" column="shouldPreCare" type="boolean"/>
+		<property name="shouldCurCare" column="shouldCurCare" type="boolean"/>
+		<property name="inducedTime" column="inducedTime" type="timestamp"/>
+		<property name="fixedTime" column="fixedTime" type="timestamp"/> 
+		<property name="changeType" column="changeType" type="string"/>
 	</class>
 </hibernate-mapping>

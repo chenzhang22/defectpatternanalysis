@@ -3,14 +3,16 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track">
-	<class name="CodeLineChange" table="code_line_change">
+	<class name="BugSurvivalTime" table="bug_survival_time">
 		<composite-id>
-			<key-property name="revisionId" column="revisionId"
-				type="string" />
+			<key-property name="bugId" column="bugId" type="integer" />
 			<key-property name="fileName" column="fileName" type="string" />
-			<key-property name="lineNumber" column="lineNumber"
-				type="integer" />
 		</composite-id>
-		<property name="shouldCare" column="shouldCare" type="boolean"/>
+		<property name="minInducedTime" column="minInducedTime"
+			type="timestamp" />
+		<property name="maxInducedTime" column="maxInducedTime"
+			type="timestamp" />
+		<property name="minFixedTime" column="minFixedTime" type="timestamp" />
+		<property name="maxFixedTime" column="maxFixedTime" type="timestamp" />
 	</class>
 </hibernate-mapping>
