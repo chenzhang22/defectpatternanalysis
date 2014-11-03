@@ -43,7 +43,7 @@ public class BlameCMD {
 	static {
 		try {
 			repo = new FileRepository(new File(
-					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
+					BugTrackingConstants.GIT_REPO_PATH));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
 		} catch (IOException e1) {

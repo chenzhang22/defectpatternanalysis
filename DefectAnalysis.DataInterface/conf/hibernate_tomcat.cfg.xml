@@ -22,8 +22,6 @@
 			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_commitinfo.hbm.xml" />
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_sourcefile.hbm.xml" />
-		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_committer.hbm.xml" />
 
 		<!-- OR Mappings for bugzilla -->
 		<mapping
@@ -38,8 +36,6 @@
 		<!-- OR Mappings for link -->
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitfiltedlink.hbm.xml" />
-		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitlink.hbm.xml" />
 
 		<!-- OR Mapping for diff -->
 		<mapping
@@ -48,5 +44,8 @@
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/bug_induce_blame_line.hbm.xml" />
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/change_distiller_diff_entity.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/code_line_change.hbm.xml" />
+
 	</session-factory>
 </hibernate-configuration>

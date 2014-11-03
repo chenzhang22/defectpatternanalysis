@@ -27,7 +27,7 @@ public class GitUtils {
 	static{
 		try {
 			repo = new FileRepository(new File(
-					BugTrackingConstants.ECLIPSE_CORE_GIT_REPO_PATH));
+					BugTrackingConstants.GIT_REPO_PATH));
 			git = new Git(repo);
 			treeWalk = new TreeWalk(repo);
 			revWalk = new RevWalk(repo);
