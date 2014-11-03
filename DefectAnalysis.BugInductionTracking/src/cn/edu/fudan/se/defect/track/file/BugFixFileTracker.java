@@ -33,7 +33,7 @@ public class BugFixFileTracker {
 	public Set<GitSourceFile> track2SourceFile(int bugId) {
 		LinkDao linkDao = new LinkDao();
 		List<FixedBugCommitFiltedLink> filtedLinks = linkDao
-				.listLinkByBugId(bugId);
+				.listLinkByBugId(bugId,BugTrackingConstants.HIBERNATE_CONF_PATH);
 		Set<String> revisions = this.mergeOneBugLinks(filtedLinks);
 
 		if (revisions != null) {
@@ -81,7 +81,7 @@ public class BugFixFileTracker {
 				continue;
 			}
 			List<GitSourceFile> srcFiles = gitSourceFileDao
-					.loadSourceFileByRevisionId(rId);
+					.loadSourceFileByRevisionId(rId,BugTrackingConstants.HIBERNATE_CONF_PATH);
 			sourceFiles.addAll(FileFilter.filter(srcFiles));
 		}
 		return sourceFiles;

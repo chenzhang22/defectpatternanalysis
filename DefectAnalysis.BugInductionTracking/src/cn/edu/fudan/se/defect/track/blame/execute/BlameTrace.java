@@ -45,7 +45,7 @@ public class BlameTrace {
 			String fileName = sf.getFileName();
 			String revisionId = sf.getRevisionId();
 			GitCommitInfo fixedCommitInfo = new GitCommitDao()
-					.loadGitCommitInfoByRevisionId(revisionId);
+					.loadGitCommitInfoByRevisionId(revisionId,BugTrackingConstants.HIBERNATE_CONF_PATH);
 			if (fixedCommitInfo == null) {
 				continue;
 			}
@@ -411,7 +411,7 @@ public class BlameTrace {
 	 * @param lineLastChangeRevisions
 	 * @param blameResult
 	 */
-	private void fillLastChangeForLine(
+	void fillLastChangeForLine(
 			Map<Integer, String[]> lineLastChangeRevisions,
 			BlameResult blameResult) {
 		lineLastChangeRevisions.clear();

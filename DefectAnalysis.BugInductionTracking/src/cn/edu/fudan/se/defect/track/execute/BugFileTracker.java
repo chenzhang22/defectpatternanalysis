@@ -16,6 +16,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 
 import cn.edu.fudan.se.defect.track.bugzilla.BugzillaBugExtractor;
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defect.track.file.BugFixFileTracker;
 import cn.edu.fudan.se.defect.track.file.BugInduceFileTracker;
 import cn.edu.fudan.se.defect.track.fileop.TempFileOperator;
@@ -79,7 +80,7 @@ public class BugFileTracker {
 			String fixedRevisionId = srcFile.getRevisionId();
 
 			GitCommitInfo fixedBugCommitInfo = gitCommitDao
-					.loadGitCommitInfoByRevisionId(fixedRevisionId);
+					.loadGitCommitInfoByRevisionId(fixedRevisionId,BugTrackingConstants.HIBERNATE_CONF_PATH);
 
 			String previousRevisionId = fixedBugCommitInfo.getPreviousRID();
 			if(previousRevisionId==null){

@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitCommitDao;
@@ -63,7 +64,7 @@ public class BugInduceFileTracker {
 		}
 		GitSourceFileDao srcFileDao = new GitSourceFileDao();
 		List<GitSourceFile> srcFiles = srcFileDao
-				.loadSourceFileByFileName(fileName);
+				.loadSourceFileByFileName(fileName,BugTrackingConstants.HIBERNATE_CONF_PATH);
 		GitCommitDao gitCommitDao = new GitCommitDao();
 		GitCommitInfo lastestGitCommitInfo = null;
 
@@ -71,7 +72,7 @@ public class BugInduceFileTracker {
 
 		for (GitSourceFile gsf : srcFiles) {
 			GitCommitInfo gitCommitInfo = gitCommitDao
-					.loadGitCommitInfoByRevisionId(gsf.getRevisionId());
+					.loadGitCommitInfoByRevisionId(gsf.getRevisionId(),BugTrackingConstants.HIBERNATE_CONF_PATH);
 			if (gitCommitInfo != null) {	
 				// The commit should be the last commit before the report time
 				if (gitCommitInfo.getTime()

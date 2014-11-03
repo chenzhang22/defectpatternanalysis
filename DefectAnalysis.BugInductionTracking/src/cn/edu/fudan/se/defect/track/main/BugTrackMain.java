@@ -16,7 +16,7 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 public class BugTrackMain {
 	public static void main(String[] args) {
 		int start = 4780;//4530
-		int length = 220;
+		int length = 2;
 		run(start,length);
 	}
 	
