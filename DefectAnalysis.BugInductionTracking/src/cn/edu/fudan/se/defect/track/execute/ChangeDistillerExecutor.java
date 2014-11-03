@@ -10,7 +10,7 @@ import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language;
 import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
 import cn.edu.fudan.se.defect.track.factory.ChangeDistillerDiffEntityFactory;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
 
 /**
  * @author Lotay

@@ -11,8 +11,8 @@ import org.incava.analysis.FileDiffs;
 import org.incava.ijdk.text.Location;
 import org.incava.ijdk.text.LocationRange;
 
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffJDiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffJDiffEntity;
 
 /**
  * @author Lotay

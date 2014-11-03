@@ -8,8 +8,8 @@ import java.util.Set;
 import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defect.track.execute.BugFileTracker;
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitFiltedLink;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
 import cn.edu.fudan.se.defectAnalysis.dao.link.LinkDao;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 

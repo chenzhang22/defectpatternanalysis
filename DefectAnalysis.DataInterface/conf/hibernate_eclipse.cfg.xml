@@ -39,13 +39,13 @@
 
 		<!-- OR Mapping for diff -->
 		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/diffj_diff_entity.hbm.xml" />
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diffj_diff_entity.hbm.xml" />
 		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/bug_induce_blame_line.hbm.xml" />
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/bug_induce_blame_line.hbm.xml" />
 		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/change_distiller_diff_entity.hbm.xml" />
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/change_distiller_diff_entity.hbm.xml" />
 		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diff/code_line_change.hbm.xml" />
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/code_line_change.hbm.xml" />
 
 	</session-factory>
 </hibernate-configuration>

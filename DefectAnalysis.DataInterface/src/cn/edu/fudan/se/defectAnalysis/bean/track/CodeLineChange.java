@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defectAnalysis.bean.track.diff;
+package cn.edu.fudan.se.defectAnalysis.bean.track;
 
 /**
  * @author Lotay

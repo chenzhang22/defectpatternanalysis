@@ -17,8 +17,8 @@ import cn.edu.fudan.se.defect.track.blame.util.LineChangeHandler;
 import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.CodeLineChange;
+import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.CodeLineChange;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitCommitDao;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 

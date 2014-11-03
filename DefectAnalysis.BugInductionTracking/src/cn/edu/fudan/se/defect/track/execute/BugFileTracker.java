@@ -25,8 +25,8 @@ import cn.edu.fudan.se.defect.track.git.GitFileReader;
 import cn.edu.fudan.se.defectAnalysis.bean.bugzilla.BugzillaBug;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitCommitDao;
 
 /**

@@ -9,7 +9,7 @@ import org.incava.analysis.FileDiffs;
 
 import cn.edu.fudan.se.defect.track.diff.DiffJMain;
 import cn.edu.fudan.se.defect.track.factory.DiffJEntityFactory;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
 
 /**
  * @author Lotay

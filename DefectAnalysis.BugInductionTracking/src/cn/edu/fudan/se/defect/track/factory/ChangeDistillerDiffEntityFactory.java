@@ -10,8 +10,8 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.defect.track.file.ASTNodeFileLocation;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.ChangeDistillerDiffEntity;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.ChangeDistillerDiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
 
 public class ChangeDistillerDiffEntityFactory {
 	public List<DiffEntity> build(int bugId, String lastRevisionId,

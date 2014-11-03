@@ -20,10 +20,10 @@ import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.BugInduceBlameLine;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.ChangeDistillerDiffEntity;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffEntity;
-import cn.edu.fudan.se.defectAnalysis.bean.track.diff.DiffJDiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
+import cn.edu.fudan.se.defectAnalysis.bean.track.ChangeDistillerDiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffEntity;
+import cn.edu.fudan.se.defectAnalysis.bean.track.DiffJDiffEntity;
 
 /**
  * @author Lotay

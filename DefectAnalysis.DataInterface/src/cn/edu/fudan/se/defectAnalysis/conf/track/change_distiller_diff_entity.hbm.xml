@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
-<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track.diff">
+<hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track">
 	<class name="ChangeDistillerDiffEntity" table="fixed_change_distiller_diff_entity">
 		<composite-id>
 			<key-property name="diffMethod" column="diffMethod" type="string" />
