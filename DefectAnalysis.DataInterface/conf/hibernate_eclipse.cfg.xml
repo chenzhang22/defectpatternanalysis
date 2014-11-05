@@ -17,6 +17,8 @@
 
 		<!-- OR Mappings for git.. -->
 		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_author.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_committer.hbm.xml" />
 		<mapping resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_changes.hbm.xml" />
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/git/git_commitinfo.hbm.xml" />
@@ -36,8 +38,10 @@
 		<!-- OR Mappings for link -->
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitfiltedlink.hbm.xml" />
+		<mapping
+			resource="cn/edu/fudan/se/defectAnalysis/conf/link/fixedbugcommitlink.hbm.xml" />
 
-		<!-- OR Mapping for track.. -->
+		<!-- OR Mapping for diff -->
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/diffj_diff_entity.hbm.xml" />
 		<mapping
@@ -48,6 +52,5 @@
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/code_line_change.hbm.xml" />
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/bug_survival_time.hbm.xml" />
-
 	</session-factory>
 </hibernate-configuration>
