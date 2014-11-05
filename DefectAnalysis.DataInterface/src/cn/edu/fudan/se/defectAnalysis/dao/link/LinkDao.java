@@ -6,6 +6,7 @@ package cn.edu.fudan.se.defectAnalysis.dao.link;
 import java.util.List;
 
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitFiltedLink;
+import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitLink;
 import cn.edu.fudan.se.defectAnalysis.constants.dao.DaoConstants;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
@@ -41,6 +42,15 @@ public class LinkDao {
 			return null;
 		}
 		String hql = "from FixedBugCommitFiltedLink order by bugId";
+		return HibernateUtils.retrieveObjects(hql, hbmPath);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FixedBugCommitLink> listUnFiltedLinks(String hbmPath) {
+		if (hbmPath == null) {
+			return null;
+		}
+		String hql = "from FixedBugCommitLink order by bugId";
 		return HibernateUtils.retrieveObjects(hql, hbmPath);
 	}
 }
