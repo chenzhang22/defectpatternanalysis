@@ -78,12 +78,16 @@ public class GitExplore {
 			String postCommit = null;
 			boolean hasStarted = true;
 			for (RevCommit commit : git.log().all().call()) {
-				/*
-				 * if (commit.getName().equals(
-				 * "f21fddc0e389caaee80e720c589d25371bc81c8f")) { hasStarted =
-				 * true; }if(commit.getName().equals(
-				 * "4f76ecdb94cd5d0b6d0ed8aefd766a01bed06900")){ break; }
-				 */
+
+//				if (commit.getName().equals(
+//						"bce35fda5537a3f0cc840685216b0d2e6f04882f")) {
+//					hasStarted = true;
+//				}
+//				if (commit.getName().equals(
+//						"7ef15a6f090fbec2b4af90203502553de5c56c17")) {
+//					break;
+//				}
+
 				if (hasStarted) {
 					Set<Object> gitObjects = extractCommit(commit, postCommit,
 							component);
