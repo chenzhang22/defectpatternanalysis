@@ -29,7 +29,8 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 public class BlameTrace {
 
 	private Set<BugInduceBlameLine> blameTrace(
-			List<GitSourceFile> sourceFileList,Set<CodeLineChange> codeLineChanges) {
+			List<GitSourceFile> sourceFileList,
+			Set<CodeLineChange> codeLineChanges) {
 		Set<BugInduceBlameLine> blameLines = new HashSet<BugInduceBlameLine>();
 		codeLineChanges.clear();
 		BlameCMD blameCom = new BlameCMD();
@@ -45,7 +46,8 @@ public class BlameTrace {
 			String fileName = sf.getFileName();
 			String revisionId = sf.getRevisionId();
 			GitCommitInfo fixedCommitInfo = new GitCommitDao()
-					.loadGitCommitInfoByRevisionId(revisionId,BugTrackingConstants.HIBERNATE_CONF_PATH);
+					.loadGitCommitInfoByRevisionId(revisionId,
+							BugTrackingConstants.HIBERNATE_CONF_PATH);
 			if (fixedCommitInfo == null) {
 				continue;
 			}
@@ -100,27 +102,21 @@ public class BlameTrace {
 		if (!lineChanges.isEmpty()) {
 			int previousVersionLine = 0, thisVersionLine = 0;
 			int preVersionStartLine = 0, thisVersionStartLine = 0;
-			while (thisVersionLine < blameResult
-					.getResultContents().size()) {
+			while (thisVersionLine < blameResult.getResultContents().size()) {
 
 				// search for the not in the change lines.
-				while (thisVersionLine < blameResult
-						.getResultContents().size()
-						&& !lineChanges
-								.containsKey(thisVersionLine)) {
-					String lastContent = blameResult
-							.getResultContents().getString(
-									thisVersionLine);
-					String lastRevisionId = blameResult
-							.getSourceCommit(thisVersionLine)
-							.getName();
+				while (thisVersionLine < blameResult.getResultContents().size()
+						&& !lineChanges.containsKey(thisVersionLine)) {
+					String lastContent = blameResult.getResultContents()
+							.getString(thisVersionLine);
+					String lastRevisionId = blameResult.getSourceCommit(
+							thisVersionLine).getName();
 
-					previousVersionLine = searchDeletedCode(
-							blameLines, preBlameResult,
-							preRevisionLineTypes, fileName,
+					previousVersionLine = searchDeletedCode(blameLines,
+							preBlameResult, preRevisionLineTypes, fileName,
 							revisionId, fixedCommitInfo, bugIds,
-							previousVersionLine, thisVersionLine,
-							lastContent, lastRevisionId);
+							previousVersionLine, thisVersionLine, lastContent,
+							lastRevisionId);
 
 					thisVersionLine++;
 					previousVersionLine++;
@@ -131,26 +127,24 @@ public class BlameTrace {
 						blameResult, lineChanges, thisVersionLine);
 
 				previousVersionLine = searchUnChangeCodeLineForPreviousVersion(
-						preBlameResult, blameResult,
-						previousVersionLine, thisVersionLine);
+						preBlameResult, blameResult, previousVersionLine,
+						thisVersionLine);
 
 				if (preVersionStartLine == previousVersionLine
 						&& previousVersionLine == preBlameResult
 								.getResultContents().size()
 						&& thisVersionLine == thisVersionStartLine
-						&& thisVersionLine == blameResult
-								.getResultContents().size()) {
-//					System.out.println("End...");
+						&& thisVersionLine == blameResult.getResultContents()
+								.size()) {
+					// System.out.println("End...");
 					break;
 				}
 
-				searchBlameLineForBug(
-						blameLines, preBlameResult,
+				searchBlameLineForBug(blameLines, preBlameResult,
 						preRevisionLineTypes, fileName, revisionId,
-						fixedCommitInfo, blameResult, lineChanges,
-						bugIds, previousVersionLine,
-						thisVersionLine, preVersionStartLine,
-						thisVersionStartLine);
+						fixedCommitInfo, blameResult, lineChanges, bugIds,
+						previousVersionLine, thisVersionLine,
+						preVersionStartLine, thisVersionStartLine);
 			}
 		}
 	}
@@ -163,8 +157,7 @@ public class BlameTrace {
 	 */
 	private int searchTheChangeCodeForCurrentRevision(BlameResult blameResult,
 			Map<Integer, Boolean> lineChanges, int thisVersionLine) {
-		while (thisVersionLine < blameResult
-				.getResultContents().size()
+		while (thisVersionLine < blameResult.getResultContents().size()
 				&& lineChanges.containsKey(thisVersionLine)) {
 			thisVersionLine++;
 		}
@@ -181,31 +174,24 @@ public class BlameTrace {
 	private int searchUnChangeCodeLineForPreviousVersion(
 			BlameResult preBlameResult, BlameResult blameResult,
 			int previousVersionLine, int thisVersionLine) {
-		if (thisVersionLine < blameResult
-				.getResultContents().size()) {
-			String line = blameResult.getResultContents()
-					.getString(thisVersionLine);
-			String nextLineRevisionId = blameResult
-					.getSourceCommit(thisVersionLine)
-					.getName();
-			for (; previousVersionLine < preBlameResult
-					.getResultContents().size(); previousVersionLine++) {
-				String lastContent = preBlameResult
-						.getResultContents().getString(
-								previousVersionLine);
-				String lastRevisionId = preBlameResult
-						.getSourceCommit(
-								previousVersionLine)
-						.getName();
-				if (lastRevisionId
-						.equals(nextLineRevisionId)
+		if (thisVersionLine < blameResult.getResultContents().size()) {
+			String line = blameResult.getResultContents().getString(
+					thisVersionLine);
+			String nextLineRevisionId = blameResult.getSourceCommit(
+					thisVersionLine).getName();
+			for (; previousVersionLine < preBlameResult.getResultContents()
+					.size(); previousVersionLine++) {
+				String lastContent = preBlameResult.getResultContents()
+						.getString(previousVersionLine);
+				String lastRevisionId = preBlameResult.getSourceCommit(
+						previousVersionLine).getName();
+				if (lastRevisionId.equals(nextLineRevisionId)
 						&& lastContent.equals(line)) {
 					break;
 				}
 			}
 		} else {
-			previousVersionLine = preBlameResult
-					.getResultContents().size();
+			previousVersionLine = preBlameResult.getResultContents().size();
 		}
 		return previousVersionLine;
 	}
@@ -231,20 +217,14 @@ public class BlameTrace {
 			Set<Integer> bugIds, int previousVersionLine, int thisVersionLine,
 			String lastContent, String lastRevisionId) {
 		// Search for the delete lines.
-		if (lastContent != null
-				&& lastRevisionId != null) {
+		if (lastContent != null && lastRevisionId != null) {
 			boolean hasDeleteLine = false;
 			int deleteStart = previousVersionLine;
-			while (previousVersionLine < preBlameResult
-					.getResultContents().size()
-					&& (!preBlameResult
-							.getSourceCommit(
-									previousVersionLine)
-							.getName()
-							.equals(lastRevisionId) || !preBlameResult
-							.getResultContents()
-							.getString(
-									previousVersionLine)
+			while (previousVersionLine < preBlameResult.getResultContents()
+					.size()
+					&& (!preBlameResult.getSourceCommit(previousVersionLine)
+							.getName().equals(lastRevisionId) || !preBlameResult
+							.getResultContents().getString(previousVersionLine)
 							.equals(lastContent))) {
 				previousVersionLine++;
 				hasDeleteLine = true;
@@ -252,8 +232,7 @@ public class BlameTrace {
 			if (hasDeleteLine) {
 				// Add Delete lines....
 				for (int ll = deleteStart; ll < previousVersionLine
-						&& ll < preRevisionLineTypes
-								.size(); ll++) {
+						&& ll < preRevisionLineTypes.size(); ll++) {
 					for (Integer bugId : bugIds) {
 						BugInduceBlameLine bl = new BugInduceBlameLine();
 						bl.setBugId(bugId);
@@ -263,18 +242,12 @@ public class BlameTrace {
 						bl.setInducedlineNumber(preBlameResult
 								.getSourceLine(ll));
 						bl.setFixedRevisionId(revisionId);
-						bl.setInducedRevisionId(preBlameResult
-								.getSourceCommit(ll)
-								.getName());
-						bl.setShouldPreCare(preRevisionLineTypes
-								.get(ll));
-						bl.setInducedTime(new Timestamp(
-								((long) preBlameResult
-										.getSourceCommit(
-												ll)
-										.getCommitTime()) * 1000));
-						bl.setFixedTime(fixedCommitInfo
-								.getTime());
+						bl.setInducedRevisionId(preBlameResult.getSourceCommit(
+								ll).getName());
+						bl.setShouldPreCare(preRevisionLineTypes.get(ll));
+						bl.setInducedTime(new Timestamp(((long) preBlameResult
+								.getSourceCommit(ll).getCommitTime()) * 1000));
+						bl.setFixedTime(fixedCommitInfo.getTime());
 						bl.setChangeType(BugTrackingConstants.CODE_DELETED);
 						blameLines.add(bl);
 					}
@@ -312,17 +285,14 @@ public class BlameTrace {
 		// comment.
 		boolean shouldCurCare = false;
 		for (int ll = thisVersionStartLine; ll < thisVersionLine
-				&& ll < blameResult.getResultContents()
-						.size(); ll++) {
-			if (lineChanges.containsKey(ll)
-					&& lineChanges.get(ll)) {
+				&& ll < blameResult.getResultContents().size(); ll++) {
+			if (lineChanges.containsKey(ll) && lineChanges.get(ll)) {
 				shouldCurCare = true;
 				break;
 			}
 		}
 		if (preVersionStartLine == previousVersionLine) {
-			if (preRevisionLineTypes
-					.containsKey(previousVersionLine)) {
+			if (preRevisionLineTypes.containsKey(previousVersionLine)) {
 				for (Integer bugId : bugIds) {
 					BugInduceBlameLine bl = new BugInduceBlameLine();
 					bl.setBugId(bugId);
@@ -332,29 +302,23 @@ public class BlameTrace {
 					bl.setInducedlineNumber(preBlameResult
 							.getSourceLine(previousVersionLine));
 					bl.setFixedRevisionId(revisionId);
-					bl.setInducedRevisionId(preBlameResult
-							.getSourceCommit(
-									previousVersionLine)
-							.getName());
+					bl.setInducedRevisionId(preBlameResult.getSourceCommit(
+							previousVersionLine).getName());
 					bl.setShouldPreCare(preRevisionLineTypes
 							.get(previousVersionLine));
 					bl.setShouldCurCare(shouldCurCare);
-					bl.setInducedTime(new Timestamp(
-							((long) preBlameResult
-									.getSourceCommit(
-											previousVersionLine)
-									.getCommitTime()) * 1000));
-					bl.setFixedTime(fixedCommitInfo
-							.getTime());
+					bl.setInducedTime(new Timestamp(((long) preBlameResult
+							.getSourceCommit(previousVersionLine)
+							.getCommitTime()) * 1000));
+					bl.setFixedTime(fixedCommitInfo.getTime());
 					bl.setChangeType(BugTrackingConstants.CODE_INSERTED);
-					
+
 					blameLines.add(bl);
 				}
 			}
 		} else if (preVersionStartLine < previousVersionLine) {
 			for (int ll = preVersionStartLine; ll < previousVersionLine
-					&& ll < blameResult.getResultContents()
-							.size(); ll++) {
+					&& ll < blameResult.getResultContents().size(); ll++) {
 				if (preRevisionLineTypes.containsKey(ll)) {
 					for (Integer bugId : bugIds) {
 						BugInduceBlameLine bl = new BugInduceBlameLine();
@@ -365,20 +329,15 @@ public class BlameTrace {
 						bl.setInducedlineNumber(preBlameResult
 								.getSourceLine(ll));
 						bl.setFixedRevisionId(revisionId);
-						bl.setInducedRevisionId(preBlameResult
-								.getSourceCommit(ll)
-								.getName());
-						bl.setShouldPreCare(preRevisionLineTypes
-								.get(ll));
+						bl.setInducedRevisionId(preBlameResult.getSourceCommit(
+								ll).getName());
+						bl.setShouldPreCare(preRevisionLineTypes.get(ll));
 						bl.setShouldCurCare(shouldCurCare);
-						bl.setInducedTime(new Timestamp(
-								((long) preBlameResult
-										.getSourceCommit(ll)
-										.getCommitTime()) * 1000));
-						bl.setFixedTime(fixedCommitInfo
-								.getTime());
+						bl.setInducedTime(new Timestamp(((long) preBlameResult
+								.getSourceCommit(ll).getCommitTime()) * 1000));
+						bl.setFixedTime(fixedCommitInfo.getTime());
 						bl.setChangeType(BugTrackingConstants.CODE_MODIFIED);
-						
+
 						blameLines.add(bl);
 					}
 				}
@@ -411,8 +370,7 @@ public class BlameTrace {
 	 * @param lineLastChangeRevisions
 	 * @param blameResult
 	 */
-	void fillLastChangeForLine(
-			Map<Integer, String[]> lineLastChangeRevisions,
+	void fillLastChangeForLine(Map<Integer, String[]> lineLastChangeRevisions,
 			BlameResult blameResult) {
 		lineLastChangeRevisions.clear();
 		for (int line = 0; line < blameResult.getResultContents().size(); line++) {
@@ -434,8 +392,9 @@ public class BlameTrace {
 			System.out.println("FileName:" + i + "/" + sourceFileLists.size()
 					+ ":" + sourceFiles.get(0).getFileName());
 			Set<CodeLineChange> codeLineChanges = new HashSet<CodeLineChange>();
-			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles,codeLineChanges);
-			//Save to DataBase.
+			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles,
+					codeLineChanges);
+			// Save to DataBase.
 			HibernateUtils.saveAll(blameLines,
 					BugTrackingConstants.HIBERNATE_CONF_PATH);
 			HibernateUtils.saveAll(codeLineChanges,
