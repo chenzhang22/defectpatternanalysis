@@ -18,7 +18,7 @@ public class BugSurvivalTimeDao {
 	public static void main(String[] args) {
 		String fileName = 	"org.eclipse.jdt.apt.core/src/org/eclipse/jdt/apt/core/util/AptPreferenceConstants.java";
 
-		System.out.println(loadAllBugSurvivalTime(DaoConstants.ECLIPSE_HIBERNATE_LOCATION_PATH).size());
+		System.out.println(loadAllBugSurvivalTime(DaoConstants.ECLIPSE_CORE_HIBERNATE_LOCATION_PATH).size());
 	}
 
 	@SuppressWarnings("unchecked")
