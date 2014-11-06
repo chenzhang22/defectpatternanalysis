@@ -6,8 +6,8 @@ public class BlameMain {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
-		int startIndex = 0;
-		int size = 10000;
+		int startIndex = 0+1150+1150;
+		int size = 1150;
 		BlameTrace blameTrace = new BlameTrace(startIndex,size);
 		blameTrace.blameTrace();
 	}
