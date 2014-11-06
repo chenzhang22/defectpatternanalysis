@@ -383,7 +383,7 @@ public class BlameTrace {
 	public void blameTrace() {
 		List<List<GitSourceFile>> sourceFileLists = SourceFilePreparation
 				.getSourcefilelist();
-		System.out.println(sourceFileLists.size());
+//		System.out.println(sourceFileLists.size());
 		for (int i = startIndex; i < startIndex + size
 				&& i < sourceFileLists.size(); i++) {
 			List<GitSourceFile> sourceFiles = sourceFileLists.get(i);
