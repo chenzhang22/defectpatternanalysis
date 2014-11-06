@@ -26,6 +26,9 @@ public class LineChangeHandler {
 			String line = blameResult.getResultContents().getString(i);
 			line = line.trim();
 			originalType = this.isInComment(line, originalType);
+			if(blameResult.getSourceCommit(i)==null){
+				continue;
+			}
 			if (revisionId.equals(blameResult.getSourceCommit(i).getName())) {
 				if(line.isEmpty()||line.equals("")){
 					changeLines.put(i, false);
