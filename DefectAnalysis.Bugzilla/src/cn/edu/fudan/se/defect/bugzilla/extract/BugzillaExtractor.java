@@ -31,6 +31,7 @@ public class BugzillaExtractor {
 			if (!(e.getCause().toString().endsWith("does not exist.")||e.getCause().toString().endsWith("was found in the element content of the document."))) {
 				System.exit(0);
 			}
+			return null;
 		}
 		return method;
 	}
