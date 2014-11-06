@@ -1,13 +1,12 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defect.bugzilla.main;
+package cn.edu.fudan.se.defect.bugzilla.extract;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.fudan.se.defect.bugzilla.constants.BugzillaConstants;
-import cn.edu.fudan.se.defect.bugzilla.extract.BugzillaExtractor;
 import cn.edu.fudan.se.defect.bugzilla.factory.BugzillaAttachmentFactory;
 import cn.edu.fudan.se.defect.bugzilla.factory.BugzillaBugFactory;
 import cn.edu.fudan.se.defect.bugzilla.factory.BugzillaCommentFactory;

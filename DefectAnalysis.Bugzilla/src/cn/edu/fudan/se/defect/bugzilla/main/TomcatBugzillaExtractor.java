@@ -1,14 +1,14 @@
 /**
  * 
  */
-package cn.edu.fudan.se.defect.bugzilla.tomcat;
+package cn.edu.fudan.se.defect.bugzilla.main;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cn.edu.fudan.se.defect.bugzilla.main.BugzillaMain;
+import cn.edu.fudan.se.defect.bugzilla.extract.BugzillaMain;
 import cn.edu.fudan.se.defectAnalysis.bean.bugzilla.BugzillaBug;
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitFiltedLink;
 import cn.edu.fudan.se.defectAnalysis.bean.link.FixedBugCommitLink;

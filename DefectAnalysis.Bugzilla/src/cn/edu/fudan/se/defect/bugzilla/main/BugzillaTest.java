@@ -3,6 +3,8 @@
  */
 package cn.edu.fudan.se.defect.bugzilla.main;
 
+import cn.edu.fudan.se.defect.bugzilla.extract.BugzillaMain;
+
 
 /**
  * @author Lotay
