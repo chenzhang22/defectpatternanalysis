@@ -26,13 +26,25 @@ public class BugzillaMain {
 	private static BugzillaCommentFactory commentFactory = new BugzillaCommentFactory();
 	private static BugzillaHistoryFactory historyFactory = new BugzillaHistoryFactory();
 
-	public List<Object> extractBugzilla(String url, int bugId) throws Exception {
+	public List<Object> extractBugzilla(String url, int bugId) {
 		List<Object> bugzillaObjs = new ArrayList<Object>();
-		BugzillaExtractor bugzillaExtractor = new BugzillaExtractor(url);
-		
+		BugzillaExtractor bugzillaExtractor;
+		try {
+			bugzillaExtractor = new BugzillaExtractor(url);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return bugzillaObjs;
+		}
+
 		BugzillaMethod getBug = new GetBugzilla(bugId,
 				BugzillaConstants.BUGZILLA_METHOD_GETBUG);
+
 		getBug = bugzillaExtractor.executMethod(getBug);
+		if (getBug == null) {
+			return bugzillaObjs;
+		}
 		bugzillaObjs.add(bugFactory.buildBugzillaBean(((GetBugzilla) getBug)
 				.getResultMap()));
 
@@ -53,7 +65,7 @@ public class BugzillaMain {
 		getHistory = (GetBugzilla) bugzillaExtractor.executMethod(getHistory);
 		bugzillaObjs.addAll(historyFactory.buildBugzillaBean(bugId,
 				getHistory.getResultMap()));
-		
+
 		return bugzillaObjs;
 	}
 }
