@@ -52,8 +52,12 @@ public class CodeRangList extends ArrayList<ChangeLineRange> {
 
 	@Override
 	public String toString() {
-		return "CodeRangList [repoName=" + repoName + ", revisionId="
-				+ revisionId + ", fileName=" + fileName + ", toString()="
-				+ super.toString() + "]";
+		StringBuffer toStr = new StringBuffer("CodeRangList [repoName="
+				+ repoName + ", fileName=" + fileName + ",revision="
+				+ this.revisionId + "]\n");
+		for (int i = 0; i < this.size(); i++) {
+			toStr.append(this.get(i) + "\n");
+		}
+		return toStr.toString();
 	}
 }
