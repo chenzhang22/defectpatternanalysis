@@ -20,7 +20,7 @@ public class BugInduceBlameLineDao {
 		if (hbmConf == null || fileName == null)
 			return null;
 		String hql = "from BugInduceBlameLine where fileName='" + fileName
-				+ "' order by bugId,inducedRevisionId,inducedlineNumber";
+				+ "' order by inducedRevisionId,bugId,inducedlineNumber";
 		return HibernateUtils.retrieveObjects(hql, hbmConf);
 	}
 
