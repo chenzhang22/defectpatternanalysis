@@ -27,9 +27,9 @@ public class LineRangeGenerator {
 		LineRangeGenerator generator = new LineRangeGenerator();
 		HashMap<String, CodeRangeList> codeListMap = generator
 				.genCodeRangList(fileName);
-		// for (CodeRangeList ranges : codeListMap.values()) {
-		// System.out.println(ranges);
-		// }
+		for (CodeRangeList ranges : codeListMap.values()) {
+			System.out.println(ranges);
+		}
 		System.out.println();
 	}
 

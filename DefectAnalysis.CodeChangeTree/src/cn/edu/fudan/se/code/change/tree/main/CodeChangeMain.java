@@ -49,7 +49,8 @@ public class CodeChangeMain {
 			CompilationUnit cu = builder.genCompilationUnit(revisionId,
 					fileName);
 			CodeRangeList rangeList = codeChangeList.get(revisionId);
-			HashSet<ChangeLineRange> rangeSet = new HashSet<ChangeLineRange>(rangeList);
+			HashSet<ChangeLineRange> rangeSet = new HashSet<ChangeLineRange>(
+					rangeList);
 			for (ChangeLineRange range : rangeSet) {
 				// System.out.println("range:"+range);
 				CodeTreeVisitor treeVisitor = new CodeTreeVisitor(
