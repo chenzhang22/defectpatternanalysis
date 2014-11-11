@@ -66,6 +66,36 @@ public class ChangeLineRange {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + inducedEndLine;
+		result = prime * result + inducedStartLine;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ChangeLineRange)) {
+			return false;
+		}
+		ChangeLineRange other = (ChangeLineRange) obj;
+		if (inducedEndLine != other.inducedEndLine) {
+			return false;
+		}
+		if (inducedStartLine != other.inducedStartLine) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "ChangeLineRange [changeType=" + changeType + ", bugId=" + bugId
 				+ ", inducedStartLine=" + inducedStartLine

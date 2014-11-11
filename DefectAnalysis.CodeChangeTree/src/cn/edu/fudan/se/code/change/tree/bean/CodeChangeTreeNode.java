@@ -96,8 +96,23 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 	public String toString() {
 		String toStr = "CodeChangeTreeNode [preType=" + preType + ", preNode="
 				+ preNode + "]";
-		
+
 		return toStr;
+	}
+
+	@Override
+	public String toNormalString() {
+		return super.toNormalString() + "+/-";
+	}
+
+	@Override
+	public String toTypeString() {
+		return super.toTypeString() + "+/-";
+	}
+
+	@Override
+	public String toSimpleTypeString() {
+		return super.toSimpleTypeString() + "+/-";
 	}
 
 }

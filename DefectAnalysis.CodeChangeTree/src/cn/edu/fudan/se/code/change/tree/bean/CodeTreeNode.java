@@ -15,9 +15,14 @@ public class CodeTreeNode {
 	private String repoName;
 	private String revisionId;
 	private String fileName;
+	private String content;
+	private String name;
 	private String type;
+	private String simpleType;
 	private ArrayList<CodeTreeNode> children = new ArrayList<CodeTreeNode>();
 	private ASTNode node;
+
+	private int bugId = -1;
 
 	private int startIndex;
 	private int endIndex;
@@ -50,6 +55,36 @@ public class CodeTreeNode {
 		this.fileName = fileName;
 	}
 
+	/**
+	 * @return the content
+	 */
+	public String getContent() {
+		return content;
+	}
+
+	/**
+	 * @param content
+	 *            the content to set
+	 */
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -58,8 +93,41 @@ public class CodeTreeNode {
 		this.type = type;
 	}
 
+	/**
+	 * @return the simpleType
+	 */
+	public String getSimpleType() {
+		return simpleType;
+	}
+
+	/**
+	 * @param simpleType the simpleType to set
+	 */
+	public void setSimpleType(String simpleType) {
+		this.simpleType = simpleType;
+	}
+
+	/**
+	 * @return the bugId
+	 */
+	public int getBugId() {
+		return bugId;
+	}
+
+	/**
+	 * @param bugId
+	 *            the bugId to set
+	 */
+	public void setBugId(int bugId) {
+		this.bugId = bugId;
+	}
+
 	public ArrayList<CodeTreeNode> getChildren() {
 		return children;
+	}
+
+	public void addChild(CodeTreeNode treeNode) {
+		this.children.add(treeNode);
 	}
 
 	public ASTNode getNode() {
@@ -114,18 +182,31 @@ public class CodeTreeNode {
 		return endColumn;
 	}
 
-	public void setEnColumn(int enColumn) {
-		this.endColumn = enColumn;
+	public void setEndColumn(int endColumn) {
+		this.endColumn = endColumn;
+	}
+
+	public String toNormalString() {
+		return "CodeTreeNode [type=" + type + ", startLine=" + startLine
+				+ ", startColumn=" + startColumn + ", endLine=" + endLine
+				+ ", endColumn=" + endColumn + "]";
 	}
 
 	@Override
 	public String toString() {
-		String toStr = "CodeTreeNode [type=" + type + ", node=" + node
-				+ ", startLine=" + startLine + ", startColumn=" + startColumn
-				+ ", endLine=" + endLine + ", endColumn=" + endColumn + "]";
-		for (CodeTreeNode node : this.children) {
-			toStr += "\n" + node.toString();
-		}
+		String toStr = "CodeTreeNode [repoName=" + repoName + ", revisionId="
+				+ revisionId + ", fileName=" + fileName + ", name=" + name
+				+ ", type=" + type + ", startIndex=" + startIndex
+				+ ", endIndex=" + endIndex + ", startLine=" + startLine
+				+ ", startColumn=" + startColumn + ", endLine=" + endLine
+				+ ", endColumn=" + endColumn + "]";
 		return toStr;
+	}
+
+	public String toTypeString() {
+		return type;
+	}
+	public String toSimpleTypeString() {
+		return simpleType;
 	}
 }
