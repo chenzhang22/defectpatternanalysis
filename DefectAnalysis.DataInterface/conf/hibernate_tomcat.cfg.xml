@@ -49,7 +49,7 @@
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/change_distiller_diff_entity.hbm.xml" />
 		<mapping
-			resource="cn/edu/fudan/se/defectAnalysis/conf/track/code_line_change.hbm.xml" />
+			resource="cn/edu/fudan/se/defectAnalysis/conf/track/code_line_change_block.hbm.xml" />
 		<mapping
 			resource="cn/edu/fudan/se/defectAnalysis/conf/track/bug_survival_time.hbm.xml" />
 	</session-factory>

@@ -5,7 +5,7 @@ package cn.edu.fudan.se.defectAnalysis.dao.track;
 
 import java.util.List;
 
-import cn.edu.fudan.se.defectAnalysis.bean.track.CodeLineChange;
+import cn.edu.fudan.se.defectAnalysis.bean.track.CodeLineChangeBlock;
 import cn.edu.fudan.se.defectAnalysis.constants.dao.DaoConstants;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
@@ -19,16 +19,16 @@ public class CodeLineChangeDao {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String fileName = "org.eclipse.jdt.core/model/org/eclipse/jdt/core/IField.java", revisionId = "002377a0c081bad20cf24753616b65ca91f33618";
+		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/ClassFile.java", revisionId = "092d49846655da2c4e511a256ba551dc4e15c674";
 		CodeLineChangeDao dao = new CodeLineChangeDao();
-		List<CodeLineChange> changeLines = dao.loadChangeLines(
+		List<CodeLineChangeBlock> changeLines = dao.loadChangeLines(
 				DaoConstants.ECLIPSE_CORE_HIBERNATE_LOCATION_PATH, fileName,
 				revisionId);
 		System.out.println(changeLines);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CodeLineChange> loadChangeLines(String hbmConf,
+	public List<CodeLineChangeBlock> loadChangeLines(String hbmConf,
 			String fileName, String revisionId) {
 		if (hbmConf == null || fileName == null || revisionId == null)
 			return null;

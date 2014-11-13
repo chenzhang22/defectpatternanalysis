@@ -3,14 +3,18 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-4-8 14:35:13 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping package="cn.edu.fudan.se.defectAnalysis.bean.track">
-	<class name="CodeLineChange" table="code_line_change">
+	<class name="CodeLineChangeBlock" table="code_line_change_block">
 		<composite-id>
 			<key-property name="revisionId" column="revisionId"
 				type="string" />
 			<key-property name="fileName" column="fileName" type="string" />
-			<key-property name="lineNumber" column="lineNumber"
+			<key-property name="curStartLine" column="curStartLine"
+				type="integer" />
+			<key-property name="curEndLine" column="curEndLine"
 				type="integer" />
 		</composite-id>
-		<property name="shouldCare" column="shouldCare" type="boolean"/>
+		<property name="preRevisionId" column="preRevisionId" type="string" />
+		<property name="preStartLine" column="preStartLine" type="integer" />
+		<property name="preEndLine" column="preEndLine" type="integer" />
 	</class>
 </hibernate-mapping>
