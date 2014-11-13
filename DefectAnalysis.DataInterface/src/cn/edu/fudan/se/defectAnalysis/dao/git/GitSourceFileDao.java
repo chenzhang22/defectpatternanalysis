@@ -47,7 +47,7 @@ public class GitSourceFileDao {
 		if (fileName == null || hbmConf == null) {
 			return null;
 		}
-		String hql = "from GitSourceFile where fileName='" + fileName + "'";
+		String hql = "from GitSourceFile where fileName='" + fileName + "' order by time";
 		return HibernateUtils.retrieveObjects(hql, hbmConf);
 	}
 

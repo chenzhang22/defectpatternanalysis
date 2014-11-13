@@ -36,4 +36,14 @@ public class GitCommitDao {
 		return commitInfos == null || commitInfos.size() != 1 ? null
 				: commitInfos.get(0);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<GitCommitInfo> loadAllGitCommitInfo(String hbmConf) {
+		if (hbmConf == null) {
+			return null;
+		}
+		List<GitCommitInfo> commitInfos = HibernateUtils.retrieveAll(
+				GitCommitInfo.class, hbmConf);
+		return commitInfos;
+	}
 }
