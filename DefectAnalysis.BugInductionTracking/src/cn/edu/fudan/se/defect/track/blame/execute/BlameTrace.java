@@ -18,7 +18,7 @@ import cn.edu.fudan.se.defect.track.constants.BugTrackingConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
-import cn.edu.fudan.se.defectAnalysis.bean.track.CodeLineChange;
+import cn.edu.fudan.se.defectAnalysis.bean.track.CodeLineChangeBlock;
 import cn.edu.fudan.se.defectAnalysis.dao.git.GitCommitDao;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
@@ -29,10 +29,8 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 public class BlameTrace {
 
 	private Set<BugInduceBlameLine> blameTrace(
-			List<GitSourceFile> sourceFileList,
-			Set<CodeLineChange> codeLineChanges) {
+			List<GitSourceFile> sourceFileList) {
 		Set<BugInduceBlameLine> blameLines = new HashSet<BugInduceBlameLine>();
-		codeLineChanges.clear();
 		BlameCMD blameCom = new BlameCMD();
 		LineChangeHandler lineChangeHandler = new LineChangeHandler();
 		BlameResult preBlameResult = null;
@@ -73,7 +71,7 @@ public class BlameTrace {
 				}
 			}
 
-			saveChangeLines(codeLineChanges, fileName, revisionId, lineChanges);
+//			buildChangeLines(codeLineChangeBlocks, fileName, revisionId, lineChanges);
 			// Set the current result and type as last ones.
 
 			preBlameResult = blameResult;
@@ -347,24 +345,24 @@ public class BlameTrace {
 	}
 
 	/**
-	 * @param codeLineChange
+	 * @param codeLineChangeBlock
 	 * @param fileName
 	 * @param revisionId
 	 * @param lineChanges
 	 */
-	private void saveChangeLines(Set<CodeLineChange> codeLineChange,
-			String fileName, String revisionId,
-			Map<Integer, Boolean> lineChanges) {
-		// Extracting the change line.
-		for (Integer line : lineChanges.keySet()) {
-			CodeLineChange lineChange = new CodeLineChange();
-			lineChange.setFileName(fileName);
-			lineChange.setRevisionId(revisionId);
-			lineChange.setShouldCare(lineChanges.get(line));
-			lineChange.setLineNumber(line);
-			codeLineChange.add(lineChange);
-		}
-	}
+//	private void buildChangeLines(Set<CodeLineChangeBlock> codeLineChangeBlock,
+//			String fileName, String revisionId,
+//			Map<Integer, Boolean> lineChanges) {
+//		// Extracting the change line.
+//		for (Integer line : lineChanges.keySet()) {
+//			CodeLineChangeBlock lineChange = new CodeLineChangeBlock();
+//			lineChange.setFileName(fileName);
+//			lineChange.setRevisionId(revisionId);
+//			lineChange.setShouldCare(lineChanges.get(line));
+//			lineChange.setLineNumber(line);
+//			codeLineChangeBlock.add(lineChange);
+//		}
+//	}
 
 	/**
 	 * @param lineLastChangeRevisions
@@ -392,13 +390,9 @@ public class BlameTrace {
 			}
 			System.out.println("FileName:" + i + "/" + sourceFileLists.size()
 					+ ":" + sourceFiles.get(0).getFileName());
-			Set<CodeLineChange> codeLineChanges = new HashSet<CodeLineChange>();
-			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles,
-					codeLineChanges);
+			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles);
 			// Save to DataBase.
 			HibernateUtils.saveAll(blameLines,
-					BugTrackingConstants.HIBERNATE_CONF_PATH);
-			HibernateUtils.saveAll(codeLineChanges,
 					BugTrackingConstants.HIBERNATE_CONF_PATH);
 		}
 	}
