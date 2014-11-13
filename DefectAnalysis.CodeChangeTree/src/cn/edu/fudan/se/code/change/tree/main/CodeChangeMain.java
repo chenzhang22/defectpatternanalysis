@@ -33,8 +33,9 @@ public class CodeChangeMain {
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/problem/ProblemReporter.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/Scope.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/parser/Parser.java",
-				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java" };
-		new CodeChangeMain().buildChangeTree(fileName[4]);
+				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java" ,
+				"org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/ClassFile.java"};
+		new CodeChangeMain().buildChangeTree(fileName[5]);
 	}
 
 	public void buildChangeTree(String fileName) {
