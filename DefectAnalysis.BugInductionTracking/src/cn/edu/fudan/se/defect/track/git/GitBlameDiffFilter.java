@@ -44,8 +44,8 @@ public class GitBlameDiffFilter {
 			MissingObjectException, IncorrectObjectTypeException,
 			AmbiguousObjectException, IOException, GitAPIException {
 		// TODO Auto-generated method stub
-		String startRevisionId = "1dac44e6f5251febeac5322fb143c153ef780c6a";
-		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/Scope.java";
+		String startRevisionId = "95753835f26c983ebe5b704e4d93979ad7bfc13d";
+		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/parser/Parser.java";
 		new GitBlameDiffFilter().changeLines(fileName, startRevisionId);
 	}
 
@@ -176,7 +176,7 @@ public class GitBlameDiffFilter {
 			String revision = bresult.getSourceCommit(line).getName();
 			if(revisionId.equals(revision)){
 				changeLines.add(line+1);
-				System.out.println("line:"+(line+1));
+				System.out.println("line:"+(line+1)+",revision:"+revision);
 			}
 		}
 		
