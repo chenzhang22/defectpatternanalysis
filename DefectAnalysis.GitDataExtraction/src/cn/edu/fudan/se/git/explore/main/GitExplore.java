@@ -216,7 +216,9 @@ public class GitExplore {
 						sourceFile.setOldPath(null);
 						sourceFile.setChangeType(ChangeType.ADD.name());
 						sourceFile.setScore(0);
-
+						long time = commit.getCommitTime();
+						time = time * 1000;
+						sourceFile.setTime(new Timestamp(time));
 						gitObjs.add(sourceFile);
 					}
 				}
