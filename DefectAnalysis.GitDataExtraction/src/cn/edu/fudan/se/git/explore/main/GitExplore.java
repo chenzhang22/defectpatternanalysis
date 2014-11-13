@@ -79,14 +79,14 @@ public class GitExplore {
 			boolean hasStarted = true;
 			for (RevCommit commit : git.log().all().call()) {
 
-//				if (commit.getName().equals(
-//						"bce35fda5537a3f0cc840685216b0d2e6f04882f")) {
-//					hasStarted = true;
-//				}
-//				if (commit.getName().equals(
-//						"7ef15a6f090fbec2b4af90203502553de5c56c17")) {
-//					break;
-//				}
+				// if (commit.getName().equals(
+				// "bce35fda5537a3f0cc840685216b0d2e6f04882f")) {
+				// hasStarted = true;
+				// }
+				// if (commit.getName().equals(
+				// "7ef15a6f090fbec2b4af90203502553de5c56c17")) {
+				// break;
+				// }
 
 				if (hasStarted) {
 					Set<Object> gitObjects = extractCommit(commit, postCommit,
@@ -196,6 +196,8 @@ public class GitExplore {
 				gitObjs.addAll(changeObjs);
 			} else {
 				System.out.println("First:" + revisionId);
+				long time = commit.getCommitTime();
+				time = time * 1000;
 				while (treeWalk.next()) {
 					String fileName = treeWalk.getPathString();
 					GitChange change = new GitChange();
@@ -205,10 +207,10 @@ public class GitExplore {
 					change.setOldPath(null);
 					change.setChangeType(ChangeType.ADD.name());
 					change.setScore(0);
+					change.setTime(new Timestamp(time));
 					gitObjs.add(change);
 					if (fileName
 							.endsWith(GitExploreConstants.SOURCE_FILE_SUFFIX)) {
-
 						GitSourceFile sourceFile = new GitSourceFile();
 						sourceFile.setFileName(fileName);
 						sourceFile.setRevisionId(revisionId);
@@ -216,8 +218,6 @@ public class GitExplore {
 						sourceFile.setOldPath(null);
 						sourceFile.setChangeType(ChangeType.ADD.name());
 						sourceFile.setScore(0);
-						long time = commit.getCommitTime();
-						time = time * 1000;
 						sourceFile.setTime(new Timestamp(time));
 						gitObjs.add(sourceFile);
 					}
