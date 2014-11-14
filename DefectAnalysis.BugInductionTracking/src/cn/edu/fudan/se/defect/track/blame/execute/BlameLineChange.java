@@ -44,6 +44,7 @@ public class BlameLineChange {
 				continue;
 			}
 			blameResult = blameCMD.gitBlame(revisionId, fileName);
+//			System.out.println(i + "/" + sourceFiles.size());
 			if (preBlameResult != null && preRevisionId != null) {
 				List<CodeLineChangeBlock> changes = matchBlameDiff(fileName,
 						revisionId, blameResult, preRevisionId, preBlameResult);
@@ -94,19 +95,31 @@ public class BlameLineChange {
 
 			// Skip the some code and change in the same commit.
 			while (thisVersionLine < thisVersionLOC
-					&& preVersionLine < preVersionLOC
-					&& (thisRevisionId = blameResult.getSourceCommit(
-							thisVersionLine).getName()) != null
-					&& (thisCodeContent = blameResult.getResultContents()
-							.getString(thisVersionLine)) != null
-					&& (preRevisionId = preBlameResult.getSourceCommit(
-							preVersionLine).getName()) != null
-					&& (preCodeContent = preBlameResult.getResultContents()
-							.getString(preVersionLine)) != null
-					&& thisCodeContent.equals(preCodeContent)
-					&& thisRevisionId.equals(preRevisionId)) {
-				thisVersionLine++;
-				preVersionLine++;
+					&& preVersionLine < preVersionLOC) {
+				if (blameResult.getSourceCommit(thisVersionLine) == null
+						|| preBlameResult.getSourceCommit(preVersionLine) == null) {
+					return changeBlocks;
+				}
+				if ((thisRevisionId = blameResult.getSourceCommit(
+						thisVersionLine).getName()) != null
+						&& blameResult.getResultContents().getString(
+								thisVersionLine) != null
+						&& (thisCodeContent = blameResult.getResultContents()
+								.getString(thisVersionLine)) != null
+						&& preBlameResult.getSourceCommit(preVersionLine) != null
+						&& (preRevisionId = preBlameResult.getSourceCommit(
+								preVersionLine).getName()) != null
+						&& preBlameResult.getResultContents().getString(
+								preVersionLine) != null
+						&& (preCodeContent = preBlameResult.getResultContents()
+								.getString(preVersionLine)) != null
+						&& thisCodeContent.equals(preCodeContent)
+						&& thisRevisionId.equals(preRevisionId)) {
+					thisVersionLine++;
+					preVersionLine++;
+				}else{
+					break;
+				}
 			}
 
 			boolean hasDiff = false;
@@ -118,6 +131,7 @@ public class BlameLineChange {
 				while (preVersionLine < preVersionLOC) {
 					if ((preCodeContent = preBlameResult.getResultContents()
 							.getString(preVersionLine)) != null
+							&& preBlameResult.getSourceCommit(preVersionLine) != null
 							&& (preRevisionId = preBlameResult.getSourceCommit(
 									preVersionLine).getName()) != null
 							&& preCodeContent.equals(thisCodeContent)
@@ -138,6 +152,7 @@ public class BlameLineChange {
 				preVersionStartLine = preVersionLine;
 				// Search the change Code in current revision
 				while ((thisVersionLine < thisVersionLOC)
+						&& blameResult.getSourceCommit(thisVersionLine) != null
 						&& (thisRevisionId = blameResult.getSourceCommit(
 								thisVersionLine).getName()) != null
 						&& thisRevisionId.equals(revisionId)) {
@@ -148,6 +163,7 @@ public class BlameLineChange {
 							.getString(thisVersionLine);
 					// Search the corresponding code with the change codes.
 					while ((preVersionLine < preVersionLOC
+							&& preBlameResult.getSourceCommit(preVersionLine) != null
 							&& (preRevisionId = preBlameResult.getSourceCommit(
 									preVersionLine).getName()) != null && (preCodeContent = preBlameResult
 							.getResultContents().getString(preVersionLine)) != null)

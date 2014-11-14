@@ -27,6 +27,6 @@ public class BugTrackingConstants {
 	public static final String CODE_DELETED = "CODE_DELETED";
 	
 	//Need changes for different git repository....
-	public static final String GIT_REPO_PATH = ECLIPSE_UI_GIT_REPO_PATH;
-	public static final String HIBERNATE_CONF_PATH = DaoConstants.ECLIPSE_UI_HIBERNATE_LOCATION_PATH;
+	public static final String GIT_REPO_PATH = ECLIPSE_CORE_GIT_REPO_PATH;
+	public static final String HIBERNATE_CONF_PATH = DaoConstants.ECLIPSE_CORE_HIBERNATE_LOCATION_PATH;
 }

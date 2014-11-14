@@ -21,7 +21,7 @@ public class BlameLineChangeMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int startIndex = 0;
+		int startIndex = 542;
 		int size = -1;
 		executeBlame(startIndex, size);
 	}
@@ -43,6 +43,9 @@ public class BlameLineChangeMain {
 			if (sourceFiles == null || sourceFiles.size() < 1) {
 				continue;
 			}
+//			if(!"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/SourceTypeBinding.java".equals(sourceFiles.get(0).getFileName())){
+//				continue;
+//			}
 			System.out.println("FileName:" + i + "/" + sourceFileLists.size()
 					+ ":" + sourceFiles.get(0).getFileName());
 			List<CodeLineChangeBlock> changeBlocks = changeLineBlame
