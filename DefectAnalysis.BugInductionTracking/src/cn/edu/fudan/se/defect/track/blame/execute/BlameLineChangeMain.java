@@ -21,7 +21,7 @@ public class BlameLineChangeMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int startIndex = 542;
+		int startIndex = 3013;
 		int size = -1;
 		executeBlame(startIndex, size);
 	}

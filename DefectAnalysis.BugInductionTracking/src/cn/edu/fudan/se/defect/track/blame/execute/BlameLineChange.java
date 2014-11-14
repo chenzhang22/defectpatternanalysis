@@ -43,6 +43,12 @@ public class BlameLineChange {
 			if ("DELETE".equals(sourceFile.getChangeType())) {
 				continue;
 			}
+			if("ADD".equals(sourceFile.getChangeType())){
+				List<CodeLineChangeBlock> changes = extractBlameAdd(fileName,
+						revisionId, blameResult);
+				changeBlocks.addAll(changes);
+				continue;
+			}
 			blameResult = blameCMD.gitBlame(revisionId, fileName);
 //			System.out.println(i + "/" + sourceFiles.size());
 			if (preBlameResult != null && preRevisionId != null) {
