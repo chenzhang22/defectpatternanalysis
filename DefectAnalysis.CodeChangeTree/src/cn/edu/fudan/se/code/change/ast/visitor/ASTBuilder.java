@@ -20,7 +20,8 @@ public class ASTBuilder {
 
 		ASTBuilder builder = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH);
 		CompilationUnit cu = builder.genCompilationUnit(revisionId, fileName);
-		cu.accept(new CodeTreeVisitor(CodeChangeTreeConstants.REPO_NAME,revisionId,fileName,null));
+		cu.accept(new FileAddedTreeVisitor(CodeChangeTreeConstants.REPO_NAME,
+				revisionId, fileName, null));
 	}
 
 	private JavaFileContentExtractor javaFileContentExtractor = null;
@@ -35,7 +36,7 @@ public class ASTBuilder {
 		}
 		char contents[] = javaFileContentExtractor
 				.extract(revisionId, fileName);
-//		System.out.println(new String(contents));
+		// System.out.println(new String(contents));
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setSource(contents);
 		parser.setCompilerOptions(getCompilerOption("1.8"));
