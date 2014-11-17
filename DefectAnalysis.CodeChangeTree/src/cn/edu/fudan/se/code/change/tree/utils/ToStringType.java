@@ -8,5 +8,5 @@ package cn.edu.fudan.se.code.change.tree.utils;
  *
  */
 enum ToStringType {
-	NORMAL, SIMPLETYPE,TYPE, FULL,
+	NORMAL, SIMPLETYPE, TYPE, FULL,
 }

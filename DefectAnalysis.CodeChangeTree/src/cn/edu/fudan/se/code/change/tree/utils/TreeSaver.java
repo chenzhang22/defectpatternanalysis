@@ -19,9 +19,9 @@ public class TreeSaver {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String fileName ="data/tree/temp.txt";
-		for(int i=0;i<10;i++){
-			save(fileName,"temp:"+i);
+		String fileName = "data/tree/temp.txt";
+		for (int i = 0; i < 10; i++) {
+			save(fileName, "temp:" + i);
 		}
 	}
 
