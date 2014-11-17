@@ -10,7 +10,7 @@ import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
-public class CodeTreeVisitor extends ASTVisitor {
+public class FileAddedTreeVisitor extends ASTVisitor {
 
 	private HashMap<ASTNode, CodeTreeNode> astTreeNodes = new HashMap<ASTNode, CodeTreeNode>();
 	private ChangeLineRange codeChangeRange = null;
@@ -27,8 +27,8 @@ public class CodeTreeVisitor extends ASTVisitor {
 	/**
 	 * @param codeRangeList
 	 */
-	public CodeTreeVisitor(String repoName, String revisionId, String fileName,
-			ChangeLineRange codeChangeRange) {
+	public FileAddedTreeVisitor(String repoName, String revisionId,
+			String fileName, ChangeLineRange codeChangeRange) {
 		super();
 		this.repoName = repoName;
 		this.revisionId = revisionId;
