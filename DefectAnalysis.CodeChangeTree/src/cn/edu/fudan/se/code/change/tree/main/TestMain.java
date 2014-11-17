@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import cn.edu.fudan.se.code.change.ast.visitor.CodeTreeVisitor;
+import cn.edu.fudan.se.code.change.ast.visitor.FileAddedTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 
 /**
@@ -48,7 +48,8 @@ public class TestMain {
 		parser.setCompilerOptions(getCompilerOption("1.7"));
 		CompilationUnit compilationUnit = (CompilationUnit) parser
 				.createAST(null);
-		compilationUnit.accept(new CodeTreeVisitor(CodeChangeTreeConstants.REPO_NAME,null,fileName,null));
+		compilationUnit.accept(new FileAddedTreeVisitor(
+				CodeChangeTreeConstants.REPO_NAME, null, fileName, null));
 
 	}
 

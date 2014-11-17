@@ -9,7 +9,7 @@ import java.util.HashSet;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
-import cn.edu.fudan.se.code.change.ast.visitor.CodeTreeVisitor;
+import cn.edu.fudan.se.code.change.ast.visitor.FileAddedTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -33,8 +33,8 @@ public class CodeChangeMain {
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/problem/ProblemReporter.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/Scope.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/parser/Parser.java",
-				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java" ,
-				"org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/ClassFile.java"};
+				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java",
+				"org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/ClassFile.java" };
 		new CodeChangeMain().buildChangeTree(fileName[5]);
 	}
 
@@ -54,7 +54,7 @@ public class CodeChangeMain {
 					rangeList);
 			for (ChangeLineRange range : rangeSet) {
 				// System.out.println("range:"+range);
-				CodeTreeVisitor treeVisitor = new CodeTreeVisitor(
+				FileAddedTreeVisitor treeVisitor = new FileAddedTreeVisitor(
 						CodeChangeTreeConstants.REPO_NAME, revisionId,
 						fileName, range);
 				cu.accept(treeVisitor);

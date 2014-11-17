@@ -101,7 +101,8 @@ public class CodeTreeNode {
 	}
 
 	/**
-	 * @param simpleType the simpleType to set
+	 * @param simpleType
+	 *            the simpleType to set
 	 */
 	public void setSimpleType(String simpleType) {
 		this.simpleType = simpleType;
@@ -206,6 +207,7 @@ public class CodeTreeNode {
 	public String toTypeString() {
 		return type;
 	}
+
 	public String toSimpleTypeString() {
 		return simpleType;
 	}
