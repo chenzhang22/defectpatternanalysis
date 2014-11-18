@@ -33,8 +33,8 @@ public class CodeChangeMain {
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/problem/ProblemReporter.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/Scope.java",
 				"org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/parser/Parser.java",
-				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java",
-				"org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/ClassFile.java" };
+				"org.eclipse.jdt.core/codeassist/org/eclipse/jdt/internal/codeassist/CompletionEngine.java" ,
+				"org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/ClassFile.java"};
 		new CodeChangeMain().buildChangeTree(fileName[5]);
 	}
 
@@ -43,7 +43,7 @@ public class CodeChangeMain {
 			return;
 		}
 		ASTBuilder builder = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH);
-		HashMap<String, CodeRangeList> codeChangeList = lineRangeGenerator
+		HashMap<String, CodeRangeList> codeChangeList = LineRangeGenerator
 				.genCodeRangList(fileName);
 
 		for (String revisionId : codeChangeList.keySet()) {
