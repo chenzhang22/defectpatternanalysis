@@ -24,21 +24,20 @@ public class LineRangeGenerator {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/problem/ProblemReporter.java";
-		LineRangeGenerator generator = new LineRangeGenerator();
-		HashMap<String, CodeRangeList> codeListMap = generator
-				.genCodeRangList(fileName);
+		HashMap<String, CodeRangeList> codeListMap = genCodeRangList(fileName);
 		for (CodeRangeList ranges : codeListMap.values()) {
 			System.out.println(ranges);
 		}
 		System.out.println();
 	}
 
-	private BugInduceBlameLineDao blameDao = new BugInduceBlameLineDao();
 
-	public HashMap<String, CodeRangeList> genCodeRangList(String fileName) {
+	public static HashMap<String, CodeRangeList> genCodeRangList(String fileName) {
 		if (fileName == null) {
 			return null;
 		}
+		BugInduceBlameLineDao blameDao = new BugInduceBlameLineDao();
+
 		List<BugInduceBlameLine> lines = blameDao.blameLinesForFile(
 				CodeChangeTreeConstants.HIBERNATE_CONF_PATH, fileName);
 		HashMap<String, CodeRangeList> codeListMap = new HashMap<String, CodeRangeList>();
