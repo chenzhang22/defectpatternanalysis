@@ -71,6 +71,4 @@ public class CodeChangeMain {
 		}
 	}
 
-	private LineRangeGenerator lineRangeGenerator = new LineRangeGenerator();
-
 }
