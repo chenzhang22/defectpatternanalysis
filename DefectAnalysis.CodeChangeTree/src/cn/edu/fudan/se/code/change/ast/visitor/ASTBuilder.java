@@ -18,10 +18,9 @@ public class ASTBuilder {
 	public static void main(String[] args) {
 		String revisionId = "b1f709bd1fd47a690112f71bf976691c90f21c2e", fileName = "org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/DeltaProcessor.java";
 
-		ASTBuilder builder = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH);
-		CompilationUnit cu = builder.genCompilationUnit(revisionId, fileName);
-		cu.accept(new FileAddedTreeVisitor(CodeChangeTreeConstants.REPO_NAME,
-				revisionId, fileName, null));
+		CompilationUnit cu = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH)
+				.genCompilationUnit(revisionId, fileName);
+		cu.accept(new FileChangedTreeVisitor(revisionId, fileName, null, null, null));
 	}
 
 	private JavaFileContentExtractor javaFileContentExtractor = null;
@@ -45,7 +44,20 @@ public class ASTBuilder {
 		return compilationUnit;
 	}
 
-	private Map<String, String> getCompilerOption(String javaVersion) {
+	public CompilationUnit genCompilationUnit(char[] contents) {
+		if (contents == null) {
+			return null;
+		}
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
+		parser.setSource(contents);
+		parser.setCompilerOptions(getCompilerOption("1.8"));
+		CompilationUnit compilationUnit = (CompilationUnit) parser
+				.createAST(null);
+		return compilationUnit;
+
+	}
+
+	private static Map<String, String> getCompilerOption(String javaVersion) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> options = JavaCore.getOptions();
 		options.put(JavaCore.COMPILER_SOURCE, javaVersion);

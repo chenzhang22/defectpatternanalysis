@@ -4,6 +4,7 @@
 package cn.edu.fudan.se.code.change.tree.bean;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
@@ -22,7 +23,7 @@ public class CodeTreeNode {
 	private ArrayList<CodeTreeNode> children = new ArrayList<CodeTreeNode>();
 	private ASTNode node;
 
-	private int bugId = -1;
+	private HashSet<Integer> bugIds = new HashSet<Integer>();
 
 	private int startIndex;
 	private int endIndex;
@@ -111,16 +112,16 @@ public class CodeTreeNode {
 	/**
 	 * @return the bugId
 	 */
-	public int getBugId() {
-		return bugId;
+	public HashSet<Integer> getBugIds() {
+		return bugIds;
 	}
 
 	/**
 	 * @param bugId
 	 *            the bugId to set
 	 */
-	public void setBugId(int bugId) {
-		this.bugId = bugId;
+	public void addBugId(int bugId) {
+		this.bugIds.add(bugId);
 	}
 
 	public ArrayList<CodeTreeNode> getChildren() {
@@ -188,7 +189,8 @@ public class CodeTreeNode {
 	}
 
 	public String toNormalString() {
-		return "CodeTreeNode [type=" + type + ", startLine=" + startLine
+		return "CodeTreeNode [type=" + type + ",startIndex=" + startIndex
+				+ ",endIndex=" + endIndex + ", startLine=" + startLine
 				+ ", startColumn=" + startColumn + ", endLine=" + endLine
 				+ ", endColumn=" + endColumn + "]";
 	}
