@@ -9,7 +9,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  * @author Lotay
  *
  */
-public class CodeChangeTreeFilter extends CodeTreeFilter{
+public class CodeChangeTreeFilter extends CodeTreeFilter {
 
 	@Override
 	protected CodeTreeNode filter(CodeTreeNode codeRootNode) {

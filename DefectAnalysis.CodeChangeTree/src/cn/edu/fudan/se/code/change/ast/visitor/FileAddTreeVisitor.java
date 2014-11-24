@@ -14,7 +14,7 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 	 */
 	public FileAddTreeVisitor(String revisionId, String fileName,
 			CodeRangeList codeChangeRangeList) {
-		super(revisionId,fileName,codeChangeRangeList);
+		super(revisionId, fileName, codeChangeRangeList);
 	}
 
 	@Override
@@ -64,16 +64,5 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 			}
 		}
 		astTreeNodes.put(node, treeNode);
-	}
-
-	private CodeRangeList checkChangeRange(int startLine, int endLine) {
-		CodeRangeList rangeList = new CodeRangeList();
-		for (ChangeLineRange range : this.codeChangeRangeList) {
-			if (range.getInducedStartLine() <= startLine
-					&& range.getInducedEndLine() >= endLine) {
-				rangeList.add(range);
-			}
-		}
-		return rangeList;
 	}
 }

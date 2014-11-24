@@ -50,7 +50,8 @@ public class CodeChangeDistillerMain {
 		int i = 0;
 		GitSourceFile preSourceFile = null;
 		String fileName = sourceFiles.get(0).getFileName();
-		Map<String, CodeRangeList> blameLines = LineRangeGenerator.genCodeRangList(fileName);
+		Map<String, CodeRangeList> blameLines = LineRangeGenerator
+				.genCodeRangList(fileName);
 		FileRevisionDiffer fileRevisionDiffer = null;
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
@@ -67,10 +68,12 @@ public class CodeChangeDistillerMain {
 			List<CodeTreeNode> codeTreeNodes = null;
 			if (preSourceFile == null || "ADD".equals(changeType)) {
 				// the first version of file
-				fileRevisionDiffer = new FileAddRevisionDiffer(sourceFile,revBlameLines);
+				fileRevisionDiffer = new FileAddRevisionDiffer(sourceFile,
+						revBlameLines);
 			} else {
 				// the change version.
-				fileRevisionDiffer = new FileChangeRevisionDiffer(preSourceFile,sourceFile,revBlameLines);
+				fileRevisionDiffer = new FileChangeRevisionDiffer(
+						preSourceFile, sourceFile, revBlameLines);
 			}
 			fileRevisionDiffer.diff();
 			preSourceFile = sourceFile;

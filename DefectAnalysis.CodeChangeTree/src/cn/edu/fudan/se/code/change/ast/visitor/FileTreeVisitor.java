@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
@@ -17,7 +18,7 @@ import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
  * @author Lotay
  *
  */
-public abstract class FileTreeVisitor extends ASTVisitor{
+public abstract class FileTreeVisitor extends ASTVisitor {
 
 	protected HashMap<ASTNode, CodeTreeNode> astTreeNodes = new HashMap<ASTNode, CodeTreeNode>();
 	protected String repoName = CodeChangeTreeConstants.REPO_NAME;
@@ -26,12 +27,14 @@ public abstract class FileTreeVisitor extends ASTVisitor{
 	protected CodeTreeNode parentTreeNode = null;
 	protected CodeTreeNode rootTreeNode = null;
 	protected CodeRangeList codeChangeRangeList = null;
+
 	/**
 	 * @param fileName
 	 * @param revisionId
-	 * @param codeChangeRangeList 
+	 * @param codeChangeRangeList
 	 */
-	public FileTreeVisitor(String fileName, String revisionId, CodeRangeList codeChangeRangeList) {
+	public FileTreeVisitor(String fileName, String revisionId,
+			CodeRangeList codeChangeRangeList) {
 		super();
 		this.fileName = fileName;
 		this.revisionId = revisionId;
@@ -60,6 +63,17 @@ public abstract class FileTreeVisitor extends ASTVisitor{
 
 	public CodeTreeNode getRootTreeNode() {
 		return rootTreeNode;
+	}
+
+	protected CodeRangeList checkChangeRange(int startLine, int endLine) {
+		CodeRangeList rangeList = new CodeRangeList();
+		for (ChangeLineRange range : this.codeChangeRangeList) {
+			if (range.getInducedStartLine() <= startLine
+					&& range.getInducedEndLine() >= endLine) {
+				rangeList.add(range);
+			}
+		}
+		return rangeList;
 	}
 
 }

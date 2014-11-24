@@ -43,20 +43,20 @@ public abstract class FileRevisionDiffer {
 		if (compilationUnit == null) {
 			return null;
 		}
-		
+
 		List<SourceCodeChange> filtedNewChanges = null;
 		List<SourceCodeChange> filtedOldChanges = null;
-		FileTreeVisitor fileTreeVisitor=null;
+		FileTreeVisitor fileTreeVisitor = null;
 		if (changes != null && !changes.isEmpty()) {
 			filtedNewChanges = filterNewChange(compilationUnit, changes,
 					lineRangeList);
 			filtedOldChanges = filterOldChange(compilationUnit, changes,
 					lineRangeList);
-			fileTreeVisitor = new FileChangedTreeVisitor(revision,
-					fileName, lineRangeList,filtedNewChanges);
-		}else{
-			fileTreeVisitor = new FileAddTreeVisitor(revision,
-					fileName, lineRangeList);
+			fileTreeVisitor = new FileChangedTreeVisitor(revision, fileName,
+					lineRangeList, filtedNewChanges);
+		} else {
+			fileTreeVisitor = new FileAddTreeVisitor(revision, fileName,
+					lineRangeList);
 		}
 
 		compilationUnit.accept(fileTreeVisitor);

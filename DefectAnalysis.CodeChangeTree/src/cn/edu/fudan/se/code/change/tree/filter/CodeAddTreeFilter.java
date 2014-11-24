@@ -11,8 +11,12 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class CodeAddTreeFilter extends CodeTreeFilter {
 
-	/* (non-Javadoc)
-	 * @see cn.edu.fudan.se.code.change.tree.filter.CodeTreeFilter#filter(cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * cn.edu.fudan.se.code.change.tree.filter.CodeTreeFilter#filter(cn.edu.
+	 * fudan.se.code.change.tree.bean.CodeTreeNode)
 	 */
 	@Override
 	protected CodeTreeNode filter(CodeTreeNode codeRootNode) {

@@ -31,7 +31,6 @@ public class LineRangeGenerator {
 		System.out.println();
 	}
 
-
 	public static HashMap<String, CodeRangeList> genCodeRangList(String fileName) {
 		if (fileName == null) {
 			return null;

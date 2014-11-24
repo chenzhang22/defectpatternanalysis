@@ -58,7 +58,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 				revBlameLines, changes);
 
 		// TODO: filter the bug-blame-code.
-//		CodeTreePrinter.treeSimpleTypePrint(codeRootNode);
+		CodeTreePrinter.treeSimpleTypePrint(codeRootNode);
 
 		System.out.println("");
 	}

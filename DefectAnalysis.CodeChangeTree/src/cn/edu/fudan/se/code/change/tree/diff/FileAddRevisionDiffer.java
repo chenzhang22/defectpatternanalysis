@@ -31,9 +31,9 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 		String revision = gitSourceFile.getRevisionId();
 		CodeTreeNode codeRootNode = extractTreeNode(fileName, revision,
 				revBlameLines, null);
-		
-		//TODO: Filter the non-bug-blame code.
-		
+
+		// TODO: Filter the non-bug-blame code.
+
 		CodeTreePrinter.treeNormalPrint(codeRootNode);
 		System.out.println("");
 	}
