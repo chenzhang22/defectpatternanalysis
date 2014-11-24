@@ -53,7 +53,7 @@ public abstract class FileRevisionDiffer {
 			filtedOldChanges = filterOldChange(compilationUnit, changes,
 					lineRangeList);
 			fileTreeVisitor = new FileChangedTreeVisitor(revision,
-					fileName, lineRangeList,filtedOldChanges, filtedNewChanges);
+					fileName, lineRangeList,filtedNewChanges);
 		}else{
 			fileTreeVisitor = new FileAddTreeVisitor(revision,
 					fileName, lineRangeList);

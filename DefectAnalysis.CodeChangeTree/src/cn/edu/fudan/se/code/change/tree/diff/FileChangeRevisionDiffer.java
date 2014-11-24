@@ -55,12 +55,11 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		changes.addAll(distiller.getSourceCodeChanges());
 
 		CodeTreeNode codeRootNode = extractTreeNode(fileName, changedRevision,
-				revBlameLines,changes);
+				revBlameLines, changes);
 
-		//TODO: filter the bug-blame-code.
-		CodeTreePrinter.treeNormalPrint(codeRootNode);
-		
-		
+		// TODO: filter the bug-blame-code.
+//		CodeTreePrinter.treeSimpleTypePrint(codeRootNode);
+
 		System.out.println("");
 	}
 }

@@ -73,9 +73,6 @@ public class CodeChangeDistillerMain {
 				fileRevisionDiffer = new FileChangeRevisionDiffer(preSourceFile,sourceFile,revBlameLines);
 			}
 			fileRevisionDiffer.diff();
-
-			System.out.println(revBlameLines);
-
 			preSourceFile = sourceFile;
 		}
 	}

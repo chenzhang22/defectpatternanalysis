@@ -20,7 +20,7 @@ public class ASTBuilder {
 
 		CompilationUnit cu = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH)
 				.genCompilationUnit(revisionId, fileName);
-		cu.accept(new FileChangedTreeVisitor(revisionId, fileName, null, null, null));
+		cu.accept(new FileChangedTreeVisitor(revisionId, fileName, null, null));
 	}
 
 	private JavaFileContentExtractor javaFileContentExtractor = null;
