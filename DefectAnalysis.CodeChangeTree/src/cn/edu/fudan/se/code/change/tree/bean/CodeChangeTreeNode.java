@@ -5,6 +5,8 @@ package cn.edu.fudan.se.code.change.tree.bean;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
+
 /**
  * @author Lotay
  *
@@ -19,6 +21,7 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 	private int preStartColumn;
 	private int preEndLine;
 	private int preEndColumn;
+	private SourceCodeChange sourceCodeChange;
 
 	public String getPreRevisionId() {
 		return preRevisionId;
@@ -90,6 +93,21 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 
 	public void setPreEndColumn(int preEndColumn) {
 		this.preEndColumn = preEndColumn;
+	}
+
+	/**
+	 * @return the sourceCodeChange
+	 */
+	public SourceCodeChange getSourceCodeChange() {
+		return sourceCodeChange;
+	}
+
+	/**
+	 * @param sourceCodeChange
+	 *            the sourceCodeChange to set
+	 */
+	public void setSourceCodeChange(SourceCodeChange sourceCodeChange) {
+		this.sourceCodeChange = sourceCodeChange;
 	}
 
 	@Override
