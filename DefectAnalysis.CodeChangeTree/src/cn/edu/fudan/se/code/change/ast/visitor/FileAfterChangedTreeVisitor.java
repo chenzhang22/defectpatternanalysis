@@ -19,19 +19,16 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 /**
  * @author Lotay This is a AST visitor for the tree after change.
  */
-public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
-	private List<SourceCodeChange> sourceCodeChanges = null;
-	public FileAfterChangedTreeVisitor(String changeRevisionId, String fileName,
+public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
+	public FileAfterChangedTreeVisitor( String fileName,String changeRevisionId,
 			CodeRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
-		super(fileName, changeRevisionId, codeChangeRangeList);
-		this.sourceCodeChanges = sourceCodeChanges;
+		super(fileName, changeRevisionId, codeChangeRangeList, sourceCodeChanges);
 	}
 
 	@Override
 	public boolean preVisit2(ASTNode node) {
 		int flag = -1;
-
 		int startLine = startLine(node);
 		int endLine = endLine(node);
 		CodeRangeList list = this.checkChangeRange(startLine, endLine);
@@ -40,7 +37,7 @@ public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 		SourceCodeChange sourceCodeChange = null;
 		if ((flag = this.checkValidNodeLocation(node, sourceCodeChange)) > 0) {
 			if (flag == 2) {
-				System.out.println(node);
+				System.out.println("after:"+node);
 				CodeChangeTreeNode changeTreeNode = new CodeChangeTreeNode();
 				changeTreeNode.setSourceCodeChange(sourceCodeChange);
 				treeNode = changeTreeNode;
@@ -53,8 +50,7 @@ public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 		return false;
 	}
 
-	private int checkValidNodeLocation(ASTNode node,
-			SourceCodeChange sourceCodeChange) {
+	protected int checkValidNodeLocation(ASTNode node, SourceCodeChange sourceCodeChange) {
 		if (sourceCodeChanges == null || sourceCodeChanges.isEmpty()) {
 			return 0;
 		}
@@ -78,7 +74,7 @@ public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 			} else if (change instanceof Delete) {
 				continue;
 			}
-
+	
 			/*
 			 * Comparing the AST Visitor, The end index of change (from
 			 * ChangeDistiller) is less than(1).
@@ -91,5 +87,4 @@ public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 		}
 		return 1;
 	}
-
 }

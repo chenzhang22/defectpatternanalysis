@@ -14,13 +14,15 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 public class CodeChangeTreeNode extends CodeTreeNode {
 	private String preRevisionId;
 	private String preType;
+	private String preSimpleType;
 	private ASTNode preNode;
 	private int preStartIndex;
-	private int preEendIndex;
+	private int preEndIndex;
 	private int preStartLine;
 	private int preStartColumn;
 	private int preEndLine;
 	private int preEndColumn;
+	private String preContent;
 	private SourceCodeChange sourceCodeChange;
 
 	public String getPreRevisionId() {
@@ -39,6 +41,14 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 		this.preType = preType;
 	}
 
+	public String getPreSimpleType() {
+		return preSimpleType;
+	}
+
+	public void setPreSimpleType(String preSimpleType) {
+		this.preSimpleType = preSimpleType;
+	}
+
 	public ASTNode getPreNode() {
 		return preNode;
 	}
@@ -55,12 +65,12 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 		this.preStartIndex = preStartIndex;
 	}
 
-	public int getPreEendIndex() {
-		return preEendIndex;
+	public int getPreEndIndex() {
+		return preEndIndex;
 	}
 
-	public void setPreEendIndex(int preEendIndex) {
-		this.preEendIndex = preEendIndex;
+	public void setPreEndIndex(int preEndIndex) {
+		this.preEndIndex = preEndIndex;
 	}
 
 	public int getPreStartLine() {
@@ -108,6 +118,14 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 	 */
 	public void setSourceCodeChange(SourceCodeChange sourceCodeChange) {
 		this.sourceCodeChange = sourceCodeChange;
+	}
+
+	public String getPreContent() {
+		return preContent;
+	}
+
+	public void setPreContent(String preContent) {
+		this.preContent = preContent;
 	}
 
 	@Override

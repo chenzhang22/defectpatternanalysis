@@ -50,12 +50,6 @@ public class SourceCodeChangeBeforeFilter extends SourceCodeChangeFilter {
 						&& rangeLineEnd >= changeLineEnd) {
 					filtedChanges.add(change);
 					break;
-				} else if (change instanceof Insert) {
-					if (rangeLineStart >= changeLineStart
-							&& rangeLineEnd <= changeLineEnd) {
-						filtedChanges.add(change);
-						break;
-					}
 				}
 			}
 		}

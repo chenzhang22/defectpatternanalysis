@@ -63,14 +63,14 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		CodeTreeNode codeAfterRootNode = extractAfterChangeTreeNode(fileName,
 				changedRevision, afterChangeChars, revBlameLines, changes);
 		CodeTreeNode codeBeforeRootNode = extractBeforeChangeTreeNode(fileName,
-				changedRevision, beforeChangeChars, revBlameLines, changes);
+				preRevision, beforeChangeChars, revBlameLines, changes);
 
 		// TODO: filter the bug-blame-code.
 		if (codeBeforeRootNode != null) {
-			CodeTreePrinter.treeSimpleTypePrint(codeBeforeRootNode);
+//			CodeTreePrinter.treeSimpleTypePrint(codeBeforeRootNode);
 		}
 		if (codeAfterRootNode != null) {
-			CodeTreePrinter.treeSimpleTypePrint(codeAfterRootNode);
+//			CodeTreePrinter.treeSimpleTypePrint(codeAfterRootNode);
 		}
 
 		System.out.println("");
@@ -91,7 +91,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			changeEntitiesNew = sourceCodeChangeFilter.filtChanges(
 					compilationUnit, changes, lineRangeList);
 			FileTreeVisitor fileAfterChangedTreeVisitor = new FileAfterChangedTreeVisitor(
-					revision, fileName, lineRangeList, changeEntitiesNew);
+					fileName, revision, lineRangeList, changeEntitiesNew);
 			compilationUnit.accept(fileAfterChangedTreeVisitor);
 			CodeTreeNode rootAfterChangeTreeNode = fileAfterChangedTreeVisitor
 					.getRootTreeNode();
@@ -115,7 +115,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			changeEntitiesOld = sourceCodeChangeFilter.filtChanges(
 					compilationUnit, changes, lineRangeList);
 			FileTreeVisitor fileBeforeChangedTreeVisitor = new FileBeforeChangedTreeVisitor(
-					revision, fileName, lineRangeList, changeEntitiesOld);
+					fileName,revision,  lineRangeList, changeEntitiesOld);
 			compilationUnit.accept(fileBeforeChangedTreeVisitor);
 			CodeTreeNode rootBeforeChangeTreeNode = fileBeforeChangedTreeVisitor
 					.getRootTreeNode();

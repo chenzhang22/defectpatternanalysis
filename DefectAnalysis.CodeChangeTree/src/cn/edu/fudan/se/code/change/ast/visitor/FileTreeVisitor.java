@@ -104,6 +104,14 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 			treeNode.addBugId(range.getBugId());
 		}
 
+		buildTree(node, treeNode);
+	}
+
+	/**
+	 * @param node
+	 * @param treeNode
+	 */
+	protected void buildTree(ASTNode node, CodeTreeNode treeNode) {
 		if (parentTreeNode == null) {
 			parentTreeNode = treeNode;
 			rootTreeNode = parentTreeNode;
