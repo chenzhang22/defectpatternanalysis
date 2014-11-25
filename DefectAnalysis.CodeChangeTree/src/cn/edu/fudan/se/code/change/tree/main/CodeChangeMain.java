@@ -4,14 +4,12 @@
 package cn.edu.fudan.se.code.change.tree.main;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
-import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;

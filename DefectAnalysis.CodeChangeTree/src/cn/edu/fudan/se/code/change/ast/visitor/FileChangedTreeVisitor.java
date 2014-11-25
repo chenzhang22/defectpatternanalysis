@@ -12,7 +12,6 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
-import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -51,40 +50,7 @@ public class FileChangedTreeVisitor extends FileTreeVisitor {
 			} else {
 				treeNode = new CodeTreeNode();
 			}
-			int startColumn = this.starColumn(node);
-			int endColumn = this.endColumn(node);
-			treeNode.setEndColumn(endColumn);
-			treeNode.setStartColumn(startColumn);
-			treeNode.setStartLine(startLine);
-			treeNode.setEndLine(endLine);
-			treeNode.setStartIndex(node.getStartPosition());
-			treeNode.setEndIndex(node.getStartPosition() + node.getLength());
-			treeNode.setNode(node);
-			treeNode.setRepoName(repoName);
-			treeNode.setFileName(fileName);
-			treeNode.setRevisionId(revisionId);
-			treeNode.setContent(node.toString());
-			treeNode.setType(node.getClass().getName());
-			treeNode.setSimpleType(node.getClass().getSimpleName());
-			for (ChangeLineRange range : list) {
-				treeNode.addBugId(range.getBugId());
-			}
-
-			if (parentTreeNode == null) {
-				parentTreeNode = treeNode;
-				rootTreeNode = parentTreeNode;
-			} else {
-				// Add the node append to its parent...
-				ASTNode parentNode = node.getParent();
-				if (astTreeNodes.containsKey(parentNode)) {
-					CodeTreeNode codeTreeNode = astTreeNodes.get(parentNode);
-					codeTreeNode.addChild(treeNode);
-				} else {
-					// append the node to the root node.
-					rootTreeNode.addChild(treeNode);
-				}
-			}
-			astTreeNodes.put(node, treeNode);
+			buildNormalTreeNode(node, startLine, endLine, list, treeNode);
 			return true;
 		}
 		return false;

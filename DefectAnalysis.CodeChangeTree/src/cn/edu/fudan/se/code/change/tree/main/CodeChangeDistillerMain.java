@@ -14,7 +14,6 @@ import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.git_change.ChangeSourceFileLoader;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
-import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
 
 /**
  * @author Lotay

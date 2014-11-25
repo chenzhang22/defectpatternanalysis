@@ -33,36 +33,6 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 		for (ChangeLineRange range : list) {
 			treeNode.addBugId(range.getBugId());
 		}
-		// astNodes.push(node);
-		int startColumn = this.starColumn(node);
-		int endColumn = this.endColumn(node);
-		treeNode.setEndColumn(endColumn);
-		treeNode.setStartColumn(startColumn);
-		treeNode.setStartLine(startLine);
-		treeNode.setEndLine(endLine);
-		treeNode.setStartIndex(node.getStartPosition());
-		treeNode.setEndIndex(node.getStartPosition() + node.getLength());
-		treeNode.setNode(node);
-		treeNode.setRepoName(repoName);
-		treeNode.setFileName(fileName);
-		treeNode.setRevisionId(revisionId);
-		treeNode.setContent(node.toString());
-		treeNode.setType(node.getClass().getName());
-		treeNode.setSimpleType(node.getClass().getSimpleName());
-		if (parentTreeNode == null) {
-			parentTreeNode = treeNode;
-			rootTreeNode = parentTreeNode;
-		} else {
-			// Add the node append to its parent...
-			ASTNode parentNode = node.getParent();
-			if (astTreeNodes.containsKey(parentNode)) {
-				CodeTreeNode codeTreeNode = astTreeNodes.get(parentNode);
-				codeTreeNode.addChild(treeNode);
-			} else {
-				// append the node to the root node.
-				rootTreeNode.addChild(treeNode);
-			}
-		}
-		astTreeNodes.put(node, treeNode);
+		this.buildNormalTreeNode(node, startLine, endLine, list, treeNode);
 	}
 }

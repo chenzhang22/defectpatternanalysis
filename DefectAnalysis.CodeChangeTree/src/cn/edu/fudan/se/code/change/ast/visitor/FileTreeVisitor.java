@@ -76,4 +76,48 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		return rangeList;
 	}
 
+	/**
+	 * @param node
+	 * @param startLine
+	 * @param endLine
+	 * @param list
+	 * @param treeNode
+	 */
+	protected void buildNormalTreeNode(ASTNode node, int startLine,
+			int endLine, CodeRangeList list, CodeTreeNode treeNode) {
+		int startColumn = this.starColumn(node);
+		int endColumn = this.endColumn(node);
+		treeNode.setEndColumn(endColumn);
+		treeNode.setStartColumn(startColumn);
+		treeNode.setStartLine(startLine);
+		treeNode.setEndLine(endLine);
+		treeNode.setStartIndex(node.getStartPosition());
+		treeNode.setEndIndex(node.getStartPosition() + node.getLength());
+		treeNode.setNode(node);
+		treeNode.setRepoName(repoName);
+		treeNode.setFileName(fileName);
+		treeNode.setRevisionId(revisionId);
+		treeNode.setContent(node.toString());
+		treeNode.setType(node.getClass().getName());
+		treeNode.setSimpleType(node.getClass().getSimpleName());
+		for (ChangeLineRange range : list) {
+			treeNode.addBugId(range.getBugId());
+		}
+
+		if (parentTreeNode == null) {
+			parentTreeNode = treeNode;
+			rootTreeNode = parentTreeNode;
+		} else {
+			// Add the node append to its parent...
+			ASTNode parentNode = node.getParent();
+			if (astTreeNodes.containsKey(parentNode)) {
+				CodeTreeNode codeTreeNode = astTreeNodes.get(parentNode);
+				codeTreeNode.addChild(treeNode);
+			} else {
+				// append the node to the root node.
+				rootTreeNode.addChild(treeNode);
+			}
+		}
+		astTreeNodes.put(node, treeNode);
+	}
 }
