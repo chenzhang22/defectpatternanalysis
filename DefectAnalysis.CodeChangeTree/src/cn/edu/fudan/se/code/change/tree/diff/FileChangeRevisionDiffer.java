@@ -15,7 +15,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
-import cn.edu.fudan.se.code.change.ast.visitor.FileChangedTreeVisitor;
+import cn.edu.fudan.se.code.change.ast.visitor.FileAfterChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
@@ -69,8 +69,9 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 				changedRevision, revBlameLines, changes);
 
 		// TODO: filter the bug-blame-code.
-		CodeTreePrinter.treeSimpleTypePrint(codeRootNode);
-
+		if (codeRootNode != null) {
+			CodeTreePrinter.treeSimpleTypePrint(codeRootNode);
+		}
 		System.out.println("");
 	}
 
@@ -90,28 +91,25 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			return null;
 		}
 
-		List<SourceCodeChange> filtedNewChanges = null;
-		List<SourceCodeChange> filtedOldChanges = null;
+		List<SourceCodeChange> changeEntitiesNew = null;
+		List<SourceCodeChange> changeEntitiesOld = null;
 		FileTreeVisitor fileTreeVisitor = null;
 		if (changes != null && !changes.isEmpty()) {
-			filtedNewChanges = filterNewChange(compilationUnit, changes,
+			changeEntitiesNew = filterAfterChanges(compilationUnit, changes,
 					lineRangeList);
-			filtedOldChanges = filterOldChange(compilationUnit, changes,
+			changeEntitiesOld = filterBeforeChanges(compilationUnit, changes,
 					lineRangeList);
-			fileTreeVisitor = new FileChangedTreeVisitor(revision, fileName,
-					lineRangeList, filtedNewChanges);
-		} else {
-			fileTreeVisitor = new FileAddTreeVisitor(revision, fileName,
-					lineRangeList);
+			fileTreeVisitor = new FileAfterChangedTreeVisitor(revision, fileName,
+					lineRangeList, changeEntitiesNew);
+			compilationUnit.accept(fileTreeVisitor);
+
+			CodeTreeNode rootTreeNode = fileTreeVisitor.getRootTreeNode();
+			return rootTreeNode;
 		}
-
-		compilationUnit.accept(fileTreeVisitor);
-
-		CodeTreeNode rootTreeNode = fileTreeVisitor.getRootTreeNode();
-		return rootTreeNode;
+		return null;
 	}
 
-	protected List<SourceCodeChange> filterOldChange(
+	protected List<SourceCodeChange> filterBeforeChanges(
 			CompilationUnit compilationUnit, List<SourceCodeChange> changes,
 			CodeRangeList lineRangeList) {
 		List<SourceCodeChange> filtedChanges = new ArrayList<SourceCodeChange>();
@@ -159,7 +157,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		return filtedChanges;
 	}
 
-	protected List<SourceCodeChange> filterNewChange(
+	protected List<SourceCodeChange> filterAfterChanges(
 			CompilationUnit compilationUnit, List<SourceCodeChange> changes,
 			CodeRangeList lineRangeList) {
 		List<SourceCodeChange> filtedChanges = new ArrayList<SourceCodeChange>();

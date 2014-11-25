@@ -19,11 +19,11 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 /**
  * @author Lotay This is a AST visitor for the tree after change.
  */
-public class FileChangedTreeVisitor extends FileTreeVisitor {
+public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 	private List<SourceCodeChange> sourceCodeChanges = null;
 	private List<SourceCodeChange> filtedValidChanges = null;
 
-	public FileChangedTreeVisitor(String changeRevisionId, String fileName,
+	public FileAfterChangedTreeVisitor(String changeRevisionId, String fileName,
 			CodeRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, changeRevisionId, codeChangeRangeList);
