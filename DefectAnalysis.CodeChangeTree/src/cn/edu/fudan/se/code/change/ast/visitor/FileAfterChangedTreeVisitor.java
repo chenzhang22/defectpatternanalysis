@@ -21,14 +21,11 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class FileAfterChangedTreeVisitor extends FileTreeVisitor {
 	private List<SourceCodeChange> sourceCodeChanges = null;
-	private List<SourceCodeChange> filtedValidChanges = null;
-
 	public FileAfterChangedTreeVisitor(String changeRevisionId, String fileName,
 			CodeRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, changeRevisionId, codeChangeRangeList);
 		this.sourceCodeChanges = sourceCodeChanges;
-		// System.out.println(this.sourceCodeChanges);
 	}
 
 	@Override

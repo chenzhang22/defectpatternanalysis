@@ -19,7 +19,6 @@ public class FileBeforeChangedTreeVisitor extends FileTreeVisitor {
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, revisionId, codeChangeRangeList);
 		this.sourceCodeChanges = sourceCodeChanges;
-
 	}
 
 }

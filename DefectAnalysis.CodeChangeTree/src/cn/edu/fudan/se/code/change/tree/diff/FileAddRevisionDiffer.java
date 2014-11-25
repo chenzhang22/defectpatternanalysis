@@ -3,18 +3,13 @@
  */
 package cn.edu.fudan.se.code.change.tree.diff;
 
-import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
-import cn.edu.fudan.se.code.change.ast.visitor.FileAfterChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
-import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
@@ -55,9 +50,7 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 	 */
 	protected CodeTreeNode extractAddTreeNode(String fileName, String revision,
 			CodeRangeList lineRangeList) {
-		ASTBuilder astBuilder = new ASTBuilder(
-				CodeChangeTreeConstants.REPO_PATH);
-		CompilationUnit compilationUnit = astBuilder.genCompilationUnit(
+		CompilationUnit compilationUnit = ASTBuilder.genCompilationUnit(
 				revision, fileName);
 		if (compilationUnit == null) {
 			return null;

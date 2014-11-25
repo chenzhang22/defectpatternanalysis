@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
-import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
@@ -64,7 +63,6 @@ public class CodeChangeDistillerMain {
 				continue;
 			}
 			String changeType = sourceFile.getChangeType();
-			List<CodeTreeNode> codeTreeNodes = null;
 			if (preSourceFile == null || "ADD".equals(changeType)) {
 				// the first version of file
 				fileRevisionDiffer = new FileAddRevisionDiffer(sourceFile,

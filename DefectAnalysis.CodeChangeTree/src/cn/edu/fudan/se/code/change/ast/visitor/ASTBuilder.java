@@ -16,35 +16,27 @@ import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
  */
 public class ASTBuilder {
 	public static void main(String[] args) {
-		String revisionId = "b1f709bd1fd47a690112f71bf976691c90f21c2e", fileName = "org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/DeltaProcessor.java";
+		String revisionId = "b1f709bd1fd47a690112f71bf976691c90f21c2e";
+		String fileName = "org.eclipse.jdt.core/model/org/eclipse/jdt/internal/core/DeltaProcessor.java";
 
-		CompilationUnit cu = new ASTBuilder(CodeChangeTreeConstants.REPO_PATH)
+		CompilationUnit cu = ASTBuilder
 				.genCompilationUnit(revisionId, fileName);
-		cu.accept(new FileAfterChangedTreeVisitor(revisionId, fileName, null, null));
+		cu.accept(new FileAfterChangedTreeVisitor(revisionId, fileName, null,
+				null));
 	}
-
-	private JavaFileContentExtractor javaFileContentExtractor = null;
-
-	public ASTBuilder(String repoPath) {
-		javaFileContentExtractor = new JavaFileContentExtractor(repoPath);
-	}
-
-	public CompilationUnit genCompilationUnit(String revisionId, String fileName) {
+	
+	public static CompilationUnit genCompilationUnit(String revisionId,
+			String fileName) {
 		if (revisionId == null || fileName == null) {
 			return null;
 		}
-		char contents[] = javaFileContentExtractor
+		char contents[] = new JavaFileContentExtractor(
+				CodeChangeTreeConstants.REPO_PATH)
 				.extract(revisionId, fileName);
-		// System.out.println(new String(contents));
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
-		parser.setSource(contents);
-		parser.setCompilerOptions(getCompilerOption("1.8"));
-		CompilationUnit compilationUnit = (CompilationUnit) parser
-				.createAST(null);
-		return compilationUnit;
+		return genCompilationUnit(contents);
 	}
 
-	public CompilationUnit genCompilationUnit(char[] contents) {
+	public static CompilationUnit genCompilationUnit(char[] contents) {
 		if (contents == null) {
 			return null;
 		}
