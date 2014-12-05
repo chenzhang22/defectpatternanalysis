@@ -27,38 +27,41 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 		super(fileName, revisionId, codeChangeRangeList, sourceCodeChanges);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jdt.core.dom.ASTVisitor#preVisit2(org.eclipse.jdt.core.dom.ASTNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jdt.core.dom.ASTVisitor#preVisit2(org.eclipse.jdt.core.dom
+	 * .ASTNode)
 	 */
 	@Override
 	public boolean preVisit2(ASTNode node) {
-		int flag = -1;
 		int startLine = startLine(node);
 		int endLine = endLine(node);
 		CodeRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
-		SourceCodeChange sourceCodeChange = null;
-		if ((flag = this.checkValidNodeLocation(node, sourceCodeChange)) > 0) {
-			if (flag == 2) {
-				System.out.println("before:"+node);
-				treeNode = this.buildBeforeTreeNode(node, startLine, endLine, list, sourceCodeChange);
-				System.out.println("before treeNode:"+treeNode);
-				treeNode.setRepoName(repoName);
-				treeNode.setFileName(fileName);
+		ValidNodeResult result = this.checkValidNodeLocation(node);
+		int flag = result.getFlag();
+		SourceCodeChange sourceCodeChange = result.getChange();
+		if (flag > 0) {
+			if (flag == 2 && sourceCodeChange != null) {
+				treeNode = this.buildBeforeTreeNode(node, startLine, endLine,
+						list, sourceCodeChange);
 			} else {
-				treeNode = new CodeTreeNode();
-				treeNode.setRepoName(repoName);
-				treeNode.setFileName(fileName);
+				treeNode = this.buildNormalTreeNode(node, startLine, endLine,
+						list, new CodeTreeNode());
 			}
-
+			treeNode.setRepoName(repoName);
+			treeNode.setFileName(fileName);
 			this.buildTree(node, treeNode);
 			return true;
 		}
 		return false;
 	}
 
-	private CodeTreeNode buildBeforeTreeNode(ASTNode node,int startLine,int endLine, CodeRangeList list,SourceCodeChange sourceCodeChange){
+	private CodeTreeNode buildBeforeTreeNode(ASTNode node, int startLine,
+			int endLine, CodeRangeList list, SourceCodeChange sourceCodeChange) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		CodeChangeTreeNode changeTreeNode = new CodeChangeTreeNode();
@@ -67,7 +70,8 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 		changeTreeNode.setPreStartLine(startLine);
 		changeTreeNode.setPreEndLine(endLine);
 		changeTreeNode.setPreStartIndex(node.getStartPosition());
-		changeTreeNode.setPreEndIndex(node.getStartPosition() + node.getLength());
+		changeTreeNode.setPreEndIndex(node.getStartPosition()
+				+ node.getLength());
 		changeTreeNode.setPreNode(node);
 		changeTreeNode.setPreRevisionId(revisionId);
 		changeTreeNode.setPreContent(node.toString());
@@ -78,11 +82,13 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 		}
 		changeTreeNode.setSourceCodeChange(sourceCodeChange);
 		return changeTreeNode;
-		}
+	}
 
-	protected int checkValidNodeLocation(ASTNode node, SourceCodeChange sourceCodeChange) {
+	protected ValidNodeResult checkValidNodeLocation(ASTNode node) {
+		ValidNodeResult result = new ValidNodeResult();
 		if (sourceCodeChanges == null || sourceCodeChanges.isEmpty()) {
-			return 0;
+			result.setFlag(0);
+			return result;
 		}
 		int nodeStartIndex = node.getStartPosition();
 		int nodeEndIndex = nodeStartIndex + node.getLength();
@@ -104,18 +110,20 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 				changeLineStart = (change.getChangedEntity().getStartPosition());
 				changeLineEnd = (change.getChangedEntity().getEndPosition());
 			}
-	
+
 			/*
 			 * Comparing the AST Visitor, The end index of change (from
 			 * ChangeDistiller) is less than(1).
 			 */
 			if (nodeStartIndex >= changeLineStart
 					&& nodeEndIndex <= (changeLineEnd + 1)) {
-				sourceCodeChange = change;
-				return 2;
+				result.setChange(change);
+				result.setFlag(2);
+				return result;
 			}
 		}
-		return 1;
+		result.setFlag(1);
+		return result;
 	}
-	
+
 }

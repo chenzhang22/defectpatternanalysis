@@ -24,7 +24,7 @@ public class ASTBuilder {
 		cu.accept(new FileAfterChangedTreeVisitor(revisionId, fileName, null,
 				null));
 	}
-	
+
 	public static CompilationUnit genCompilationUnit(String revisionId,
 			String fileName) {
 		if (revisionId == null || fileName == null) {

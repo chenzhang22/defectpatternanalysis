@@ -130,15 +130,19 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 
 	@Override
 	public String toString() {
-		String toStr = "CodeChangeTreeNode [preType=" + preType + ", preNode="
-				+ preNode + "]";
-
-		return toStr;
+		return "CodeChangeTreeNode [preRevisionId=" + preRevisionId
+				+ ", preType=" + preType + ", preSimpleType=" + preSimpleType
+				+ ", preNode=" + preNode + ", preStartIndex=" + preStartIndex
+				+ ", preEndIndex=" + preEndIndex + ", preStartLine="
+				+ preStartLine + ", preStartColumn=" + preStartColumn
+				+ ", preEndLine=" + preEndLine + ", preEndColumn="
+				+ preEndColumn + ", preContent=" + preContent
+				+ ", sourceCodeChange=" + sourceCodeChange + "]";
 	}
 
 	@Override
 	public String toNormalString() {
-		return super.toNormalString() + "+/-";
+		return toString()+super.toNormalString() + "+/-";
 	}
 
 	@Override

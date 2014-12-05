@@ -82,8 +82,9 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	 * @param endLine
 	 * @param list
 	 * @param treeNode
+	 * @return 
 	 */
-	protected void buildNormalTreeNode(ASTNode node, int startLine,
+	protected CodeTreeNode buildNormalTreeNode(ASTNode node, int startLine,
 			int endLine, CodeRangeList list, CodeTreeNode treeNode) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
@@ -103,8 +104,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		for (ChangeLineRange range : list) {
 			treeNode.addBugId(range.getBugId());
 		}
-
-		buildTree(node, treeNode);
+		return treeNode;
 	}
 
 	/**

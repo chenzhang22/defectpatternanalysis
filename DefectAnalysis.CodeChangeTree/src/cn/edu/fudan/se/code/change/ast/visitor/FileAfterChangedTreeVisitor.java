@@ -20,39 +20,44 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  * @author Lotay This is a AST visitor for the tree after change.
  */
 public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
-	public FileAfterChangedTreeVisitor( String fileName,String changeRevisionId,
-			CodeRangeList codeChangeRangeList,
+	public FileAfterChangedTreeVisitor(String fileName,
+			String changeRevisionId, CodeRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
-		super(fileName, changeRevisionId, codeChangeRangeList, sourceCodeChanges);
+		super(fileName, changeRevisionId, codeChangeRangeList,
+				sourceCodeChanges);
 	}
 
 	@Override
 	public boolean preVisit2(ASTNode node) {
-		int flag = -1;
 		int startLine = startLine(node);
 		int endLine = endLine(node);
 		CodeRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
-		SourceCodeChange sourceCodeChange = null;
-		if ((flag = this.checkValidNodeLocation(node, sourceCodeChange)) > 0) {
-			if (flag == 2) {
-				System.out.println("after:"+node);
+		ValidNodeResult result = this.checkValidNodeLocation(node);
+		int flag = result.getFlag();
+		SourceCodeChange sourceCodeChange = result.getChange();
+		if (flag > 0) {
+			if (flag == 2 && sourceCodeChange != null) {
+				// System.out.println("after:"+node);
 				CodeChangeTreeNode changeTreeNode = new CodeChangeTreeNode();
 				changeTreeNode.setSourceCodeChange(sourceCodeChange);
 				treeNode = changeTreeNode;
 			} else {
 				treeNode = new CodeTreeNode();
 			}
-			buildNormalTreeNode(node, startLine, endLine, list, treeNode);
+			treeNode = buildNormalTreeNode(node, startLine, endLine, list, treeNode);
+			buildTree(node, treeNode);
 			return true;
 		}
 		return false;
 	}
 
-	protected int checkValidNodeLocation(ASTNode node, SourceCodeChange sourceCodeChange) {
+	protected ValidNodeResult checkValidNodeLocation(ASTNode node) {
+		ValidNodeResult result = new ValidNodeResult();
 		if (sourceCodeChanges == null || sourceCodeChanges.isEmpty()) {
-			return 0;
+			result.setFlag(0);
+			return result;
 		}
 		int nodeStartIndex = node.getStartPosition();
 		int nodeEndIndex = nodeStartIndex + node.getLength();
@@ -74,17 +79,19 @@ public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 			} else if (change instanceof Delete) {
 				continue;
 			}
-	
+
 			/*
 			 * Comparing the AST Visitor, The end index of change (from
 			 * ChangeDistiller) is less than(1).
 			 */
 			if (nodeStartIndex >= changeLineStart
 					&& nodeEndIndex <= (changeLineEnd + 1)) {
-				sourceCodeChange = change;
-				return 2;
+				result.setFlag(2);
+				result.setChange(change);
+				return result;
 			}
 		}
-		return 1;
+		result.setFlag(1);
+		return result;
 	}
 }
