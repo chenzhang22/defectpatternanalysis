@@ -6,7 +6,6 @@ package cn.edu.fudan.se.code.change.tree.merge;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.uzh.ifi.seal.changedistiller.model.entities.Delete;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -16,7 +15,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  *
  */
 public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
-
+	private final static boolean includeDeleteChangeType = false;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -29,24 +28,9 @@ public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
 		HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps = new HashMap<SourceCodeChange, CodeTreeNode>();
-		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps);
+		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps,includeDeleteChangeType);
 		merge(afterCodeTree, changeTreeNodeMaps);
 		return afterCodeTree;
-	}
-
-	private void buildChangeTreeNodeMap(CodeTreeNode codeTreeNode,
-			HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps) {
-		if (codeTreeNode instanceof CodeChangeTreeNode) {
-			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) codeTreeNode;
-			SourceCodeChange change = codeChangeTreeNode.getSourceCodeChange();
-			if (!(change instanceof Delete)) {
-				changeTreeNodeMaps.put(change, codeChangeTreeNode);
-			}
-		}
-		List<CodeTreeNode> childrenNodes = codeTreeNode.getChildren();
-		for (CodeTreeNode childNode : childrenNodes) {
-			this.buildChangeTreeNodeMap(childNode, changeTreeNodeMaps);
-		}
 	}
 
 	private void merge(CodeTreeNode afterCodeTreeNode,
