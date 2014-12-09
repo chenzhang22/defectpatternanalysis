@@ -16,6 +16,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 	private final static boolean includeDeleteChangeType = false;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -28,7 +29,8 @@ public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
 		HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps = new HashMap<SourceCodeChange, CodeTreeNode>();
-		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps,includeDeleteChangeType);
+		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps,
+				includeDeleteChangeType);
 		merge(afterCodeTree, changeTreeNodeMaps);
 		return afterCodeTree;
 	}
