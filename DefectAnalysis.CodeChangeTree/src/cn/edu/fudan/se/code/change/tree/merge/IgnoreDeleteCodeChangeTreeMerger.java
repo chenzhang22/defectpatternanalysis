@@ -70,10 +70,6 @@ public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 				afterNode.setPreStartIndex(beforeNode.getPreStartIndex());
 				afterNode.setPreStartLine(beforeNode.getPreStartLine());
 				afterNode.setPreType(beforeNode.getPreType());
-//				changeTreeNodeMaps.remove(change);
-				System.out.println(afterCodeTreeNode.toString()
-						+ afterCodeTreeNode.toSimpleTypeString());
-				System.out.println();
 			}
 
 		}
