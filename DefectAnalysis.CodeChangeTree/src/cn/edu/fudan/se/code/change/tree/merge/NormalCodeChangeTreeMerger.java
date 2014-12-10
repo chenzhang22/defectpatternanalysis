@@ -3,7 +3,6 @@
  */
 package cn.edu.fudan.se.code.change.tree.merge;
 
-import java.util.HashMap;
 import java.util.List;
 
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
@@ -13,9 +12,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  * @author Lotay
  *
  */
-public class NormalCodeChangeTreeMerger extends ICodeChangeTreeMerger {
-
-	private static final boolean includeDeleteChangeType = true;
+public class NormalCodeChangeTreeMerger extends IgnoreDeleteCodeChangeTreeMerger {
 
 	/*
 	 * (non-Javadoc)
@@ -28,15 +25,12 @@ public class NormalCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 	@Override
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
-		HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps = new HashMap<SourceCodeChange, CodeTreeNode>();
-		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps,
-				includeDeleteChangeType);
-		this.merge(afterCodeTree, changeTreeNodeMaps);
+		super.merge(beforeCodeTree,afterCodeTree, changes);
+		merge(afterCodeTree);
 		return null;
 	}
 
-	private void merge(CodeTreeNode afterCodeTreeNode,
-			HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps) {
+	private void merge(CodeTreeNode afterCodeTreeNode) {
 		
 	}
 }

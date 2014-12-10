@@ -3,9 +3,9 @@
  */
 package cn.edu.fudan.se.code.change.tree.merge;
 
-import java.util.HashMap;
 import java.util.List;
 
+import ch.uzh.ifi.seal.changedistiller.model.entities.Delete;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -15,7 +15,6 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  *
  */
 public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
-	private final static boolean includeDeleteChangeType = false;
 
 	/*
 	 * (non-Javadoc)
@@ -28,21 +27,19 @@ public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 	@Override
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
-		HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps = new HashMap<SourceCodeChange, CodeTreeNode>();
-		buildChangeTreeNodeMap(beforeCodeTree, changeTreeNodeMaps,
-				includeDeleteChangeType);
-		merge(afterCodeTree, changeTreeNodeMaps);
+		buildChangeTreeNodeMap(beforeCodeTree);
+		merge(afterCodeTree);
 		return afterCodeTree;
 	}
 
-	private void merge(CodeTreeNode afterCodeTreeNode,
-			HashMap<SourceCodeChange, CodeTreeNode> changeTreeNodeMaps) {
+	private void merge(CodeTreeNode afterCodeTreeNode) {
 		if (afterCodeTreeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) afterCodeTreeNode;
 			SourceCodeChange change = codeChangeTreeNode.getSourceCodeChange();
 			CodeTreeNode beforeCodeTreeNode = changeTreeNodeMaps.get(change);
-			if (beforeCodeTreeNode != null
-					&& beforeCodeTreeNode instanceof CodeChangeTreeNode) {
+			if ((beforeCodeTreeNode != null)
+					&& (beforeCodeTreeNode instanceof CodeChangeTreeNode)
+					&& (!(change instanceof Delete))) {
 				CodeChangeTreeNode beforeNode = (CodeChangeTreeNode) beforeCodeTreeNode;
 				CodeChangeTreeNode afterNode = (CodeChangeTreeNode) afterCodeTreeNode;
 				afterNode.setPreContent(beforeNode.getContent());
@@ -57,11 +54,10 @@ public class IgnoreDeleteCodeChangeTreeMerger extends ICodeChangeTreeMerger {
 				afterNode.setPreStartLine(beforeNode.getPreStartLine());
 				afterNode.setPreType(beforeNode.getPreType());
 			}
-
 		}
 		List<CodeTreeNode> childrenNodes = afterCodeTreeNode.getChildren();
 		for (CodeTreeNode childNode : childrenNodes) {
-			this.merge(childNode, changeTreeNodeMaps);
+			this.merge(childNode);
 		}
 	}
 }
