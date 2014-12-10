@@ -27,7 +27,7 @@ public class NormalCodeChangeTreeMerger extends IgnoreDeleteCodeChangeTreeMerger
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
 		super.merge(beforeCodeTree,afterCodeTree, changes);
 		merge(afterCodeTree);
-		return null;
+		return afterCodeTree;
 	}
 
 	private void merge(CodeTreeNode afterCodeTreeNode) {
