@@ -44,6 +44,11 @@ public abstract class ICodeChangeTreeMerger {
 	protected HashMap<SourceCodeChange, CodeChangeTreeNode> deleteCodeChangeTreeNodeMap = new HashMap<SourceCodeChange, CodeChangeTreeNode>();
 
 	/**
+	 * add the delete list order recorder.
+	 * */
+	protected ArrayList<List<Integer>> deleteListOrder = new ArrayList<List<Integer>>();
+
+	/**
 	 * @param codeTreeNode
 	 * @param index
 	 */
@@ -58,6 +63,7 @@ public abstract class ICodeChangeTreeMerger {
 				if (!deleteCodeChangeTreeLocations.containsKey(change)) {
 					List<Integer> locations = new ArrayList<Integer>();
 					locations.addAll(locationStack);
+					deleteListOrder.add(locations);
 					deleteCodeChangeTreeLocations.put(change, locations);
 					/** Add the code delete change node to the delete map. */
 					deleteCodeChangeTreeNodeMap.put(change, codeChangeTreeNode);

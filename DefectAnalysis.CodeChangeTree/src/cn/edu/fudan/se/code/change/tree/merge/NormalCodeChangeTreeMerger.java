@@ -27,6 +27,7 @@ public class NormalCodeChangeTreeMerger extends
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
 		super.merge(beforeCodeTree, afterCodeTree, changes);
+		System.out.println("deleteListOrder:"+deleteListOrder);
 		if ((!super.deleteCodeChangeTreeLocations.isEmpty())
 				&& (!super.deleteCodeChangeTreeNodeMap.isEmpty())) {
 			merge(afterCodeTree);
