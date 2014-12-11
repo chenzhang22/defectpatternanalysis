@@ -17,8 +17,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.merge.ICodeChangeTreeMerger;
-import cn.edu.fudan.se.code.change.tree.merge.IgnoreDeleteCodeChangeTreeMerger;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
+import cn.edu.fudan.se.code.change.tree.merge.NormalCodeChangeTreeMerger;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
 
@@ -70,7 +69,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		// TODO: filter the bug-blame-code.
 		if (codeBeforeRootNode != null&&codeAfterRootNode != null) {
 			System.out.println("changedRevision:"+changedRevision);
-			ICodeChangeTreeMerger codeChangeTreeMerger = new IgnoreDeleteCodeChangeTreeMerger();
+			ICodeChangeTreeMerger codeChangeTreeMerger = new NormalCodeChangeTreeMerger();
 			CodeTreeNode changeTree = codeChangeTreeMerger.merge(codeBeforeRootNode, codeAfterRootNode, changes);
 //			CodeTreePrinter.treeNormalPrint(changeTree);
 		}
