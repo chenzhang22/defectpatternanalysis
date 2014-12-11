@@ -30,33 +30,44 @@ public abstract class ICodeChangeTreeMerger {
 	 *            -- false: ignore delete, true: does not ignore
 	 *            delete(included).
 	 */
-
 	protected void buildChangeTreeNodeMap(CodeTreeNode codeTreeNode) {
 		changeTreeNodeMaps.clear();
-		buildChangeTreeNodeLocation(codeTreeNode,0);
+		buildChangeTreeNodeLocation(codeTreeNode, 0);
 		System.out.println(changeLocations);
 	}
-	
+
 	private Stack<Integer> locationStack = new Stack<Integer>();
-	protected HashMap<SourceCodeChange,List<Integer>> changeLocations = new HashMap<SourceCodeChange,List<Integer>>();
-	private void buildChangeTreeNodeLocation(CodeTreeNode codeTreeNode,int index) {
+	protected HashMap<SourceCodeChange, List<Integer>> changeLocations = new HashMap<SourceCodeChange, List<Integer>>();
+	/**
+	 * Add new deleteCodeChangeTreeNodeMap
+	 * */
+	protected HashMap<SourceCodeChange, CodeChangeTreeNode> deleteCodeChangeTreeNodeMap = new HashMap<SourceCodeChange, CodeChangeTreeNode>();
+
+	/**
+	 * @param codeTreeNode
+	 * @param index
+	 */
+	private void buildChangeTreeNodeLocation(CodeTreeNode codeTreeNode,
+			int index) {
 		locationStack.push(index);
 		if (codeTreeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) codeTreeNode;
 			SourceCodeChange change = codeChangeTreeNode.getSourceCodeChange();
 			changeTreeNodeMaps.put(change, codeChangeTreeNode);
-			if(change instanceof Delete){
-				if(!changeLocations.containsKey(change)){
+			if (change instanceof Delete) {
+				if (!changeLocations.containsKey(change)) {
 					List<Integer> locations = new ArrayList<Integer>();
 					locations.addAll(locationStack);
 					changeLocations.put(change, locations);
+					/** Add the code delete change node to the delete map. */
+					deleteCodeChangeTreeNodeMap.put(change, codeChangeTreeNode);
 				}
 			}
 		}
 		List<CodeTreeNode> childrenNodes = codeTreeNode.getChildren();
-		int i=0;
+		int i = 0;
 		for (CodeTreeNode childNode : childrenNodes) {
-			buildChangeTreeNodeLocation(childNode,i);
+			buildChangeTreeNodeLocation(childNode, i);
 			i++;
 		}
 		locationStack.pop();
