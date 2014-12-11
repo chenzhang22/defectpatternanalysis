@@ -12,7 +12,8 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  * @author Lotay
  *
  */
-public class NormalCodeChangeTreeMerger extends IgnoreDeleteCodeChangeTreeMerger {
+public class NormalCodeChangeTreeMerger extends
+		IgnoreDeleteCodeChangeTreeMerger {
 
 	/*
 	 * (non-Javadoc)
@@ -25,12 +26,15 @@ public class NormalCodeChangeTreeMerger extends IgnoreDeleteCodeChangeTreeMerger
 	@Override
 	public CodeTreeNode merge(CodeTreeNode beforeCodeTree,
 			CodeTreeNode afterCodeTree, List<SourceCodeChange> changes) {
-		super.merge(beforeCodeTree,afterCodeTree, changes);
-		merge(afterCodeTree);
+		super.merge(beforeCodeTree, afterCodeTree, changes);
+		if ((!super.deleteCodeChangeTreeLocations.isEmpty())
+				&& (!super.deleteCodeChangeTreeNodeMap.isEmpty())) {
+			merge(afterCodeTree);
+		}
 		return afterCodeTree;
 	}
 
 	private void merge(CodeTreeNode afterCodeTreeNode) {
-		
+
 	}
 }

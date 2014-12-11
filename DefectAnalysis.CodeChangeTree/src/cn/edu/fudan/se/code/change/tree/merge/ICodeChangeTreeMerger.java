@@ -33,11 +33,11 @@ public abstract class ICodeChangeTreeMerger {
 	protected void buildChangeTreeNodeMap(CodeTreeNode codeTreeNode) {
 		changeTreeNodeMaps.clear();
 		buildChangeTreeNodeLocation(codeTreeNode, 0);
-		System.out.println(changeLocations);
+		System.out.println(deleteCodeChangeTreeLocations);
 	}
 
 	private Stack<Integer> locationStack = new Stack<Integer>();
-	protected HashMap<SourceCodeChange, List<Integer>> changeLocations = new HashMap<SourceCodeChange, List<Integer>>();
+	protected HashMap<SourceCodeChange, List<Integer>> deleteCodeChangeTreeLocations = new HashMap<SourceCodeChange, List<Integer>>();
 	/**
 	 * Add new deleteCodeChangeTreeNodeMap
 	 * */
@@ -55,10 +55,10 @@ public abstract class ICodeChangeTreeMerger {
 			SourceCodeChange change = codeChangeTreeNode.getSourceCodeChange();
 			changeTreeNodeMaps.put(change, codeChangeTreeNode);
 			if (change instanceof Delete) {
-				if (!changeLocations.containsKey(change)) {
+				if (!deleteCodeChangeTreeLocations.containsKey(change)) {
 					List<Integer> locations = new ArrayList<Integer>();
 					locations.addAll(locationStack);
-					changeLocations.put(change, locations);
+					deleteCodeChangeTreeLocations.put(change, locations);
 					/** Add the code delete change node to the delete map. */
 					deleteCodeChangeTreeNodeMap.put(change, codeChangeTreeNode);
 				}
