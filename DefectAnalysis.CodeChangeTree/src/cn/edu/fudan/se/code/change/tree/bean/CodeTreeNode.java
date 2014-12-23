@@ -20,6 +20,7 @@ public class CodeTreeNode {
 	private String name;
 	private String type;
 	private String simpleType;
+	private CodeTreeNode parentTreeNode = null;
 	private ArrayList<CodeTreeNode> children = new ArrayList<CodeTreeNode>();
 	private ASTNode node;
 
@@ -130,6 +131,15 @@ public class CodeTreeNode {
 
 	public void addChild(CodeTreeNode treeNode) {
 		this.children.add(treeNode);
+		treeNode.setParentTreeNode(this);
+	}
+
+	public CodeTreeNode getParentTreeNode() {
+		return parentTreeNode;
+	}
+
+	public void setParentTreeNode(CodeTreeNode parentTreeNode) {
+		this.parentTreeNode = parentTreeNode;
 	}
 
 	public ASTNode getNode() {
