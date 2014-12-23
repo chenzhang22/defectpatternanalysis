@@ -157,6 +157,10 @@ public class CodeTreeNode {
 		this.nameTypes.put(name, type);
 	}
 
+	public void addNameType(HashMap<String, String> nameType) {
+		this.nameTypes.putAll(nameType);
+	}
+
 	public ASTNode getNode() {
 		return node;
 	}
