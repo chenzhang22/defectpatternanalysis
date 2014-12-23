@@ -4,6 +4,7 @@
 package cn.edu.fudan.se.code.change.tree.bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -23,6 +24,8 @@ public class CodeTreeNode {
 	private CodeTreeNode parentTreeNode = null;
 	private ArrayList<CodeTreeNode> children = new ArrayList<CodeTreeNode>();
 	private ASTNode node;
+
+	private HashMap<String, String> nameTypes = new HashMap<String, String>();
 
 	private HashSet<Integer> bugIds = new HashSet<Integer>();
 
@@ -140,6 +143,18 @@ public class CodeTreeNode {
 
 	public void setParentTreeNode(CodeTreeNode parentTreeNode) {
 		this.parentTreeNode = parentTreeNode;
+	}
+
+	public String getNameType(String name) {
+		return this.nameTypes.get(name);
+	}
+
+	public boolean hasTypeName(String name) {
+		return this.nameTypes.containsKey(name);
+	}
+
+	public void addNameType(String name, String type) {
+		this.nameTypes.put(name, type);
 	}
 
 	public ASTNode getNode() {
