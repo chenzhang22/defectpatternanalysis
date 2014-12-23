@@ -34,5 +34,6 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 			treeNode.addBugId(range.getBugId());
 		}
 		this.buildNormalTreeNode(node, startLine, endLine, list, treeNode);
+		this.genNameType(node, treeNode);
 	}
 }
