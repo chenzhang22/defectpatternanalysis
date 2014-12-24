@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.fudan.se.code.change.ast.visitor;
+package cn.edu.fudan.se.code.change.tree.utils;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
