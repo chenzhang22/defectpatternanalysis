@@ -13,7 +13,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 /**
@@ -21,7 +21,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 	public FileAfterChangedTreeVisitor(String fileName,
-			String changeRevisionId, CodeRangeList codeChangeRangeList,
+			String changeRevisionId, CodeBlameRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, changeRevisionId, codeChangeRangeList,
 				sourceCodeChanges);
@@ -31,7 +31,7 @@ public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 	public boolean preVisit2(ASTNode node) {
 		int startLine = startLine(node);
 		int endLine = endLine(node);
-		CodeRangeList list = this.checkChangeRange(startLine, endLine);
+		CodeBlameRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
 		ValidNodeResult result = this.checkValidNodeLocation(node);

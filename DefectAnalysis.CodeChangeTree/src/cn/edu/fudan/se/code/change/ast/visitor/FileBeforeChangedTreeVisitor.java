@@ -12,9 +12,9 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
-import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 /**
@@ -22,7 +22,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	public FileBeforeChangedTreeVisitor(String fileName, String revisionId,
-			CodeRangeList codeChangeRangeList,
+			CodeBlameRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, revisionId, codeChangeRangeList, sourceCodeChanges);
 	}
@@ -38,7 +38,7 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	public boolean preVisit2(ASTNode node) {
 		int startLine = startLine(node);
 		int endLine = endLine(node);
-		CodeRangeList list = this.checkChangeRange(startLine, endLine);
+		CodeBlameRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
 		ValidNodeResult result = this.checkValidNodeLocation(node);
@@ -61,7 +61,7 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	}
 
 	private CodeTreeNode buildBeforeTreeNode(ASTNode node, int startLine,
-			int endLine, CodeRangeList list, SourceCodeChange sourceCodeChange) {
+			int endLine, CodeBlameRangeList list, SourceCodeChange sourceCodeChange) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		CodeChangeTreeNode changeTreeNode = new CodeChangeTreeNode();
@@ -77,7 +77,7 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 		changeTreeNode.setPreContent(node.toString());
 		changeTreeNode.setPreType(node.getClass().getName());
 		changeTreeNode.setPreSimpleType(node.getClass().getSimpleName());
-		for (ChangeLineRange range : list) {
+		for (CodeBlameLineRange range : list) {
 			changeTreeNode.addBugId(range.getBugId());
 		}
 		changeTreeNode.setSourceCodeChange(sourceCodeChange);

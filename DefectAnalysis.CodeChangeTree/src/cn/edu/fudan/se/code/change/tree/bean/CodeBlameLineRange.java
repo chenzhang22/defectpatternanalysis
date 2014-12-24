@@ -7,7 +7,7 @@ package cn.edu.fudan.se.code.change.tree.bean;
  * @author Lotay
  *
  */
-public class ChangeLineRange {
+public class CodeBlameLineRange {
 	private String changeType;
 	private int bugId;
 
@@ -82,10 +82,10 @@ public class ChangeLineRange {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof ChangeLineRange)) {
+		if (!(obj instanceof CodeBlameLineRange)) {
 			return false;
 		}
-		ChangeLineRange other = (ChangeLineRange) obj;
+		CodeBlameLineRange other = (CodeBlameLineRange) obj;
 		if (inducedEndLine != other.inducedEndLine) {
 			return false;
 		}

@@ -6,7 +6,7 @@ package cn.edu.fudan.se.code.change.tree.main;
 import java.util.List;
 import java.util.Map;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
@@ -48,7 +48,7 @@ public class CodeChangeDistillerMain {
 		int i = 0;
 		GitSourceFile preSourceFile = null;
 		String fileName = sourceFiles.get(0).getFileName();
-		Map<String, CodeRangeList> blameLines = LineRangeGenerator
+		Map<String, CodeBlameRangeList> blameLines = LineRangeGenerator
 				.genCodeRangList(fileName);
 		FileRevisionDiffer fileRevisionDiffer = null;
 		for (; i < sourceFiles.size(); i++) {
@@ -57,7 +57,7 @@ public class CodeChangeDistillerMain {
 				continue;
 			}
 			String revisionId = sourceFile.getRevisionId();
-			CodeRangeList revBlameLines = blameLines.get(revisionId);
+			CodeBlameRangeList revBlameLines = blameLines.get(revisionId);
 			if (revBlameLines == null || revBlameLines.isEmpty()) {
 				preSourceFile = sourceFile;
 				continue;

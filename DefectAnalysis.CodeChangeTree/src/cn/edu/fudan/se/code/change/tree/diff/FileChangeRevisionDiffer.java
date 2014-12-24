@@ -13,13 +13,14 @@ import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAfterChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileBeforeChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.merge.ICodeChangeTreeMerger;
 import cn.edu.fudan.se.code.change.tree.merge.NormalCodeChangeTreeMerger;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
+import cn.edu.fudan.se.git.explore.main.GitExplore;
 
 /**
  * @author Lotay
@@ -28,10 +29,10 @@ import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
 public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 	private GitSourceFile preSourceFile;
 	private GitSourceFile changedSourceFile;
-	private CodeRangeList revBlameLines;
+	private CodeBlameRangeList revBlameLines;
 
 	public FileChangeRevisionDiffer(GitSourceFile preSourceFile,
-			GitSourceFile changedSourceFile, CodeRangeList revBlameLines) {
+			GitSourceFile changedSourceFile, CodeBlameRangeList revBlameLines) {
 		super();
 		this.preSourceFile = preSourceFile;
 		this.changedSourceFile = changedSourceFile;
@@ -60,18 +61,23 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 				fileName, afterChangeChars, fileName);
 		List<SourceCodeChange> changes = new ArrayList<SourceCodeChange>();
 		changes.addAll(distiller.getSourceCodeChanges());
-
+		try {
+			ArrayList<Integer> changeLines = GitExplore.gitBlame(fileName,
+					changedSourceFile.getRevisionId());
+		} catch (Exception e) {
+		}
 		CodeTreeNode codeAfterRootNode = extractAfterChangeTreeNode(fileName,
 				changedRevision, afterChangeChars, revBlameLines, changes);
 		CodeTreeNode codeBeforeRootNode = extractBeforeChangeTreeNode(fileName,
 				preRevision, beforeChangeChars, revBlameLines, changes);
 
 		// TODO: filter the bug-blame-code.
-		if (codeBeforeRootNode != null&&codeAfterRootNode != null) {
-			System.out.println("changedRevision:"+changedRevision);
+		if (codeBeforeRootNode != null && codeAfterRootNode != null) {
+			System.out.println("changedRevision:" + changedRevision);
 			ICodeChangeTreeMerger codeChangeTreeMerger = new NormalCodeChangeTreeMerger();
-			CodeTreeNode changeTree = codeChangeTreeMerger.merge(codeBeforeRootNode, codeAfterRootNode, changes);
-//			CodeTreePrinter.treeNormalPrint(changeTree);
+			CodeTreeNode changeTree = codeChangeTreeMerger.merge(
+					codeBeforeRootNode, codeAfterRootNode, changes);
+			// CodeTreePrinter.treeNormalPrint(changeTree);
 		}
 
 		System.out.println("");
@@ -79,7 +85,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 
 	private CodeTreeNode extractAfterChangeTreeNode(String fileName,
 			String revision, char afterChangeChars[],
-			CodeRangeList lineRangeList, List<SourceCodeChange> changes) {
+			CodeBlameRangeList lineRangeList, List<SourceCodeChange> changes) {
 		CompilationUnit compilationUnit = ASTBuilder
 				.genCompilationUnit(afterChangeChars);
 		if (compilationUnit == null) {
@@ -103,7 +109,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 
 	private CodeTreeNode extractBeforeChangeTreeNode(String fileName,
 			String revision, char beforeChangeChars[],
-			CodeRangeList lineRangeList, List<SourceCodeChange> changes) {
+			CodeBlameRangeList lineRangeList, List<SourceCodeChange> changes) {
 		CompilationUnit compilationUnit = ASTBuilder
 				.genCompilationUnit(beforeChangeChars);
 		if (compilationUnit == null) {
@@ -116,7 +122,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			changeEntitiesOld = sourceCodeChangeFilter.filtChanges(
 					compilationUnit, changes, lineRangeList);
 			FileTreeVisitor fileBeforeChangedTreeVisitor = new FileBeforeChangedTreeVisitor(
-					fileName,revision,  lineRangeList, changeEntitiesOld);
+					fileName, revision, lineRangeList, changeEntitiesOld);
 			compilationUnit.accept(fileBeforeChangedTreeVisitor);
 			CodeTreeNode rootBeforeChangeTreeNode = fileBeforeChangedTreeVisitor
 					.getRootTreeNode();

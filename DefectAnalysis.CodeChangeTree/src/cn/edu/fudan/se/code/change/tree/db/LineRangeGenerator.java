@@ -6,8 +6,8 @@ package cn.edu.fudan.se.code.change.tree.db;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.edu.fudan.se.code.change.tree.bean.ChangeLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
 import cn.edu.fudan.se.defectAnalysis.dao.track.BugInduceBlameLineDao;
@@ -24,14 +24,14 @@ public class LineRangeGenerator {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/problem/ProblemReporter.java";
-		HashMap<String, CodeRangeList> codeListMap = genCodeRangList(fileName);
-		for (CodeRangeList ranges : codeListMap.values()) {
+		HashMap<String, CodeBlameRangeList> codeListMap = genCodeRangList(fileName);
+		for (CodeBlameRangeList ranges : codeListMap.values()) {
 			System.out.println(ranges);
 		}
 		System.out.println();
 	}
 
-	public static HashMap<String, CodeRangeList> genCodeRangList(String fileName) {
+	public static HashMap<String, CodeBlameRangeList> genCodeRangList(String fileName) {
 		if (fileName == null) {
 			return null;
 		}
@@ -39,15 +39,15 @@ public class LineRangeGenerator {
 
 		List<BugInduceBlameLine> lines = blameDao.blameLinesForFile(
 				CodeChangeTreeConstants.HIBERNATE_CONF_PATH, fileName);
-		HashMap<String, CodeRangeList> codeListMap = new HashMap<String, CodeRangeList>();
+		HashMap<String, CodeBlameRangeList> codeListMap = new HashMap<String, CodeBlameRangeList>();
 
 		int bugId = -2;
 		String induceRevisionId = null;
 		String fixedRevisionId = null;
 		int inducedLine = -2;
 		String changeType = null;
-		ChangeLineRange range = null;
-		CodeRangeList codeList = null;
+		CodeBlameLineRange range = null;
+		CodeBlameRangeList codeList = null;
 		for (BugInduceBlameLine line : lines) {
 			int lineBugId = line.getBugId();
 			String lineRevisionId = line.getInducedRevisionId();
@@ -59,7 +59,7 @@ public class LineRangeGenerator {
 
 			if (codeList == null
 					|| !codeList.getRevisionId().equals(lineRevisionId)) {
-				codeList = new CodeRangeList();
+				codeList = new CodeBlameRangeList();
 				codeList.setRepoName(CodeChangeTreeConstants.REPO_NAME);
 				codeList.setFileName(fileName);
 				codeList.setRevisionId(lineRevisionId);
@@ -73,7 +73,7 @@ public class LineRangeGenerator {
 					|| (lineBugId != bugId) || induceRevisionId == null
 					|| !lineRevisionId.equals(induceRevisionId)
 					|| (lineInduceNum != inducedLine + 1)) {
-				range = new ChangeLineRange();
+				range = new CodeBlameLineRange();
 				range.setBugId(lineBugId);
 				range.setChangeType(ct);
 
@@ -97,5 +97,18 @@ public class LineRangeGenerator {
 		}
 
 		return codeListMap;
+	}
+	
+	public CodeBlameRangeList genCodeRangList(String fileName,String revisionId,List<Integer> lines){
+		CodeBlameRangeList codeChangeList = new CodeBlameRangeList();
+		codeChangeList.setFileName(fileName);
+		codeChangeList.setRevisionId(revisionId);
+		codeChangeList.setRepoName(CodeChangeTreeConstants.REPO_NAME);
+		
+		for(Integer l:lines){
+			
+		}
+		return codeChangeList;
+		
 	}
 }

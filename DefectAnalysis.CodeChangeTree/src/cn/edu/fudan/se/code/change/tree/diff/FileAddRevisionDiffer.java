@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
@@ -19,10 +19,10 @@ import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
  */
 public class FileAddRevisionDiffer extends FileRevisionDiffer {
 	private GitSourceFile gitSourceFile;
-	private CodeRangeList revBlameLines;
+	private CodeBlameRangeList revBlameLines;
 
 	public FileAddRevisionDiffer(GitSourceFile gitSourceFile,
-			CodeRangeList revBlameLines) {
+			CodeBlameRangeList revBlameLines) {
 		this.gitSourceFile = gitSourceFile;
 		this.revBlameLines = revBlameLines;
 	}
@@ -49,7 +49,7 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 	 * @param changes
 	 */
 	protected CodeTreeNode extractAddTreeNode(String fileName, String revision,
-			CodeRangeList lineRangeList) {
+			CodeBlameRangeList lineRangeList) {
 		CompilationUnit compilationUnit = ASTBuilder.genCompilationUnit(
 				revision, fileName);
 		if (compilationUnit == null) {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 @SuppressWarnings("serial")
-public class CodeRangeList extends ArrayList<ChangeLineRange> {
+public class CodeBlameRangeList extends ArrayList<CodeBlameLineRange> {
 	private String repoName;
 	private String revisionId;
 	private String fileName;
