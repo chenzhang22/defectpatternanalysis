@@ -166,8 +166,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 			String name = svd.getName().toString();
 			String tyName = resolveType(ty);
 			belongCodeTreeNode.addNameType(name, tyName);
-		} else if (node instanceof FieldDeclaration
-				|| node instanceof VariableDeclarationStatement) {
+		} else if (node instanceof FieldDeclaration) {
 			FieldDeclaration fd = (FieldDeclaration) node;
 			Type ty = fd.getType();
 			String tyName = resolveType(ty);
@@ -177,9 +176,19 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 				belongCodeTreeNode
 						.addNameType(var.getName().toString(), tyName);
 			}
+		} else if (node instanceof VariableDeclarationStatement) {
+			VariableDeclarationStatement varDeclStatement = (VariableDeclarationStatement) node;
+			Type ty = varDeclStatement.getType();
+			String tyName = resolveType(ty);
+
+			for (VariableDeclarationFragment var : (List<VariableDeclarationFragment>) varDeclStatement
+					.fragments()) {
+				belongCodeTreeNode
+						.addNameType(var.getName().toString(), tyName);
+			}
 		} else if (node instanceof PackageDeclaration) {
-//			PackageDeclaration packDecl = (PackageDeclaration) node;
-//			String packDeclStr = packDecl.getName().getFullyQualifiedName();
+			// PackageDeclaration packDecl = (PackageDeclaration) node;
+			// String packDeclStr = packDecl.getName().getFullyQualifiedName();
 		} else if (node instanceof ImportDeclaration) {
 			ImportDeclaration impDecl = (ImportDeclaration) node;
 			importList.add(impDecl.getName().getFullyQualifiedName());
