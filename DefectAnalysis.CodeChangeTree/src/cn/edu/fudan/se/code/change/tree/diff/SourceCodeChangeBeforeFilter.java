@@ -7,13 +7,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
 
 public class SourceCodeChangeBeforeFilter extends SourceCodeChangeFilter {
 	@Override
 	protected List<SourceCodeChange> filtChanges(
 			CompilationUnit compilationUnit, List<SourceCodeChange> changes,
-			CodeBlameRangeList lineRangeList) {
+			CodeBlameLineList lineRangeList) {
 		List<SourceCodeChange> filtedChanges = new ArrayList<SourceCodeChange>();
 		for (SourceCodeChange change : changes) {
 			if(!(change instanceof Insert)){

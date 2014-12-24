@@ -29,7 +29,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 
@@ -45,7 +45,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	protected String revisionId = null;
 	protected CodeTreeNode parentTreeNode = null;
 	protected CodeTreeNode rootTreeNode = null;
-	protected CodeBlameRangeList codeChangeRangeList = null;
+	protected CodeBlameLineList codeChangeRangeList = null;
 
 	/**
 	 * @param fileName
@@ -53,7 +53,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	 * @param codeChangeRangeList
 	 */
 	public FileTreeVisitor(String fileName, String revisionId,
-			CodeBlameRangeList codeChangeRangeList) {
+			CodeBlameLineList codeChangeRangeList) {
 		super();
 		this.fileName = fileName;
 		this.revisionId = revisionId;
@@ -84,8 +84,8 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		return rootTreeNode;
 	}
 
-	protected CodeBlameRangeList checkChangeRange(int startLine, int endLine) {
-		CodeBlameRangeList rangeList = new CodeBlameRangeList();
+	protected CodeBlameLineList checkChangeRange(int startLine, int endLine) {
+		CodeBlameLineList rangeList = new CodeBlameLineList();
 		for (CodeBlameLineRange range : this.codeChangeRangeList) {
 			if (range.getInducedStartLine() <= startLine
 					&& range.getInducedEndLine() >= endLine) {
@@ -104,7 +104,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	 * @return
 	 */
 	protected CodeTreeNode buildNormalTreeNode(ASTNode node, int startLine,
-			int endLine, CodeBlameRangeList list, CodeTreeNode treeNode) {
+			int endLine, CodeBlameLineList list, CodeTreeNode treeNode) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		treeNode.setEndColumn(endColumn);

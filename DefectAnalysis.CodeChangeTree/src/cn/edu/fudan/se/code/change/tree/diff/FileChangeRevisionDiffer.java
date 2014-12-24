@@ -13,7 +13,7 @@ import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAfterChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileBeforeChangedTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.merge.ICodeChangeTreeMerger;
@@ -29,10 +29,10 @@ import cn.edu.fudan.se.git.explore.main.GitExplore;
 public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 	private GitSourceFile preSourceFile;
 	private GitSourceFile changedSourceFile;
-	private CodeBlameRangeList revBlameLines;
+	private CodeBlameLineList revBlameLines;
 
 	public FileChangeRevisionDiffer(GitSourceFile preSourceFile,
-			GitSourceFile changedSourceFile, CodeBlameRangeList revBlameLines) {
+			GitSourceFile changedSourceFile, CodeBlameLineList revBlameLines) {
 		super();
 		this.preSourceFile = preSourceFile;
 		this.changedSourceFile = changedSourceFile;
@@ -85,7 +85,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 
 	private CodeTreeNode extractAfterChangeTreeNode(String fileName,
 			String revision, char afterChangeChars[],
-			CodeBlameRangeList lineRangeList, List<SourceCodeChange> changes) {
+			CodeBlameLineList lineRangeList, List<SourceCodeChange> changes) {
 		CompilationUnit compilationUnit = ASTBuilder
 				.genCompilationUnit(afterChangeChars);
 		if (compilationUnit == null) {
@@ -109,7 +109,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 
 	private CodeTreeNode extractBeforeChangeTreeNode(String fileName,
 			String revision, char beforeChangeChars[],
-			CodeBlameRangeList lineRangeList, List<SourceCodeChange> changes) {
+			CodeBlameLineList lineRangeList, List<SourceCodeChange> changes) {
 		CompilationUnit compilationUnit = ASTBuilder
 				.genCompilationUnit(beforeChangeChars);
 		if (compilationUnit == null) {
