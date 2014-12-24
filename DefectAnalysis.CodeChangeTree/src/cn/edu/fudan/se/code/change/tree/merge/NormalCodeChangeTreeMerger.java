@@ -52,8 +52,10 @@ public class NormalCodeChangeTreeMerger extends
 			// CountTree deleteNodeIndexTree = searchAndAddDeleteIndex(
 			// deleteNodeIndexTreeRoot, deleteLocation);
 			if (change != null && changeTreeNode != null) {
-				searchAndInsertDeleteNode(afterCodeTreeNode, deleteLocation, 1,
-						changeTreeNode);
+				searchAndInsertDeleteNode(
+						afterCodeTreeNode.getChildren().get(
+								afterCodeTreeNode.getChildren().size() - 1),
+						deleteLocation, 2, changeTreeNode);
 			}
 			// deleteNodeIndexTree.increaseCount();
 		}
@@ -62,26 +64,27 @@ public class NormalCodeChangeTreeMerger extends
 	private void searchAndInsertDeleteNode(CodeTreeNode afterCodeTreeNode,
 			List<Integer> deleteLocation, int curLoc,
 			CodeChangeTreeNode changeTreeNode) {
-		ArrayList<CodeTreeNode> children = afterCodeTreeNode.getChildren();
+		CodeTreeNode codeNode = afterCodeTreeNode;
+		ArrayList<CodeTreeNode> children = codeNode.getChildren();;
 		// search to the
-		int index = searchNextLevelChangeNode(children, deleteLocation, curLoc);
-		if (curLoc < deleteLocation.size() - 1) {
+		
+		for (; curLoc < deleteLocation.size() - 1; curLoc++) {
+			children = codeNode.getChildren();
+			int index = searchNextLevelChangeNode(children, deleteLocation,
+					curLoc);
+//			System.out.print(index+"-->");
 			if (index < children.size()) {
-				this.searchAndInsertDeleteNode(children.get(index),
-						deleteLocation, curLoc + 1, changeTreeNode);
-			} else {
-				System.out.println(deleteLocation + ",curLoc:" + curLoc
-						+ ",index=" + index+",change type:"+changeTreeNode.getSourceCodeChange().getChangeType());
-				System.out.println();
+				codeNode = children.get(index);
 			}
-		} else {
-			// System.out.println("index:" + index);
-			// change
-			if (index > children.size()) {
-				index = children.size();
-			}
-			children.add(index, changeTreeNode);
 		}
+		int index = searchNextLevelChangeNode(children, deleteLocation, curLoc);
+//		System.out.print(index+"\n");
+		if (index <= children.size()) {  
+			children.add(index, changeTreeNode);
+		}else{
+			System.out.println("Not found:"+deleteLocation);
+		}
+		
 	}
 
 	/**
@@ -97,21 +100,19 @@ public class NormalCodeChangeTreeMerger extends
 		// CountTree corTree = this.searchParentDeleteIndex(
 		// deleteNodeIndexTreeRoot, deleteLocation, curLoc);
 
-		int newIndex = 0;
-		for (CodeTreeNode node : children) {
+		int newIndex = oldIndex;
+		int count = 0;
+		for (; count < newIndex && count < children.size(); count++) {
+			CodeTreeNode node = children.get(count);
 			if (node instanceof CodeChangeTreeNode) {
 				CodeChangeTreeNode n = (CodeChangeTreeNode) node;
 				SourceCodeChange change = n.getSourceCodeChange();
-				if (!(change instanceof Insert)) {
+				if ((change instanceof Insert)) {
 					newIndex++;
 				}
-			} else {
-				newIndex++;
-			}
-			if (newIndex >= oldIndex) {
-				break;
 			}
 		}
+
 		return newIndex;
 	}
 
