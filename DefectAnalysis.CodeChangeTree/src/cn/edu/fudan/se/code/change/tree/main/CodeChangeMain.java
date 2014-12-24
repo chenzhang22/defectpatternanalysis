@@ -11,6 +11,7 @@ import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTree2String;
@@ -46,7 +47,7 @@ public class CodeChangeMain {
 		for (String revisionId : codeChangeList.keySet()) {
 			CompilationUnit cu = ASTBuilder.genCompilationUnit(revisionId,
 					fileName);
-			CodeBlameLineRangeList rangeList = codeChangeList.get(revisionId);
+			CodeRangeList rangeList = new CodeRangeList();
 			FileTreeVisitor treeVisitor = new FileAddTreeVisitor(revisionId,
 					fileName, rangeList);
 			cu.accept(treeVisitor);

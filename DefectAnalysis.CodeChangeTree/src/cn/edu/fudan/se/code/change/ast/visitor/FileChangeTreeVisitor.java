@@ -7,6 +7,7 @@ import java.util.List;
 
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 
 /**
  * @author Lotay
@@ -17,9 +18,9 @@ public abstract class FileChangeTreeVisitor extends FileTreeVisitor {
 	protected List<SourceCodeChange> sourceCodeChanges = null;
 
 	public FileChangeTreeVisitor(String fileName, String revisionId,
-			CodeBlameLineRangeList codeChangeRangeList,
+			CodeRangeList codeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
-		super(fileName, revisionId, codeChangeRangeList);
+		super(fileName, revisionId, codeRangeList);
 		this.sourceCodeChanges = sourceCodeChanges;
 	}
 

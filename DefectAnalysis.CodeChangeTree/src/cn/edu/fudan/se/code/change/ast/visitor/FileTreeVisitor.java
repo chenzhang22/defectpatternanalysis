@@ -30,6 +30,8 @@ import org.eclipse.jdt.core.dom.WildcardType;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 
@@ -45,19 +47,19 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	protected String revisionId = null;
 	protected CodeTreeNode parentTreeNode = null;
 	protected CodeTreeNode rootTreeNode = null;
-	protected CodeBlameLineRangeList codeChangeRangeList = null;
+	protected CodeRangeList codeChangeRangeList = null;
 
 	/**
 	 * @param fileName
 	 * @param revisionId
-	 * @param codeChangeRangeList
+	 * @param codeRangeList
 	 */
 	public FileTreeVisitor(String fileName, String revisionId,
-			CodeBlameLineRangeList codeChangeRangeList) {
+			CodeRangeList codeRangeList) {
 		super();
 		this.fileName = fileName;
 		this.revisionId = revisionId;
-		this.codeChangeRangeList = codeChangeRangeList;
+		this.codeChangeRangeList = codeRangeList;
 	}
 
 	protected int startLine(ASTNode node) {
@@ -84,11 +86,11 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		return rootTreeNode;
 	}
 
-	protected CodeBlameLineRangeList checkChangeRange(int startLine, int endLine) {
-		CodeBlameLineRangeList rangeList = new CodeBlameLineRangeList();
-		for (CodeBlameLineRange range : this.codeChangeRangeList) {
-			if (range.getInducedStartLine() <= startLine
-					&& range.getInducedEndLine() >= endLine) {
+	protected CodeRangeList checkChangeRange(int startLine, int endLine) {
+		CodeRangeList rangeList = new CodeRangeList();
+		for (CodeRange range : this.codeChangeRangeList) {
+			if (range.getStartLine() <= startLine
+					&& range.getEndLine() >= endLine) {
 				rangeList.add(range);
 			}
 		}
@@ -104,7 +106,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	 * @return
 	 */
 	protected CodeTreeNode buildNormalTreeNode(ASTNode node, int startLine,
-			int endLine, CodeBlameLineRangeList list, CodeTreeNode treeNode) {
+			int endLine, CodeRangeList list, CodeTreeNode treeNode) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		treeNode.setEndColumn(endColumn);
@@ -120,9 +122,9 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		treeNode.setContent(node.toString());
 		treeNode.setType(node.getClass().getName());
 		treeNode.setSimpleType(node.getClass().getSimpleName());
-		for (CodeBlameLineRange range : list) {
-			treeNode.addBugId(range.getBugId());
-		}
+//		for (CodeRange range : list) {
+//			treeNode.addBugId(range.getBugId());
+//		}
 		return treeNode;
 	}
 

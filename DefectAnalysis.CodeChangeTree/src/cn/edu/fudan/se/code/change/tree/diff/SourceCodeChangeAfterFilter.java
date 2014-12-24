@@ -13,8 +13,8 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 
 /**
  * @author Lotay
@@ -23,7 +23,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 public class SourceCodeChangeAfterFilter extends SourceCodeChangeFilter {
 	protected List<SourceCodeChange> filtChanges(
 			CompilationUnit compilationUnit, List<SourceCodeChange> changes,
-			CodeBlameLineRangeList lineRangeList) {
+			CodeRangeList lineRangeList) {
 		List<SourceCodeChange> filtedChanges = new ArrayList<SourceCodeChange>();
 		for (SourceCodeChange change : changes) {
 			int changeLineStart = -1;
@@ -51,9 +51,9 @@ public class SourceCodeChangeAfterFilter extends SourceCodeChangeFilter {
 			}
 			// check the validity of the change, whether the change is in the
 			// blame line.
-			for (CodeBlameLineRange range : lineRangeList) {
-				int rangeLineStart = range.getInducedStartLine();
-				int rangeLineEnd = range.getInducedEndLine();
+			for (CodeRange range : lineRangeList) {
+				int rangeLineStart = range.getStartLine();
+				int rangeLineEnd = range.getEndLine();
 				if (rangeLineStart <= changeLineStart
 						&& rangeLineEnd >= changeLineEnd) {
 					filtedChanges.add(change);

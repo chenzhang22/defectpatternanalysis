@@ -3,15 +3,22 @@
  */
 package cn.edu.fudan.se.code.change.tree.diff;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
+import cn.edu.fudan.se.git.explore.main.GitExplore;
 
 /**
  * @author Lotay
@@ -34,12 +41,19 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 		}
 		String fileName = gitSourceFile.getFileName();
 		String revision = gitSourceFile.getRevisionId();
-		CodeTreeNode codeRootNode = extractAddTreeNode(fileName, revision,
-				revBlameLines);
+		ArrayList<Integer> changeLines;
+		try {
+			changeLines = GitExplore.gitBlame(fileName, revision);
+			CodeRangeList codeRangeList = LineRangeGenerator.genCodeRangList(
+					fileName, revision, changeLines);
+			CodeTreeNode codeRootNode = extractAddTreeNode(fileName, revision,
+					codeRangeList);
 
-		// TODO: Filter the non-bug-blame code.
-
-		CodeTreePrinter.treeNormalPrint(codeRootNode);
+			// TODO: Filter the non-bug-blame code.
+			CodeTreePrinter.treeNormalPrint(codeRootNode);
+		} catch (GitAPIException | IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println("");
 	}
 
@@ -49,7 +63,7 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 	 * @param changes
 	 */
 	protected CodeTreeNode extractAddTreeNode(String fileName, String revision,
-			CodeBlameLineRangeList lineRangeList) {
+			CodeRangeList lineRangeList) {
 		CompilationUnit compilationUnit = ASTBuilder.genCompilationUnit(
 				revision, fileName);
 		if (compilationUnit == null) {

@@ -8,6 +8,8 @@ import java.util.List;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
+import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.defectAnalysis.bean.track.BugInduceBlameLine;
 import cn.edu.fudan.se.defectAnalysis.dao.track.BugInduceBlameLineDao;
@@ -31,7 +33,8 @@ public class LineRangeGenerator {
 		System.out.println();
 	}
 
-	public static HashMap<String, CodeBlameLineRangeList> genCodeRangList(String fileName) {
+	public static HashMap<String, CodeBlameLineRangeList> genCodeRangList(
+			String fileName) {
 		if (fileName == null) {
 			return null;
 		}
@@ -98,17 +101,30 @@ public class LineRangeGenerator {
 
 		return codeListMap;
 	}
-	
-	public CodeBlameLineRangeList genCodeRangList(String fileName,String revisionId,List<Integer> lines){
-		CodeBlameLineRangeList codeChangeList = new CodeBlameLineRangeList();
+
+	public static CodeRangeList genCodeRangList(String fileName, String revisionId,
+			List<Integer> lines) {
+		CodeRangeList codeChangeList = new CodeRangeList();
 		codeChangeList.setFileName(fileName);
 		codeChangeList.setRevisionId(revisionId);
 		codeChangeList.setRepoName(CodeChangeTreeConstants.REPO_NAME);
-		
-		for(Integer l:lines){
-			
+		CodeRange range = null;
+		int lastLine = 0;
+		for (Integer l : lines) {
+			boolean newRange = false;
+			if (range == null) {
+				newRange = true;
+			} else if ((lastLine + 1 != l)) {
+				range.setEndLine(lastLine);
+				newRange = true;
+			}
+			if (newRange) {
+				range = new CodeRange();
+				codeChangeList.add(range);
+				range.setStartLine(l);
+			}
+			lastLine = l;
 		}
 		return codeChangeList;
-		
 	}
 }
