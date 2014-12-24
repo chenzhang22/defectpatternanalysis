@@ -165,7 +165,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 			Type ty = svd.getType();
 			String name = svd.getName().toString();
 			String tyName = resolveType(ty);
-			belongCodeTreeNode.addNameType(name, tyName);
+			addNameType(belongCodeTreeNode, name, tyName);
 		} else if (node instanceof FieldDeclaration) {
 			FieldDeclaration fd = (FieldDeclaration) node;
 			Type ty = fd.getType();
@@ -173,8 +173,8 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 
 			for (VariableDeclarationFragment var : (List<VariableDeclarationFragment>) fd
 					.fragments()) {
-				belongCodeTreeNode
-						.addNameType(var.getName().toString(), tyName);
+				String name = var.getName().toString();
+				addNameType(belongCodeTreeNode, name, tyName);
 			}
 		} else if (node instanceof VariableDeclarationStatement) {
 			VariableDeclarationStatement varDeclStatement = (VariableDeclarationStatement) node;
@@ -183,8 +183,8 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 
 			for (VariableDeclarationFragment var : (List<VariableDeclarationFragment>) varDeclStatement
 					.fragments()) {
-				belongCodeTreeNode
-						.addNameType(var.getName().toString(), tyName);
+				String name = var.getName().toString();
+				addNameType(belongCodeTreeNode, name, tyName);
 			}
 		} else if (node instanceof PackageDeclaration) {
 			// PackageDeclaration packDecl = (PackageDeclaration) node;
@@ -195,6 +195,14 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		} else if (node instanceof AbstractTypeDeclaration) {
 			AbstractTypeDeclaration absTypeDecl = (AbstractTypeDeclaration) node;
 			typeDecl.add(absTypeDecl.getName().getFullyQualifiedName());
+		}
+	}
+
+	void addNameType(CodeTreeNode belongCodeTreeNode, String name, String type) {
+		if (belongCodeTreeNode.getParentTreeNode() != null) {
+			belongCodeTreeNode.getParentTreeNode().addNameType(name, type);
+		} else {
+			belongCodeTreeNode.addNameType(name, type);
 		}
 	}
 
