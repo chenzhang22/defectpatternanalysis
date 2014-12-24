@@ -3,6 +3,7 @@ package cn.edu.fudan.se.git.explore.main;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -48,21 +49,20 @@ public class GitExplore {
 	static Git git;
 	static RevWalk walk;
 
-	public static void main(String[] args) throws NoHeadException,
-			GitAPIException {
+	static {
 		try {
 			repo = new FileRepository(new File(
 					GitExploreConstants.GIT_REPO_PATH));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
-			// allBugIds = loadBugIDs();
-
-			track(GitExploreConstants.COMPONENT_NAME);
-
-			// gitBlame();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) throws NoHeadException,
+			GitAPIException {
+		track(GitExploreConstants.COMPONENT_NAME);
 	}
 
 	/**
@@ -342,29 +342,24 @@ public class GitExplore {
 		return commitInfo;
 	}
 
-	public static void gitBlame() throws NoHeadException, GitAPIException,
-			IOException {
-		BlameCommand bcmd = git.blame();
-		bcmd.setStartCommit(walk.parseCommit(repo
-				.resolve("965ee55c83771df9f7f21b38b9a78903a86f630d")));
-		bcmd.setFilePath("org.eclipse.jdt.apt.core/src/org/eclipse/jdt/apt/core/internal/generatedfile/GeneratedFileManager.java");
-		BlameResult bresult = bcmd.call();
-		System.out.println("getResultContents:"
-				+ bresult.getResultContents().size());
-
-		bresult.computeAll();
-		System.out.println("getResultContents:"
-				+ bresult.getResultContents().size());
-
-		for (int i = 0; i < bresult.getResultContents().size(); i++) {
-			System.out.println();
-			System.out.println("getSourceLine:" + i + ">>"
-					+ bresult.getSourceLine(i));
-			System.out.println("getSourceCommit:"
-					+ bresult.getSourceCommit(i).getName() + "\t"
-					+ bresult.getSourceCommit(i).getShortMessage());
+	public static ArrayList<Integer> gitBlame(String fileName, String revisionId)
+			throws NoHeadException, GitAPIException, IOException {
+		ArrayList<Integer> changeLines = new ArrayList<Integer>();
+		if (revisionId == null || fileName == null) {
+			System.err
+					.println("GitExplore->gitBlame:revision or filename is null.");
+			return changeLines;
 		}
-
-		System.out.println(bresult);
+		BlameCommand bcmd = git.blame();
+		bcmd.setStartCommit(walk.parseCommit(repo.resolve(revisionId)));
+		bcmd.setFilePath(fileName);
+		BlameResult bresult = bcmd.call();
+		bresult.computeAll();
+		for (int i = 0; i < bresult.getResultContents().size(); i++) {
+			if (revisionId.equals(bresult.getSourceCommit(i).getName())) {
+				changeLines.add(i + 1);
+			}
+		}
+		return changeLines;
 	}
 }
