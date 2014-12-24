@@ -14,7 +14,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 /**
@@ -22,7 +22,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	public FileBeforeChangedTreeVisitor(String fileName, String revisionId,
-			CodeBlameLineList codeChangeRangeList,
+			CodeBlameLineRangeList codeChangeRangeList,
 			List<SourceCodeChange> sourceCodeChanges) {
 		super(fileName, revisionId, codeChangeRangeList, sourceCodeChanges);
 	}
@@ -38,7 +38,7 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	public boolean preVisit2(ASTNode node) {
 		int startLine = startLine(node);
 		int endLine = endLine(node);
-		CodeBlameLineList list = this.checkChangeRange(startLine, endLine);
+		CodeBlameLineRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
 		ValidNodeResult result = this.checkValidNodeLocation(node);
@@ -61,7 +61,7 @@ public class FileBeforeChangedTreeVisitor extends FileChangeTreeVisitor {
 	}
 
 	private CodeTreeNode buildBeforeTreeNode(ASTNode node, int startLine,
-			int endLine, CodeBlameLineList list, SourceCodeChange sourceCodeChange) {
+			int endLine, CodeBlameLineRangeList list, SourceCodeChange sourceCodeChange) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		CodeChangeTreeNode changeTreeNode = new CodeChangeTreeNode();

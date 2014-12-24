@@ -14,7 +14,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 
 /**
  * @author Lotay
@@ -23,7 +23,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
 public class SourceCodeChangeAfterFilter extends SourceCodeChangeFilter {
 	protected List<SourceCodeChange> filtChanges(
 			CompilationUnit compilationUnit, List<SourceCodeChange> changes,
-			CodeBlameLineList lineRangeList) {
+			CodeBlameLineRangeList lineRangeList) {
 		List<SourceCodeChange> filtedChanges = new ArrayList<SourceCodeChange>();
 		for (SourceCodeChange change : changes) {
 			int changeLineStart = -1;

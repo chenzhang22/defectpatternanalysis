@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import cn.edu.fudan.se.code.change.ast.visitor.ASTBuilder;
 import cn.edu.fudan.se.code.change.ast.visitor.FileAddTreeVisitor;
 import cn.edu.fudan.se.code.change.ast.visitor.FileTreeVisitor;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTree2String;
@@ -40,13 +40,13 @@ public class CodeChangeMain {
 		if (fileName == null) {
 			return;
 		}
-		HashMap<String, CodeBlameLineList> codeChangeList = LineRangeGenerator
+		HashMap<String, CodeBlameLineRangeList> codeChangeList = LineRangeGenerator
 				.genCodeRangList(fileName);
 
 		for (String revisionId : codeChangeList.keySet()) {
 			CompilationUnit cu = ASTBuilder.genCompilationUnit(revisionId,
 					fileName);
-			CodeBlameLineList rangeList = codeChangeList.get(revisionId);
+			CodeBlameLineRangeList rangeList = codeChangeList.get(revisionId);
 			FileTreeVisitor treeVisitor = new FileAddTreeVisitor(revisionId,
 					fileName, rangeList);
 			cu.accept(treeVisitor);

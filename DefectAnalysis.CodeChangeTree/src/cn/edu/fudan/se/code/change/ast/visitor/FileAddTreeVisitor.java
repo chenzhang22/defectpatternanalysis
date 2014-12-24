@@ -4,7 +4,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 public class FileAddTreeVisitor extends FileTreeVisitor {
@@ -13,7 +13,7 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 	 * @param codeRangeList
 	 */
 	public FileAddTreeVisitor(String revisionId, String fileName,
-			CodeBlameLineList codeChangeRangeList) {
+			CodeBlameLineRangeList codeChangeRangeList) {
 		super(revisionId, fileName, codeChangeRangeList);
 	}
 
@@ -23,7 +23,7 @@ public class FileAddTreeVisitor extends FileTreeVisitor {
 		int endLine = endLine(node);
 
 		CodeTreeNode treeNode = null;
-		CodeBlameLineList list = this.checkChangeRange(startLine, endLine);
+		CodeBlameLineRangeList list = this.checkChangeRange(startLine, endLine);
 		if (list.isEmpty()) {
 			treeNode = new CodeTreeNode();
 		} else {
