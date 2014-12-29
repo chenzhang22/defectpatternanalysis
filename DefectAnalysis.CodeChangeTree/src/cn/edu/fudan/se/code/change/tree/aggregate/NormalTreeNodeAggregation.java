@@ -4,12 +4,14 @@
 package cn.edu.fudan.se.code.change.tree.aggregate;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import ch.uzh.ifi.seal.changedistiller.model.entities.Delete;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
+import cn.edu.fudan.se.code.change.tree.bean.AggregateTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
@@ -20,8 +22,12 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 
 	@Override
-	public CodeTreeNode aggregate(CodeTreeNode treeNode) {
-		
+	public AggregateTreeNode aggregate(CodeTreeNode treeNode) {
+		ASTNode astNode = treeNode.getNode();
+		if (astNode instanceof TypeDeclaration) {
+			TypeDeclaration typeDecl = (TypeDeclaration) treeNode.getNode();
+
+		}
 		if (treeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode changeTreeNode = (CodeChangeTreeNode) treeNode;
 			SourceCodeChange sourceCodeChange = changeTreeNode
@@ -48,8 +54,12 @@ public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 	}
 
 	@Override
-	public String aggregate2Value(CodeTreeNode treeNode) {
-
+	public String aggregate2Value(ASTNode astNode) {
+		int nodeType = astNode.getNodeType();
+		switch (nodeType) {
+		case ASTNode.TYPE_DECLARATION:
+			break;
+		}
 		return null;
 	}
 }
