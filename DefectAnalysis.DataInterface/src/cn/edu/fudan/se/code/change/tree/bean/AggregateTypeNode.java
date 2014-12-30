@@ -13,6 +13,7 @@ public class AggregateTypeNode {
 	private String changeType = "NORMAL";
 	private String postNodeType = null;
 	private String preNodeType = null;
+	private AggregateTypeNode parentNode = null;
 	private ArrayList<AggregateTypeNode> children = new ArrayList<AggregateTypeNode>();
 
 	public String getChangeType() {
@@ -39,12 +40,23 @@ public class AggregateTypeNode {
 		this.preNodeType = preNodeType;
 	}
 
+	public AggregateTypeNode getParentNode() {
+		return parentNode;
+	}
+
+	public void setParentNode(AggregateTypeNode parentNode) {
+		this.parentNode = parentNode;
+	}
+
 	public ArrayList<AggregateTypeNode> getChildren() {
 		return children;
 	}
 
 	public void addChildNode(AggregateTypeNode child) {
-		this.children.add(child);
+		if(child!=null){
+			this.children.add(child);
+			child.setParentNode(this);
+		}
 	}
 
 	public double similar(AggregateTypeNode treeNode) {
