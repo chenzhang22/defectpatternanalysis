@@ -18,7 +18,7 @@ public class CodeTreeNode {
 	private String revisionId;
 	private String fileName;
 	private String content;
-	private String name;
+	private String simpleNameType;
 	private String type;
 	private String simpleType;
 	private CodeTreeNode parentTreeNode = null;
@@ -60,34 +60,20 @@ public class CodeTreeNode {
 		this.fileName = fileName;
 	}
 
-	/**
-	 * @return the content
-	 */
 	public String getContent() {
 		return content;
 	}
 
-	/**
-	 * @param content
-	 *            the content to set
-	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
+	public String getSimpleNameType() {
+		return simpleNameType;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setSimpleNameType(String name) {
+		this.simpleNameType = name;
 	}
 
 	public String getType() {
@@ -227,7 +213,7 @@ public class CodeTreeNode {
 	@Override
 	public String toString() {
 		String toStr = "CodeTreeNode [repoName=" + repoName + ", revisionId="
-				+ revisionId + ", fileName=" + fileName + ", name=" + name
+				+ revisionId + ", fileName=" + fileName + ", name=" + simpleNameType
 				+ ", type=" + type + ", startIndex=" + startIndex
 				+ ", endIndex=" + endIndex + ", startLine=" + startLine
 				+ ", startColumn=" + startColumn + ", endLine=" + endLine
