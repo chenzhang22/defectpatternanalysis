@@ -70,22 +70,21 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			CodeRangeList codeRangeList = LineRangeGenerator.genCodeRangList(
 					fileName, changedRevision, changeLines);
 
-			CodeTreeNode codeAfterRootNode = extractAfterChangeTreeNode(fileName,
-					changedRevision, afterChangeChars, codeRangeList, changes);
-			CodeTreeNode codeBeforeRootNode = extractBeforeChangeTreeNode(fileName,
-					preRevision, beforeChangeChars, codeRangeList, changes);
+			CodeTreeNode codeAfterRootNode = extractAfterChangeTreeNode(
+					fileName, changedRevision, afterChangeChars, codeRangeList,
+					changes);
+			CodeTreeNode codeBeforeRootNode = extractBeforeChangeTreeNode(
+					fileName, preRevision, beforeChangeChars, codeRangeList,
+					changes);
 
-			// TODO: filter the bug-blame-code.
 			if (codeBeforeRootNode != null && codeAfterRootNode != null) {
-				System.out.println("changedRevision:" + changedRevision);
 				ICodeChangeTreeMerger codeChangeTreeMerger = new NormalCodeChangeTreeMerger();
 				CodeTreeNode changeTree = codeChangeTreeMerger.merge(
 						codeBeforeRootNode, codeAfterRootNode, changes);
 				return changeTree;
-			}else if(codeBeforeRootNode != null){
+			} else if (codeBeforeRootNode != null) {
 				return codeBeforeRootNode;
-			}
-			else if(codeAfterRootNode != null){
+			} else if (codeAfterRootNode != null) {
 				return codeAfterRootNode;
 			}
 		} catch (Exception e) {

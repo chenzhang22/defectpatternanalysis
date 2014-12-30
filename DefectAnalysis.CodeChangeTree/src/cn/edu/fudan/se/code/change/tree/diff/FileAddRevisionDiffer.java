@@ -49,12 +49,12 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 					codeRangeList);
 
 			// TODO: Filter the non-bug-blame code.
-//			CodeTreePrinter.treeNormalPrint(codeRootNode);
+			// CodeTreePrinter.treeNormalPrint(codeRootNode);
 			return codeRootNode;
 		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 		}
-//		System.out.println("");
+		// System.out.println("");
 		return null;
 	}
 
