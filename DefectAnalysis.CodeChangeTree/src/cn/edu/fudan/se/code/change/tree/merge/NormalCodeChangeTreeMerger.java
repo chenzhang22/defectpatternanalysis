@@ -125,19 +125,19 @@ public class NormalCodeChangeTreeMerger extends
 	 * @param deleteLocation
 	 * @return
 	 */
-	private CountTree searchAndAddDeleteIndex(CountTree deleteNodeIndexTree,
-			List<Integer> deleteLocation) {
-		for (int i = 1; i < deleteLocation.size() - 1; i++) {
-			CountTree tree = deleteNodeIndexTree.findChild(deleteLocation
-					.get(i));
-			if (tree == null) {
-				tree = new CountTree(deleteLocation.get(i));
-				deleteNodeIndexTree.addChild(tree);
-			}
-			deleteNodeIndexTree = tree;
-		}
-		return deleteNodeIndexTree;
-	}
+//	private CountTree searchAndAddDeleteIndex(CountTree deleteNodeIndexTree,
+//			List<Integer> deleteLocation) {
+//		for (int i = 1; i < deleteLocation.size() - 1; i++) {
+//			CountTree tree = deleteNodeIndexTree.findChild(deleteLocation
+//					.get(i));
+//			if (tree == null) {
+//				tree = new CountTree(deleteLocation.get(i));
+//				deleteNodeIndexTree.addChild(tree);
+//			}
+//			deleteNodeIndexTree = tree;
+//		}
+//		return deleteNodeIndexTree;
+//	}
 
 	/**
 	 * Search the delete tree to get the number of delete for the same parent.
@@ -146,16 +146,16 @@ public class NormalCodeChangeTreeMerger extends
 	 * @param deleteLocation
 	 * @return
 	 */
-	private CountTree searchParentDeleteIndex(CountTree deleteNodeIndexTree,
-			List<Integer> deleteLocation, int endIndex) {
-		if (endIndex < 1) {
-			return null;
-		}
-		for (int i = 1; i < endIndex; i++) {
-			CountTree tree = deleteNodeIndexTree.findChild(deleteLocation
-					.get(i));
-			deleteNodeIndexTree = tree;
-		}
-		return deleteNodeIndexTree;
-	}
+//	private CountTree searchParentDeleteIndex(CountTree deleteNodeIndexTree,
+//			List<Integer> deleteLocation, int endIndex) {
+//		if (endIndex < 1) {
+//			return null;
+//		}
+//		for (int i = 1; i < endIndex; i++) {
+//			CountTree tree = deleteNodeIndexTree.findChild(deleteLocation
+//					.get(i));
+//			deleteNodeIndexTree = tree;
+//		}
+//		return deleteNodeIndexTree;
+//	}
 }
