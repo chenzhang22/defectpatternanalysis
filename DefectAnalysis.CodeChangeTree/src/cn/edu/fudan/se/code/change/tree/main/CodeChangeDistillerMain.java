@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.git_change.ChangeSourceFileLoader;
+import cn.edu.fudan.se.code.change.tree.type.AbsNodeTypeReplaceStrategy;
+import cn.edu.fudan.se.code.change.tree.type.DirectNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
 /**
@@ -51,6 +54,7 @@ public class CodeChangeDistillerMain {
 		Map<String, CodeBlameLineRangeList> blameLines = LineRangeGenerator
 				.genCodeRangList(fileName);
 		FileRevisionDiffer fileRevisionDiffer = null;
+		AbsNodeTypeReplaceStrategy replaceStrategy = new DirectNodeTypeReplaceStrategy();
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
 			if (sourceFile == null) {
@@ -72,7 +76,8 @@ public class CodeChangeDistillerMain {
 				fileRevisionDiffer = new FileChangeRevisionDiffer(
 						preSourceFile, sourceFile, revBlameLines);
 			}
-			fileRevisionDiffer.diff();
+			CodeTreeNode codeTree = fileRevisionDiffer.diff();
+			codeTree = replaceStrategy.replace(codeTree);
 			preSourceFile = sourceFile;
 		}
 	}
