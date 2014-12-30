@@ -23,9 +23,9 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 	public FileAfterChangedTreeVisitor(String fileName,
 			String changeRevisionId, CodeRangeList codeRangeList,
-			List<SourceCodeChange> sourceCodeChanges, CodeBlameLineRangeList revBlameLines) {
-		super(fileName, changeRevisionId, codeRangeList,
-				sourceCodeChanges);
+			List<SourceCodeChange> sourceCodeChanges,
+			CodeBlameLineRangeList revBlameLines) {
+		super(fileName, changeRevisionId, codeRangeList, sourceCodeChanges);
 		this.revBlameLines = revBlameLines;
 	}
 
@@ -33,7 +33,7 @@ public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 	public boolean preVisit2(ASTNode node) {
 		int startLine = startLine(node);
 		int endLine = endLine(node);
-		CodeRangeList list = this.checkChangeRange(startLine, endLine);
+		CodeBlameLineRangeList list = this.checkChangeRange(startLine, endLine);
 
 		CodeTreeNode treeNode = null;
 		ValidNodeResult result = this.checkValidNodeLocation(node);
@@ -48,7 +48,8 @@ public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 			} else {
 				treeNode = new CodeTreeNode();
 			}
-			treeNode = buildNormalTreeNode(node, startLine, endLine, list, treeNode);
+			treeNode = buildNormalTreeNode(node, startLine, endLine, list,
+					treeNode);
 			buildTree(node, treeNode);
 			return true;
 		}

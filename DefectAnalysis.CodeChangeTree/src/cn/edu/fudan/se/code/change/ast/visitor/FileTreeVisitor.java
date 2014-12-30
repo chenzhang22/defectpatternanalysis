@@ -28,8 +28,8 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
-import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
@@ -86,12 +86,14 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		return rootTreeNode;
 	}
 
-	protected CodeRangeList checkChangeRange(int startLine, int endLine) {
-		CodeRangeList rangeList = new CodeRangeList();
-		for (CodeRange range : this.codeChangeRangeList) {
-			if (range.getStartLine() <= startLine
-					&& range.getEndLine() >= endLine) {
-				rangeList.add(range);
+	protected CodeBlameLineRangeList checkChangeRange(int startLine, int endLine) {
+		CodeBlameLineRangeList rangeList = new CodeBlameLineRangeList();
+		if (this.revBlameLines != null) {
+			for (CodeBlameLineRange range : this.revBlameLines) {
+				if (range.getInducedStartLine() <= startLine
+						&& range.getInducedEndLine() >= endLine) {
+					rangeList.add(range);
+				}
 			}
 		}
 		return rangeList;
@@ -106,7 +108,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	 * @return
 	 */
 	protected CodeTreeNode buildNormalTreeNode(ASTNode node, int startLine,
-			int endLine, CodeRangeList list, CodeTreeNode treeNode) {
+			int endLine, CodeBlameLineRangeList list, CodeTreeNode treeNode) {
 		int startColumn = this.starColumn(node);
 		int endColumn = this.endColumn(node);
 		treeNode.setEndColumn(endColumn);
@@ -122,9 +124,13 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		treeNode.setContent(node.toString());
 		treeNode.setType(node.getClass().getName());
 		treeNode.setSimpleType(node.getClass().getSimpleName());
-		// for (CodeRange range : list) {
-		// treeNode.addBugId(range.getBugId());
-		// }
+		
+		/**Add bug ID*/
+		if (list != null) {
+			for (CodeBlameLineRange range : list) {
+				treeNode.addBugId(range.getBugId());
+			}
+		}
 		return treeNode;
 	}
 
