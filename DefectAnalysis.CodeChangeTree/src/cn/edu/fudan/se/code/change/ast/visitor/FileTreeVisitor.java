@@ -221,7 +221,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	/**
 	 * resolve the simple type string to name.
 	 * */
-	private String resolveTypeQualifierString(String tyStr) {
+	String resolveTypeQualifierString(String tyStr) {
 		for (String impStr : importList) {
 			if (impStr.endsWith(tyStr)) {
 				int ind = impStr.lastIndexOf(tyStr);
@@ -277,12 +277,13 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 			break;
 		case ASTNode.NAME_QUALIFIED_TYPE:
 			NameQualifiedType nameQualifiedType = (NameQualifiedType) ty;
-			typeStr += nameQualifiedType.getName().getFullyQualifiedName();
+			typeStr += nameQualifiedType.getName().toString();
 			break;
 		case ASTNode.PARAMETERIZED_TYPE:
 			ParameterizedType paraType = (ParameterizedType) ty;
 			String typeString = this.resolveType(paraType.getType());
-			typeStr += this.resolveTypeQualifierString(typeString);
+//			typeStr += this.resolveTypeQualifierString(typeString);
+			typeStr += typeString;
 			List<Type> pTypes = paraType.typeArguments();
 			typeStr += "<";
 			for (int i = 0; i < pTypes.size(); i++) {
@@ -301,14 +302,15 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 			QualifiedType qualifiedType = (QualifiedType) ty;
 			Type qualifierTy = qualifiedType.getQualifier();
 			typeStr += this.resolveType(qualifierTy);
-			String quaName = qualifiedType.getName().getFullyQualifiedName();
+			String quaName = qualifiedType.getName().toString();
 			typeStr += "." + quaName;
 			break;
 		case ASTNode.SIMPLE_TYPE:
 			SimpleType simpleType = (SimpleType) ty;
 			String fullyQualifiedName = simpleType.getName()
 					.getFullyQualifiedName();
-			typeStr += this.resolveTypeQualifierString(fullyQualifiedName);
+//			typeStr += this.resolveTypeQualifierString(fullyQualifiedName);
+			typeStr = fullyQualifiedName;
 			break;
 		case ASTNode.UNION_TYPE:
 			UnionType unionType = (UnionType) ty;
