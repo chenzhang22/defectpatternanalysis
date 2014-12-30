@@ -28,8 +28,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;

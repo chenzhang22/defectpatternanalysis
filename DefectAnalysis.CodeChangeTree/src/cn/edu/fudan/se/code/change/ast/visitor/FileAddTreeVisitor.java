@@ -2,8 +2,6 @@ package cn.edu.fudan.se.code.change.ast.visitor;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;

@@ -12,9 +12,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
