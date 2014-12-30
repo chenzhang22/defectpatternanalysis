@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.fudan.se.code.change.tree.type;
+package cn.edu.fudan.se.code.change.tree.replace;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 

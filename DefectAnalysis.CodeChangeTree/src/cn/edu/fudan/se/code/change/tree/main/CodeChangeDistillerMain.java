@@ -13,8 +13,8 @@ import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.git_change.ChangeSourceFileLoader;
-import cn.edu.fudan.se.code.change.tree.type.AbsNodeTypeReplaceStrategy;
-import cn.edu.fudan.se.code.change.tree.type.DirectNodeTypeReplaceStrategy;
+import cn.edu.fudan.se.code.change.tree.replace.AbsNodeTypeReplaceStrategy;
+import cn.edu.fudan.se.code.change.tree.replace.DirectNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
 /**
@@ -77,7 +77,9 @@ public class CodeChangeDistillerMain {
 						preSourceFile, sourceFile, revBlameLines);
 			}
 			CodeTreeNode codeTree = fileRevisionDiffer.diff();
-			codeTree = replaceStrategy.replace(codeTree);
+			if (codeTree != null) {
+				codeTree = replaceStrategy.replace(codeTree);
+			}
 			preSourceFile = sourceFile;
 		}
 	}

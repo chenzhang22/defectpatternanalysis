@@ -23,11 +23,6 @@ public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 
 	@Override
 	public AggregateTreeNode aggregate(CodeTreeNode treeNode) {
-		ASTNode astNode = treeNode.getNode();
-		if (astNode instanceof TypeDeclaration) {
-			TypeDeclaration typeDecl = (TypeDeclaration) treeNode.getNode();
-
-		}
 		if (treeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode changeTreeNode = (CodeChangeTreeNode) treeNode;
 			SourceCodeChange sourceCodeChange = changeTreeNode
@@ -58,6 +53,7 @@ public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 		int nodeType = astNode.getNodeType();
 		switch (nodeType) {
 		case ASTNode.TYPE_DECLARATION:
+
 			break;
 		}
 		return null;
