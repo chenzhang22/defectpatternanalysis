@@ -32,12 +32,10 @@ public class CodeTreePrinter {
 			System.err.println("The tree is empty.");
 			return;
 		}
-//		if (treeNode.getType().equals("org.eclipse.jdt.core.dom.SimpleName")) {
-//			return;
-//		}
+
 		String blank = "";
 		for (int i = 0; i < depth; i++) {
-			blank += "\t";
+			blank += "  ";
 		}
 		String toStr = null;
 		switch (printType) {
@@ -53,6 +51,10 @@ public class CodeTreePrinter {
 		default:
 			toStr = treeNode.toString();
 			break;
+		}
+		if ("org.eclipse.jdt.core.dom.SimpleName".equals(treeNode.getType())) {
+			toStr += ((org.eclipse.jdt.core.dom.SimpleName) (treeNode.getNode()))
+					.getFullyQualifiedName();
 		}
 		System.out.println(blank + toStr);
 
