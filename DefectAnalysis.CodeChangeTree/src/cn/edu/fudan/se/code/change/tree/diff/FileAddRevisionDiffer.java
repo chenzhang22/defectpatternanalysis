@@ -16,7 +16,6 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.git.explore.main.GitExplore;
 
@@ -35,9 +34,9 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 	}
 
 	@Override
-	public void diff() {
+	public CodeTreeNode diff() {
 		if (this.gitSourceFile == null || this.revBlameLines == null) {
-			return;
+			return null;
 		}
 		String fileName = gitSourceFile.getFileName();
 		String revision = gitSourceFile.getRevisionId();
@@ -50,11 +49,13 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 					codeRangeList);
 
 			// TODO: Filter the non-bug-blame code.
-			CodeTreePrinter.treeNormalPrint(codeRootNode);
+//			CodeTreePrinter.treeNormalPrint(codeRootNode);
+			return codeRootNode;
 		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("");
+//		System.out.println("");
+		return null;
 	}
 
 	/**

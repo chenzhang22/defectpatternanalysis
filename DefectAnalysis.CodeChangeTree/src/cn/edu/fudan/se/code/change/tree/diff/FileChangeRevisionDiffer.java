@@ -20,7 +20,6 @@ import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.merge.ICodeChangeTreeMerger;
 import cn.edu.fudan.se.code.change.tree.merge.NormalCodeChangeTreeMerger;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
 import cn.edu.fudan.se.git.explore.main.GitExplore;
@@ -44,10 +43,10 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 	}
 
 	@Override
-	public void diff() {
+	public CodeTreeNode diff() {
 		if (this.preSourceFile == null || this.changedSourceFile == null
 				|| this.revBlameLines == null) {
-			return;
+			return null;
 		}
 		JavaFileContentExtractor fileContentExtractor = new JavaFileContentExtractor(
 				CodeChangeTreeConstants.REPO_PATH);
@@ -82,15 +81,17 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 				ICodeChangeTreeMerger codeChangeTreeMerger = new NormalCodeChangeTreeMerger();
 				CodeTreeNode changeTree = codeChangeTreeMerger.merge(
 						codeBeforeRootNode, codeAfterRootNode, changes);
-				
+				return changeTree;
+			}else if(codeBeforeRootNode != null){
+				return codeBeforeRootNode;
 			}
-			if("org.eclipse.jdt.core/dom/org/eclipse/jdt/internal/core/dom/NaiveASTFlattener.java".equals(fileName)){
-				CodeTreePrinter.treeNormalPrint(codeAfterRootNode);
-				System.out.println("");
+			else if(codeAfterRootNode != null){
+				return codeAfterRootNode;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	private CodeTreeNode extractAfterChangeTreeNode(String fileName,
