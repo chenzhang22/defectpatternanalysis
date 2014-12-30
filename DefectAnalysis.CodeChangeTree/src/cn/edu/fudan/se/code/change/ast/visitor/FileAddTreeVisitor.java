@@ -2,6 +2,7 @@ package cn.edu.fudan.se.code.change.ast.visitor;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -9,11 +10,13 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 public class FileAddTreeVisitor extends FileTreeVisitor {
 
 	/**
+	 * @param lineRangeList 
 	 * @param codeRangeList
 	 */
 	public FileAddTreeVisitor(String revisionId, String fileName,
-			CodeRangeList codeChangeRangeList) {
+			CodeRangeList codeChangeRangeList, CodeBlameLineRangeList revBlameLines) {
 		super(revisionId, fileName, codeChangeRangeList);
+		this.revBlameLines = revBlameLines;
 	}
 
 	@Override

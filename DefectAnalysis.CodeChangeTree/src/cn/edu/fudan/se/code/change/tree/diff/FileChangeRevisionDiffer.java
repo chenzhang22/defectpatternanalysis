@@ -108,7 +108,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 			changeEntitiesNew = sourceCodeChangeFilter.filtChanges(
 					compilationUnit, changes, codeRangeList);
 			FileTreeVisitor fileAfterChangedTreeVisitor = new FileAfterChangedTreeVisitor(
-					fileName, revision, codeRangeList, changeEntitiesNew);
+					fileName, revision, codeRangeList, changeEntitiesNew,revBlameLines);
 			compilationUnit.accept(fileAfterChangedTreeVisitor);
 			CodeTreeNode rootAfterChangeTreeNode = fileAfterChangedTreeVisitor
 					.getRootTreeNode();

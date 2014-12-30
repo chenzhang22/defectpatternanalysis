@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRange;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -46,6 +47,7 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	protected CodeTreeNode parentTreeNode = null;
 	protected CodeTreeNode rootTreeNode = null;
 	protected CodeRangeList codeChangeRangeList = null;
+	protected CodeBlameLineRangeList revBlameLines = null;
 
 	/**
 	 * @param fileName
@@ -120,9 +122,9 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 		treeNode.setContent(node.toString());
 		treeNode.setType(node.getClass().getName());
 		treeNode.setSimpleType(node.getClass().getSimpleName());
-//		for (CodeRange range : list) {
-//			treeNode.addBugId(range.getBugId());
-//		}
+		// for (CodeRange range : list) {
+		// treeNode.addBugId(range.getBugId());
+		// }
 		return treeNode;
 	}
 
@@ -158,6 +160,10 @@ public abstract class FileTreeVisitor extends ASTVisitor {
 	private HashSet<String> importList = new HashSet<String>();
 	private HashSet<String> typeDecl = new HashSet<String>();
 
+	/**
+	 * Add the field/variable/ other type and its corresponding type to the its
+	 * parent node.
+	 * */
 	@SuppressWarnings("unchecked")
 	protected void genNameType(ASTNode node, CodeTreeNode belongCodeTreeNode) {
 		if (node instanceof SingleVariableDeclaration) {

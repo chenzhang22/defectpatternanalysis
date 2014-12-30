@@ -73,7 +73,7 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 
 		FileTreeVisitor fileTreeVisitor = null;
 		fileTreeVisitor = new FileAddTreeVisitor(revision, fileName,
-				lineRangeList);
+				lineRangeList,revBlameLines);
 		compilationUnit.accept(fileTreeVisitor);
 
 		CodeTreeNode rootTreeNode = fileTreeVisitor.getRootTreeNode();

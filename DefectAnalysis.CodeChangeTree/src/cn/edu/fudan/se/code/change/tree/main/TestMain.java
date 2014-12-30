@@ -47,7 +47,7 @@ public class TestMain {
 		parser.setCompilerOptions(getCompilerOption("1.7"));
 		CompilationUnit compilationUnit = (CompilationUnit) parser
 				.createAST(null);
-		compilationUnit.accept(new FileAddTreeVisitor("test", fileName, null));
+		compilationUnit.accept(new FileAddTreeVisitor("test", fileName, null, null));
 
 	}
 

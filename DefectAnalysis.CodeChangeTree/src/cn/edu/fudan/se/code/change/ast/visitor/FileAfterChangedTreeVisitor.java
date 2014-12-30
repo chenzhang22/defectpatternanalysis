@@ -12,6 +12,7 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
+import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -22,9 +23,10 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 public class FileAfterChangedTreeVisitor extends FileChangeTreeVisitor {
 	public FileAfterChangedTreeVisitor(String fileName,
 			String changeRevisionId, CodeRangeList codeRangeList,
-			List<SourceCodeChange> sourceCodeChanges) {
+			List<SourceCodeChange> sourceCodeChanges, CodeBlameLineRangeList revBlameLines) {
 		super(fileName, changeRevisionId, codeRangeList,
 				sourceCodeChanges);
+		this.revBlameLines = revBlameLines;
 	}
 
 	@Override

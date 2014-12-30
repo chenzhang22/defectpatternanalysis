@@ -48,8 +48,10 @@ public class CodeChangeMain {
 			CompilationUnit cu = ASTBuilder.genCompilationUnit(revisionId,
 					fileName);
 			CodeRangeList rangeList = new CodeRangeList();
+			CodeBlameLineRangeList lineRangeList = codeChangeList
+					.get(revisionId);
 			FileTreeVisitor treeVisitor = new FileAddTreeVisitor(revisionId,
-					fileName, rangeList);
+					fileName, rangeList, lineRangeList);
 			cu.accept(treeVisitor);
 			CodeTreeNode treeNode = treeVisitor.getRootTreeNode();
 			// CodeTreePrinter.treeTypePrint(treeNode);

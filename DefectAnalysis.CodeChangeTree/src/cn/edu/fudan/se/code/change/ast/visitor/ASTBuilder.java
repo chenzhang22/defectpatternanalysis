@@ -22,7 +22,7 @@ public class ASTBuilder {
 		CompilationUnit cu = ASTBuilder
 				.genCompilationUnit(revisionId, fileName);
 		cu.accept(new FileAfterChangedTreeVisitor(revisionId, fileName, null,
-				null));
+				null, null));
 	}
 
 	public static CompilationUnit genCompilationUnit(String revisionId,
