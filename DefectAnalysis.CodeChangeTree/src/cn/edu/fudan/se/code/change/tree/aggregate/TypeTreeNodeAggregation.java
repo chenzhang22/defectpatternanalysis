@@ -71,6 +71,6 @@ public class TypeTreeNodeAggregation implements AbsTreeNodeAggregation {
 	 */
 	@Override
 	public String aggregate2Value(ASTNode treeNode) {
-		return ASTNode.nodeClassForType(treeNode.getNodeType()).getTypeName();
+		return ASTNode.nodeClassForType(treeNode.getNodeType()).getName();
 	}
 }
