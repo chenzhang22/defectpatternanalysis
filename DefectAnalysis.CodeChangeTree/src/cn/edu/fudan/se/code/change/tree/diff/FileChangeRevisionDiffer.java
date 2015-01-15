@@ -20,7 +20,6 @@ import cn.edu.fudan.se.code.change.tree.constant.CodeChangeTreeConstants;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.merge.ICodeChangeTreeMerger;
 import cn.edu.fudan.se.code.change.tree.merge.NormalCodeChangeTreeMerger;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 import cn.edu.fudan.se.git.content.extract.JavaFileContentExtractor;
 import cn.edu.fudan.se.git.explore.main.GitExplore;
@@ -66,7 +65,8 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		List<SourceCodeChange> changes = new ArrayList<SourceCodeChange>();
 		changes.addAll(distiller.getSourceCodeChanges());
 		try {
-			ArrayList<Integer> changeLines = GitExplore.gitBlame(fileName,
+			GitExplore gitExplore = new GitExplore();
+			ArrayList<Integer> changeLines = gitExplore.gitBlame(fileName,
 					changedRevision);
 			CodeRangeList codeRangeList = LineRangeGenerator.genCodeRangList(
 					fileName, changedRevision, changeLines);

@@ -45,14 +45,23 @@ import cn.edu.fudan.se.git.explore.constants.GitExploreConstants;
 import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
 public class GitExplore {
-	static Repository repo;
-	static Git git;
-	static RevWalk walk;
-
-	static {
+	private Repository repo;
+	private Git git;
+	private RevWalk walk;
+	
+	public GitExplore(String gitRepoPath){
 		try {
-			repo = new FileRepository(new File(
-					GitExploreConstants.GIT_REPO_PATH));
+			repo = new FileRepository(new File(gitRepoPath));
+			git = new Git(repo);
+			walk = new RevWalk(repo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public GitExplore(){
+		try {
+			repo = new FileRepository(new File(GitExploreConstants.GIT_REPO_PATH));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
 		} catch (IOException e) {
@@ -62,13 +71,14 @@ public class GitExplore {
 
 	public static void main(String[] args) throws NoHeadException,
 			GitAPIException {
-		track(GitExploreConstants.COMPONENT_NAME);
+		GitExplore gitExplore = new GitExplore();
+		gitExplore.track(GitExploreConstants.COMPONENT_NAME);
 	}
 
 	/**
 	 * @throws RevisionSyntaxException
 	 */
-	static void track(String component) throws RevisionSyntaxException {
+	void track(String component) throws RevisionSyntaxException {
 		try {
 
 			// List<Ref> branches = git.branchList().setListMode(ListMode.ALL)
@@ -105,6 +115,40 @@ public class GitExplore {
 			e.printStackTrace();
 		}
 	}
+	
+	public void trackWithTime(String component, Timestamp startTime, Timestamp endTime) 
+			throws RevisionSyntaxException {
+		try {
+			String postCommit = null;
+			boolean hasStarted = true;
+			int size = 0;
+			for (RevCommit commit : git.log().all().call()) {
+				long time = commit.getCommitTime();
+				time = time * 1000;
+				Timestamp commitTime = new Timestamp(time);
+				if (commitTime.after(startTime) && commitTime.before(endTime) && hasStarted) {
+					Set<Object> gitObjects = extractCommit(commit, postCommit,
+							component);
+					for (Object object : gitObjects) {
+						if (object instanceof GitCommitInfo) {
+							System.out.println(object);
+							size ++;
+						}
+					}
+					//HibernateUtils.saveAll(gitObjects, GitExploreConstants.HIBERNATE_CONF_PATH);
+				}
+				postCommit = commit.getName();
+			}
+
+			System.out.println("size: " + size);
+			
+			walk.dispose();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (GitAPIException e) {
+			e.printStackTrace();
+		}
+	}
 
 	static Set<Integer> loadBugIDs() {
 		BugzillaBugDao dao = new BugzillaBugDao();
@@ -127,7 +171,7 @@ public class GitExplore {
 	 * @throws CorruptObjectException
 	 * @throws GitAPIException
 	 */
-	private static Set<Object> extractCommit(RevCommit commit,
+	private Set<Object> extractCommit(RevCommit commit,
 			String postCommit, String component) throws MissingObjectException,
 			IncorrectObjectTypeException, IOException,
 			AmbiguousObjectException, RevisionSyntaxException,
@@ -138,7 +182,7 @@ public class GitExplore {
 		if (commit == null || (revisionId = commit.getName()) == null) {
 			return gitObjs;
 		}
-		System.out.println("revisionId:" + revisionId);
+		//System.out.println("revisionId:" + revisionId);
 		boolean foundInThisBranch = false;
 		String branchName = null;
 
@@ -195,7 +239,7 @@ public class GitExplore {
 						prevTargetCommit);
 				gitObjs.addAll(changeObjs);
 			} else {
-				System.out.println("First:" + revisionId);
+				//System.out.println("First:" + revisionId);
 				long time = commit.getCommitTime();
 				time = time * 1000;
 				while (treeWalk.next()) {
@@ -235,7 +279,7 @@ public class GitExplore {
 	 * @throws IOException
 	 * @throws GitAPIException
 	 */
-	private static Set<Object> extractChange(RevCommit commit,
+	private Set<Object> extractChange(RevCommit commit,
 			String revisionId, RevCommit prevTargetCommit)
 			throws IncorrectObjectTypeException, IOException, GitAPIException {
 		Set<Object> changeObjs = new HashSet<Object>();
@@ -342,7 +386,7 @@ public class GitExplore {
 		return commitInfo;
 	}
 
-	public static ArrayList<Integer> gitBlame(String fileName, String revisionId)
+	public ArrayList<Integer> gitBlame(String fileName, String revisionId)
 			throws NoHeadException, GitAPIException, IOException {
 		ArrayList<Integer> changeLines = new ArrayList<Integer>();
 		if (revisionId == null || fileName == null) {
