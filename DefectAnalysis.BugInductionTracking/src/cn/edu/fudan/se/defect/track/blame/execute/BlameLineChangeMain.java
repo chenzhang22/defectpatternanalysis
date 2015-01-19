@@ -31,8 +31,8 @@ public class BlameLineChangeMain {
 	 * @param size
 	 */
 	private static void executeBlame(int startIndex, int size) {
-		List<List<GitSourceFile>> sourceFileLists = SourceFilePreparation
-				.getSourcefilelist();
+		SourceFilePreparation preparation = new SourceFilePreparation();
+		List<List<GitSourceFile>> sourceFileLists = preparation.getSourcefilelist();
 		if (size < 0) {
 			size = sourceFileLists.size();
 		}

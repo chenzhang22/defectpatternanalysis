@@ -378,8 +378,8 @@ public class BlameTrace {
 	}
 
 	public void blameTrace() {
-		List<List<GitSourceFile>> sourceFileLists = SourceFilePreparation
-				.getSourcefilelist();
+		SourceFilePreparation preparation = new SourceFilePreparation();
+		List<List<GitSourceFile>> sourceFileLists = preparation.getSourcefilelist();
 //		System.out.println(sourceFileLists.size());
 		for (int i = startIndex; i < startIndex + size
 				&& i < sourceFileLists.size(); i++) {
@@ -395,10 +395,28 @@ public class BlameTrace {
 					BugTrackingConstants.HIBERNATE_CONF_PATH);
 		}
 	}
+	
+	public void blameTrace(Timestamp startTime, Timestamp endTime) {
+		SourceFilePreparation preparation = new SourceFilePreparation(startTime, endTime);
+		List<List<GitSourceFile>> sourceFileLists = preparation.getSourcefilelist();
+		for (List<GitSourceFile> sourceFiles : sourceFileLists) {
+			if (sourceFiles == null || sourceFiles.size() < 1) {
+				continue;
+			}
+			System.out.println("FileName:" + sourceFileLists.indexOf(sourceFiles)
+					+ "/" + sourceFileLists.size()
+					+ ":" + sourceFiles.get(0).getFileName());
+			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles);
+			// Save to DataBase.
+			//HibernateUtils.saveAll(blameLines, BugTrackingConstants.HIBERNATE_CONF_PATH);
+		}
+	}
 
 	int startIndex = 0;
 	int size = 0;
-
+	private Timestamp startTime = null;
+	private Timestamp endTime = null;
+	
 	/**
 	 * @param startIndex
 	 */
@@ -406,5 +424,8 @@ public class BlameTrace {
 		super();
 		this.startIndex = startIndex;
 		this.size = size;
+	}
+	
+	public BlameTrace(){
 	}
 }

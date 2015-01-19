@@ -3,6 +3,7 @@
  */
 package cn.edu.fudan.se.defectAnalysis.dao.git;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
@@ -57,6 +58,17 @@ public class GitSourceFileDao {
 			return null;
 		}
 		String hql = "from GitSourceFile where fileName not like '%test%' order by fileName,time";
+		return HibernateUtils.retrieveObjects(hql, hbmPath);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GitSourceFile> loadSourceFileNoTestByTime(Timestamp startTime, 
+			Timestamp endTime, String hbmPath) {
+		if (hbmPath == null) {
+			return null;
+		}
+		String hql = "from GitSourceFile where fileName not like '%test%' and time between '" 
+				+ startTime + "' and '" + endTime + "' order by fileName, time";
 		return HibernateUtils.retrieveObjects(hql, hbmPath);
 	}
 }
