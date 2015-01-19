@@ -414,8 +414,6 @@ public class BlameTrace {
 
 	int startIndex = 0;
 	int size = 0;
-	private Timestamp startTime = null;
-	private Timestamp endTime = null;
 	
 	/**
 	 * @param startIndex

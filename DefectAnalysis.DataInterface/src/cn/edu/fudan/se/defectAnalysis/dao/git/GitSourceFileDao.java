@@ -64,7 +64,7 @@ public class GitSourceFileDao {
 	@SuppressWarnings("unchecked")
 	public List<GitSourceFile> loadSourceFileNoTestByTime(Timestamp startTime, 
 			Timestamp endTime, String hbmPath) {
-		if (hbmPath == null) {
+		if (startTime == null || endTime == null || hbmPath == null) {
 			return null;
 		}
 		String hql = "from GitSourceFile where fileName not like '%test%' and time between '" 
