@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class AggregateTypeNode {
 	private String changeType = "NORMAL";
-	private String postNodeType = null;
-	private String preNodeType = null;
+	private String postNodeValue = null;
+	private String preNodeValue = null;
 	private AggregateTypeNode parentNode = null;
 	private ArrayList<AggregateTypeNode> children = new ArrayList<AggregateTypeNode>();
 
@@ -24,20 +24,20 @@ public class AggregateTypeNode {
 		this.changeType = changeType;
 	}
 
-	public String getPostNodeType() {
-		return postNodeType;
+	public String getPostNodeValue() {
+		return postNodeValue;
 	}
 
-	public void setPostNodeType(String postNodeType) {
-		this.postNodeType = postNodeType;
+	public void setPostNodeValue(String postNodeValue) {
+		this.postNodeValue = postNodeValue;
 	}
 
-	public String getPreNodeType() {
-		return preNodeType;
+	public String getPreNodeValue() {
+		return preNodeValue;
 	}
 
-	public void setPreNodeType(String preNodeType) {
-		this.preNodeType = preNodeType;
+	public void setPreNodeValue(String preNodeValue) {
+		this.preNodeValue = preNodeValue;
 	}
 
 	public AggregateTypeNode getParentNode() {
@@ -53,51 +53,9 @@ public class AggregateTypeNode {
 	}
 
 	public void addChildNode(AggregateTypeNode child) {
-		if(child!=null){
+		if (child != null) {
 			this.children.add(child);
 			child.setParentNode(this);
 		}
-	}
-
-	public double similar(AggregateTypeNode treeNode) {
-		double similarity = 0;
-		if (treeNode != null) {
-			if (this.changeType == null || treeNode.getChangeType() == null) {
-				return similarity;
-			}
-			if (treeNode.getChangeType().equals(this.changeType)) {
-				String postType = treeNode.getPostNodeType();
-				String preType = treeNode.getPreNodeType();
-				if (preType != null && postType != null) {
-					if (preType.equals(this.preNodeType)) {
-						similarity += 0.5;
-					}
-					if (postType.equals(this.postNodeType)) {
-						similarity += 0.5;
-					}
-				} else if (preType != null) {
-					if (preType.equals(this.preNodeType)) {
-						similarity += 0.5;
-					}
-					if (this.postNodeType == null) {
-						similarity += 0.3;
-					} else {
-						similarity += 0.5;
-					}
-				} else if (postType != null) {
-					if (postType.equals(this.postNodeType)) {
-						similarity += 0.5;
-					}
-					if (this.preNodeType == null) {
-						similarity += 0.3;
-					} else {
-						similarity += 0.5;
-					}
-				} else {
-					similarity = 0;
-				}
-			}
-		}
-		return 0;
 	}
 }

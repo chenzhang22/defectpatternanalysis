@@ -41,8 +41,8 @@ public class TypeTreeNodeAggregation implements AbsTreeNodeAggregation {
 			/** generate the previous node type and value.*/
 			ASTNode preAstNode = changeTreeNode.getPreNode();
 			if (preAstNode != null) {
-				String preType = this.aggregate2Value(preAstNode);
-				aggregateTypeNode.setPreNodeType(preType);
+				String preValue = this.aggregate2Value(preAstNode);
+				aggregateTypeNode.setPreNodeValue(preValue);
 			}
 
 		}
@@ -50,8 +50,8 @@ public class TypeTreeNodeAggregation implements AbsTreeNodeAggregation {
 		/** generate the post node type and value..*/
 		ASTNode postAstNode = treeNode.getNode();
 		if (postAstNode != null) {
-			String postType = this.aggregate2Value(postAstNode);
-			aggregateTypeNode.setPostNodeType(postType);
+			String postValue = this.aggregate2Value(postAstNode);
+			aggregateTypeNode.setPostNodeValue(postValue);
 		}
 		
 		ArrayList<CodeTreeNode> treeNodeChildren = treeNode.getChildren();
