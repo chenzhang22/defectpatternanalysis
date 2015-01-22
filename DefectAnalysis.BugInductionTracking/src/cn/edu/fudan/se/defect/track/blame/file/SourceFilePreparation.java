@@ -47,10 +47,10 @@ public class SourceFilePreparation {
 		//}
 	}
 	
-	public SourceFilePreparation(Timestamp startTime, Timestamp endTime){
+	public SourceFilePreparation(Timestamp startTime, Timestamp endTime, String hiberConf){
 		GitSourceFileDao dao = new GitSourceFileDao();
 		List<GitSourceFile> sourceFiles = dao.loadSourceFileNoTestByTime(startTime, 
-				endTime, BugTrackingConstants.HIBERNATE_CONF_PATH);
+				endTime, hiberConf);
 		String lastFileName = null;
 		List<GitSourceFile> fileBaseList = null;
 		for (GitSourceFile sf : sourceFiles) {

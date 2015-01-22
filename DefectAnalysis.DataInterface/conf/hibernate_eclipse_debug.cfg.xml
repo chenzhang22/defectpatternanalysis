@@ -5,13 +5,13 @@
 	<session-factory name="sessionFactory">
 		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
 
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/eclipse_debug_bug</property>
+		<property name="hibernate.connection.url">jdbc:mysql://10.131.252.160:3306/eclipse_debug_bug</property>
 		<!-- 10.131.252.160 <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/huaweidata</property> -->
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.current_session_context_class">thread</property>
-		<property name="hibernate.connection.username">lotay</property>
-		<property name="hibernate.connection.password">lotay</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">1234</property>
 		<property name="hibernate.connection.characterEncoding">utf-8</property>
 
 

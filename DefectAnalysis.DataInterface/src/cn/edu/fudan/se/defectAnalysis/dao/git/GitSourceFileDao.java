@@ -71,4 +71,15 @@ public class GitSourceFileDao {
 				+ startTime + "' and '" + endTime + "' order by fileName, time";
 		return HibernateUtils.retrieveObjects(hql, hbmPath);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GitSourceFile> loadSourceFileNoTestWithinTimeOrderByTime(
+			Timestamp startTime, Timestamp endTime, String hbmPath) {
+		if (startTime == null || endTime == null || hbmPath == null) {
+			return null;
+		}
+		String hql = "from GitSourceFile where fileName not like '%test%' and time between '"
+				+ startTime + "' and '" + endTime + "' order by time, fileName";
+		return HibernateUtils.retrieveObjects(hql, hbmPath);
+	}
 }

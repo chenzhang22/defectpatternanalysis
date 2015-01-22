@@ -116,32 +116,22 @@ public class GitExplore {
 		}
 	}
 	
-	public void trackWithTime(String component, Timestamp startTime, Timestamp endTime) 
+	public void trackWithTime(String component, Timestamp startTime, Timestamp endTime,
+			String hiberConf) 
 			throws RevisionSyntaxException {
 		try {
 			String postCommit = null;
 			boolean hasStarted = true;
-			int size = 0;
 			for (RevCommit commit : git.log().all().call()) {
 				long time = commit.getCommitTime();
 				time = time * 1000;
 				Timestamp commitTime = new Timestamp(time);
 				if (commitTime.after(startTime) && commitTime.before(endTime) && hasStarted) {
-					Set<Object> gitObjects = extractCommit(commit, postCommit,
-							component);
-					for (Object object : gitObjects) {
-						if (object instanceof GitCommitInfo) {
-							System.out.println(object);
-							size ++;
-						}
-					}
-					//HibernateUtils.saveAll(gitObjects, GitExploreConstants.HIBERNATE_CONF_PATH);
+					Set<Object> gitObjects = extractCommit(commit, postCommit, component);
+					HibernateUtils.saveAll(gitObjects, hiberConf);
 				}
 				postCommit = commit.getName();
-			}
-
-			System.out.println("size: " + size);
-			
+			}			
 			walk.dispose();
 		} catch (IOException e) {
 			e.printStackTrace();

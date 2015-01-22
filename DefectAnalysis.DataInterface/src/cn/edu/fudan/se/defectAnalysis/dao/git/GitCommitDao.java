@@ -3,6 +3,7 @@
  */
 package cn.edu.fudan.se.defectAnalysis.dao.git;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitCommitInfo;
@@ -44,6 +45,19 @@ public class GitCommitDao {
 		}
 		List<GitCommitInfo> commitInfos = HibernateUtils.retrieveAll(
 				GitCommitInfo.class, hbmConf);
+		return commitInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GitCommitInfo> loadGitCommitInfoWithinTime(Timestamp startTime,
+			Timestamp endTime, String hbmConf) {
+		if (startTime == null || endTime == null || hbmConf == null) {
+			return null;
+		}
+		String hql = "from GitCommitInfo where time between'" + startTime
+				+ "' and '" + endTime + "'";
+		List<GitCommitInfo> commitInfos = HibernateUtils.retrieveObjects(hql,
+				hbmConf);
 		return commitInfos;
 	}
 }

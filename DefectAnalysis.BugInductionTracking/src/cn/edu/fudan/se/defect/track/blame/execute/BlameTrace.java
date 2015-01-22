@@ -27,8 +27,8 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
  */
 public class BlameTrace {
 
-	private Set<BugInduceBlameLine> blameTrace(
-			List<GitSourceFile> sourceFileList) {
+	private Set<BugInduceBlameLine> blameTrace(List<GitSourceFile> sourceFileList, 
+			String hiberConf) {
 		Set<BugInduceBlameLine> blameLines = new HashSet<BugInduceBlameLine>();
 		BlameCMD blameCom = new BlameCMD();
 		LineChangeHandler lineChangeHandler = new LineChangeHandler();
@@ -42,9 +42,11 @@ public class BlameTrace {
 			}
 			String fileName = sf.getFileName();
 			String revisionId = sf.getRevisionId();
-			GitCommitInfo fixedCommitInfo = new GitCommitDao()
+			/*GitCommitInfo fixedCommitInfo = new GitCommitDao()
 					.loadGitCommitInfoByRevisionId(revisionId,
-							BugTrackingConstants.HIBERNATE_CONF_PATH);
+							BugTrackingConstants.HIBERNATE_CONF_PATH);*/
+			GitCommitInfo fixedCommitInfo = new GitCommitDao().loadGitCommitInfoByRevisionId(
+					revisionId, hiberConf);
 			if (fixedCommitInfo == null) {
 				continue;
 			}
@@ -389,15 +391,17 @@ public class BlameTrace {
 			}
 			System.out.println("FileName:" + i + "/" + sourceFileLists.size()
 					+ ":" + sourceFiles.get(0).getFileName());
-			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles);
+			Set<BugInduceBlameLine> blameLines = this.blameTrace(
+					sourceFiles, BugTrackingConstants.HIBERNATE_CONF_PATH);
 			// Save to DataBase.
 			HibernateUtils.saveAll(blameLines,
 					BugTrackingConstants.HIBERNATE_CONF_PATH);
 		}
 	}
 	
-	public void blameTrace(Timestamp startTime, Timestamp endTime) {
-		SourceFilePreparation preparation = new SourceFilePreparation(startTime, endTime);
+	public void blameTrace(Timestamp startTime, Timestamp endTime, String hiberConf) {
+		SourceFilePreparation preparation = new SourceFilePreparation(startTime, endTime, 
+				hiberConf);
 		List<List<GitSourceFile>> sourceFileLists = preparation.getSourcefilelist();
 		for (List<GitSourceFile> sourceFiles : sourceFileLists) {
 			if (sourceFiles == null || sourceFiles.size() < 1) {
@@ -406,9 +410,10 @@ public class BlameTrace {
 			System.out.println("FileName:" + sourceFileLists.indexOf(sourceFiles)
 					+ "/" + sourceFileLists.size()
 					+ ":" + sourceFiles.get(0).getFileName());
-			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles);
+			Set<BugInduceBlameLine> blameLines = this.blameTrace(sourceFiles, hiberConf);
+			System.out.println("size: " + blameLines.size());
 			// Save to DataBase.
-			//HibernateUtils.saveAll(blameLines, BugTrackingConstants.HIBERNATE_CONF_PATH);
+			HibernateUtils.saveAll(blameLines, hiberConf);
 		}
 	}
 
