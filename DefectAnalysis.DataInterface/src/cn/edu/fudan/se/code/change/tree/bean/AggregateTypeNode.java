@@ -15,6 +15,12 @@ public class AggregateTypeNode {
 	private String preNodeValue = null;
 	private AggregateTypeNode parentNode = null;
 	private ArrayList<AggregateTypeNode> children = new ArrayList<AggregateTypeNode>();
+	private CodeTreeNode codeTreeNode;
+
+	public AggregateTypeNode(CodeTreeNode codeTreeNode) {
+		super();
+		this.codeTreeNode = codeTreeNode;
+	}
 
 	public String getChangeType() {
 		return changeType;
@@ -57,5 +63,13 @@ public class AggregateTypeNode {
 			this.children.add(child);
 			child.setParentNode(this);
 		}
+	}
+
+	public CodeTreeNode getCodeTreeNode() {
+		return codeTreeNode;
+	}
+
+	public void setCodeTreeNode(CodeTreeNode codeTreeNode) {
+		this.codeTreeNode = codeTreeNode;
 	}
 }

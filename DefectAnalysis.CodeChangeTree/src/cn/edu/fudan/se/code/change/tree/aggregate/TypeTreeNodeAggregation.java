@@ -28,7 +28,7 @@ public class TypeTreeNodeAggregation implements AbsTreeNodeAggregation {
 	 */
 	@Override
 	public AggregateTypeNode aggregate(CodeTreeNode treeNode) {
-		AggregateTypeNode aggregateTypeNode = new AggregateTypeNode();
+		AggregateTypeNode aggregateTypeNode = new AggregateTypeNode(treeNode);
 		if (treeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode changeTreeNode = (CodeChangeTreeNode) treeNode;
 			
