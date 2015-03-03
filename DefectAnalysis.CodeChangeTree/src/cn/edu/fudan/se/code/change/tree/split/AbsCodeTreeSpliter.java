@@ -9,6 +9,6 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  * @author Lotay
  *
  */
-public abstract class BuggyTreeSpliter {
-	public abstract void split(CodeTreeNode treeNode);
+public abstract class AbsCodeTreeSpliter {
+	public abstract CodeTreeNode split(CodeTreeNode treeNode);
 }
