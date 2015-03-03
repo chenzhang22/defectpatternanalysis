@@ -6,6 +6,9 @@ package cn.edu.fudan.se.code.change.tree.main;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.fudan.se.code.change.tree.aggregate.AbsTreeNodeAggregation;
+import cn.edu.fudan.se.code.change.tree.aggregate.NormalTreeNodeAggregation;
+import cn.edu.fudan.se.code.change.tree.bean.AggregateTypeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
@@ -15,6 +18,8 @@ import cn.edu.fudan.se.code.change.tree.diff.FileRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.git_change.ChangeSourceFileLoader;
 import cn.edu.fudan.se.code.change.tree.replace.AbsNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.code.change.tree.replace.DirectNodeTypeReplaceStrategy;
+import cn.edu.fudan.se.code.change.tree.split.AbsCodeTreeSpliter;
+import cn.edu.fudan.se.code.change.tree.split.NormalCodeTreeSpliter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
 /**
@@ -55,6 +60,8 @@ public class CodeChangeDistillerMain {
 				.genCodeRangList(fileName);
 		FileRevisionDiffer fileRevisionDiffer = null;
 		AbsNodeTypeReplaceStrategy replaceStrategy = new DirectNodeTypeReplaceStrategy();
+		AbsTreeNodeAggregation aggregationStrategy = new NormalTreeNodeAggregation();
+		AbsCodeTreeSpliter splitStrategy = new NormalCodeTreeSpliter();
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
 			if (sourceFile == null) {
@@ -77,8 +84,25 @@ public class CodeChangeDistillerMain {
 						preSourceFile, sourceFile, revBlameLines);
 			}
 			CodeTreeNode codeTree = fileRevisionDiffer.diff();
+			CodeTreeNode splitedCodeTreeNode = null;	//reference to the code tree node after split the change node.....
+
 			if (codeTree != null) {
+				//replace the code tree simpleName with corresponding Type...
 				codeTree = replaceStrategy.replace(codeTree);
+			}
+			if(codeTree!=null){
+				//split the changed code tree node from the normal node.. 
+				splitedCodeTreeNode = splitStrategy.split(codeTree);
+			}
+			
+//			CodeTreePrinter.treeNormalPrint(codeTree);
+			if(splitedCodeTreeNode!=null){
+				// TODO: aggregate the splited code tree node (NormalTreeNodeAggregation).....
+				AggregateTypeNode aggregateTypeNode = aggregationStrategy.aggregate(splitedCodeTreeNode);
+				System.out.println(aggregateTypeNode);
+			}
+			if (codeTree != null) {
+//				codeTree = replaceStrategy.replace(codeTree);
 			}
 			preSourceFile = sourceFile;
 		}
