@@ -79,9 +79,9 @@ public class DirectNodeTypeReplaceStrategy implements
 				String typeName = NameTypeUtils.genNameType(codeTreeNode,
 						labelStr);
 				if (typeName != null) {
-					System.out.println(codeTreeNode.getStartLine() + ":"
-							+ codeTreeNode.getEndLine() + ":" + labelStr
-							+ "-->" + typeName);
+//					System.out.println(codeTreeNode.getStartLine() + ":"
+//							+ codeTreeNode.getEndLine() + ":" + labelStr
+//							+ "-->" + typeName);
 				}
 			}
 		}
