@@ -48,10 +48,14 @@ public class DirectNodeTypeReplaceStrategy implements
 		if (codeTreeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) codeTreeNode;
 			ASTNode preNode = codeChangeTreeNode.getPreNode();
-			resolveSimpleName(codeTreeNode, parentNodeType, preNode);
+			String preSimpleNameType = resolveSimpleName(codeTreeNode,
+					parentNodeType, preNode);
+			codeChangeTreeNode.setPreSimpleNameType(preSimpleNameType);
 		}
 		ASTNode astNode = codeTreeNode.getNode();
-		resolveSimpleName(codeTreeNode, parentNodeType, astNode);
+		String simpleNameType = resolveSimpleName(codeTreeNode, parentNodeType,
+				astNode);
+		codeTreeNode.setSimpleNameType(simpleNameType);
 		ArrayList<CodeTreeNode> children = codeTreeNode.getChildren();
 		for (CodeTreeNode node : children) {
 			this.replaceSimpleName(node);
@@ -63,10 +67,9 @@ public class DirectNodeTypeReplaceStrategy implements
 	 * @param parentNodeType
 	 * @param astNode
 	 */
-	private void resolveSimpleName(CodeTreeNode codeTreeNode,
+	private String resolveSimpleName(CodeTreeNode codeTreeNode,
 			String parentNodeType, ASTNode astNode) {
-
-		if (astNode instanceof SimpleName) {
+		if (astNode != null && astNode instanceof SimpleName) {
 			/**
 			 * ignore the simplename with parent type: SingleVariableDeclaration
 			 * or VariableDeclarationFragment
@@ -79,14 +82,14 @@ public class DirectNodeTypeReplaceStrategy implements
 				String typeName = NameTypeUtils.genNameType(codeTreeNode,
 						labelStr);
 				if (typeName != null) {
-//					System.out.println(codeTreeNode.getStartLine() + ":"
-//							+ codeTreeNode.getEndLine() + ":" + labelStr
-//							+ "-->" + typeName);
+					return typeName;
 				}
 			}
 		}
+		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean shouldEnd(ASTNode astNode) {
 		return false;
 	}
