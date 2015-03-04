@@ -15,6 +15,7 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 	private String preRevisionId;
 	private String preType;
 	private String preSimpleType;
+	private String preSimpleNameType;
 	private ASTNode preNode;
 	private int preStartIndex;
 	private int preEndIndex;
@@ -51,6 +52,14 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 
 	public ASTNode getPreNode() {
 		return preNode;
+	}
+
+	public String getPreSimpleNameType() {
+		return preSimpleNameType;
+	}
+
+	public void setPreSimpleNameType(String preSimpleNameType) {
+		this.preSimpleNameType = preSimpleNameType;
 	}
 
 	public void setPreNode(ASTNode node) {

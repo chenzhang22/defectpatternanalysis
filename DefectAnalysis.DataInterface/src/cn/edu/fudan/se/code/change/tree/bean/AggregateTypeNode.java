@@ -72,4 +72,11 @@ public class AggregateTypeNode {
 	public void setCodeTreeNode(CodeTreeNode codeTreeNode) {
 		this.codeTreeNode = codeTreeNode;
 	}
+
+	@Override
+	public String toString() {
+		return "AggregateTypeNode [changeType=" + changeType
+				+ ", postNodeValue=" + postNodeValue + ", preNodeValue="
+				+ preNodeValue + "]";
+	}
 }

@@ -113,7 +113,9 @@ public class CodeTreeNode {
 	public void addBugId(int bugId) {
 		this.bugIds.add(bugId);
 	}
-
+	public void addBugIds(HashSet<Integer> bugIds) {
+		this.bugIds.addAll(bugIds);
+	}
 	public ArrayList<CodeTreeNode> getChildren() {
 		return children;
 	}
@@ -121,6 +123,10 @@ public class CodeTreeNode {
 	public void addChild(CodeTreeNode treeNode) {
 		this.children.add(treeNode);
 		treeNode.setParentTreeNode(this);
+	}
+	
+	public void removeAllChildren() {
+		this.children.clear();
 	}
 
 	public CodeTreeNode getParentTreeNode() {
@@ -138,12 +144,16 @@ public class CodeTreeNode {
 	public boolean hasTypeName(String name) {
 		return this.nameTypes.containsKey(name);
 	}
+	
+	public HashMap<String, String> getNameTypes() {
+		return this.nameTypes;
+	}
 
 	public void addNameType(String name, String type) {
 		this.nameTypes.put(name, type);
 	}
 
-	public void addNameType(HashMap<String, String> nameType) {
+	public void addNameTypes(HashMap<String, String> nameType) {
 		this.nameTypes.putAll(nameType);
 	}
 
