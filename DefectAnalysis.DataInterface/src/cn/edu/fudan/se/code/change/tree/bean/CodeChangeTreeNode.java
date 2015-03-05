@@ -66,6 +66,12 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 		this.preNode = node;
 	}
 
+	public int getPreNodeType() {
+		if (this.preNode != null)
+			return this.preNode.getNodeType();
+		return -1;
+	}
+
 	public int getPreStartIndex() {
 		return preStartIndex;
 	}
@@ -151,7 +157,7 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 
 	@Override
 	public String toNormalString() {
-		return toString()+super.toNormalString() + "+/-";
+		return toString() + super.toNormalString() + "+/-";
 	}
 
 	@Override

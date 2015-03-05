@@ -161,6 +161,12 @@ public class CodeTreeNode {
 		return node;
 	}
 
+	public int getNodeType() {
+		if(this.node!=null)
+			return this.node.getNodeType();
+		return -1;
+	}
+	
 	public void setNode(ASTNode node) {
 		this.node = node;
 	}
