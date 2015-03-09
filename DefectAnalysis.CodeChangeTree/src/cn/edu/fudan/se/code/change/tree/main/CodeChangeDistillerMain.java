@@ -19,7 +19,7 @@ import cn.edu.fudan.se.code.change.tree.git_change.ChangeSourceFileLoader;
 import cn.edu.fudan.se.code.change.tree.replace.AbsNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.code.change.tree.replace.DirectNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.code.change.tree.split.AbsCodeTreeSpliter;
-import cn.edu.fudan.se.code.change.tree.split.NormalCodeTreeSpliter;
+import cn.edu.fudan.se.code.change.tree.split.MethodLevelCodeTreeSpliter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
 
 /**
@@ -61,7 +61,7 @@ public class CodeChangeDistillerMain {
 		FileRevisionDiffer fileRevisionDiffer = null;
 		AbsNodeTypeReplaceStrategy replaceStrategy = new DirectNodeTypeReplaceStrategy();
 		AbsTreeNodeAggregation aggregationStrategy = new NormalTreeNodeAggregation();
-		AbsCodeTreeSpliter splitStrategy = new NormalCodeTreeSpliter();
+		AbsCodeTreeSpliter splitStrategy = new MethodLevelCodeTreeSpliter();
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
 			if (sourceFile == null) {
@@ -84,25 +84,30 @@ public class CodeChangeDistillerMain {
 						preSourceFile, sourceFile, revBlameLines);
 			}
 			CodeTreeNode codeTree = fileRevisionDiffer.diff();
-			List<CodeTreeNode> splitedCodeTreeNode = null;	//reference to the code tree node after split the change node.....
+			List<CodeTreeNode> splitedCodeTreeNode = null; // reference to the
+															// code tree node
+															// after split the
+															// change node.....
 
 			if (codeTree != null) {
-				//replace the code tree simpleName with corresponding Type...
+				// replace the code tree simpleName with corresponding Type...
 				codeTree = replaceStrategy.replace(codeTree);
 			}
-			if(codeTree!=null){
-				//split the changed code tree node from the normal node.. 
+			if (codeTree != null) {
+				// split the changed code tree node from the normal node..
 				splitedCodeTreeNode = splitStrategy.split(codeTree);
 			}
-			
-//			CodeTreePrinter.treeNormalPrint(codeTree);
-			if(splitedCodeTreeNode!=null){
-				// TODO: aggregate the splited code tree node (NormalTreeNodeAggregation).....
-				AggregateTypeNode aggregateTypeNode = aggregationStrategy.aggregate(splitedCodeTreeNode.get(0));
+
+			// CodeTreePrinter.treeNormalPrint(codeTree);
+			if (splitedCodeTreeNode != null && !splitedCodeTreeNode.isEmpty()) {
+				// TODO: aggregate the splited code tree node
+				// (NormalTreeNodeAggregation).....
+				AggregateTypeNode aggregateTypeNode = aggregationStrategy
+						.aggregate(splitedCodeTreeNode.get(0));
 				System.out.println(aggregateTypeNode);
 			}
 			if (codeTree != null) {
-//				codeTree = replaceStrategy.replace(codeTree);
+				// codeTree = replaceStrategy.replace(codeTree);
 			}
 			preSourceFile = sourceFile;
 		}
