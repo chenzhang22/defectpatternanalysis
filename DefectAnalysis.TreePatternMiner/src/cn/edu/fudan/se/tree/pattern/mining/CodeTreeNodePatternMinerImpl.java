@@ -5,16 +5,16 @@ package cn.edu.fudan.se.tree.pattern.mining;
 
 import java.util.List;
 
-import cn.edu.fudan.se.code.change.tree.bean.AggregateTypeNode;
-import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
+import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
 
 /**
  * @author Lotay
  *
  */
-public class CodeTreeNodePatternMinerImpl extends AbsAggregatedTreePatternMiner {
+public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 
-	public CodeTreeNodePatternMinerImpl(ITreeNodeSimilarity nodeSimilary) {
+	public CodeTreeNodePatternMinerImpl(ICodeTreeNodeSimilarity nodeSimilary) {
 		super(nodeSimilary);
 		// TODO Auto-generated constructor stub
 	}
@@ -27,7 +27,7 @@ public class CodeTreeNodePatternMinerImpl extends AbsAggregatedTreePatternMiner 
 	 * (java.util.List)
 	 */
 	@Override
-	public AggregateTypeNode mine(List<AggregateTypeNode> aggregatedTreeNode) {
+	public CodeTreeNode mine(List<CodeTreeNode> aggregatedTreeNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
