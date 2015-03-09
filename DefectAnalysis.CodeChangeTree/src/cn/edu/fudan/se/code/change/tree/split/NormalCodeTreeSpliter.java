@@ -3,6 +3,9 @@
  */
 package cn.edu.fudan.se.code.change.tree.split;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
@@ -13,13 +16,15 @@ import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
  *
  *         split rules: change node parent nodes/ sibling nodes/ child nodes.
  */
-public class NormalCodeTreeSpliter extends AbsCodeTreeSpliter {
+public class NormalCodeTreeSpliter implements AbsCodeTreeSpliter {
 	@Override
-	public CodeTreeNode split(CodeTreeNode treeNode) {
+	public List<CodeTreeNode> split(CodeTreeNode treeNode) {
 		// TODO Auto-generated method stub
 		parentNode = null;
 		this.splits(treeNode, parentNode);
-		return parentNode;
+		ArrayList<CodeTreeNode> treeForest = new ArrayList<CodeTreeNode>();
+		treeForest.add(parentNode);
+		return treeForest;
 	}
 
 	private CodeTreeNode parentNode = null;

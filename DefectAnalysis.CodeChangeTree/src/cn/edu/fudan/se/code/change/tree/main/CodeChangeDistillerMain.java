@@ -84,7 +84,7 @@ public class CodeChangeDistillerMain {
 						preSourceFile, sourceFile, revBlameLines);
 			}
 			CodeTreeNode codeTree = fileRevisionDiffer.diff();
-			CodeTreeNode splitedCodeTreeNode = null;	//reference to the code tree node after split the change node.....
+			List<CodeTreeNode> splitedCodeTreeNode = null;	//reference to the code tree node after split the change node.....
 
 			if (codeTree != null) {
 				//replace the code tree simpleName with corresponding Type...
@@ -98,7 +98,7 @@ public class CodeChangeDistillerMain {
 //			CodeTreePrinter.treeNormalPrint(codeTree);
 			if(splitedCodeTreeNode!=null){
 				// TODO: aggregate the splited code tree node (NormalTreeNodeAggregation).....
-				AggregateTypeNode aggregateTypeNode = aggregationStrategy.aggregate(splitedCodeTreeNode);
+				AggregateTypeNode aggregateTypeNode = aggregationStrategy.aggregate(splitedCodeTreeNode.get(0));
 				System.out.println(aggregateTypeNode);
 			}
 			if (codeTree != null) {
