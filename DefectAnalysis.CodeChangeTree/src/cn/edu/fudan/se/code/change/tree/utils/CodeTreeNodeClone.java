@@ -3,6 +3,7 @@
  */
 package cn.edu.fudan.se.code.change.tree.utils;
 
+import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 /**
@@ -11,7 +12,28 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class CodeTreeNodeClone {
 	public static CodeTreeNode clone(CodeTreeNode codeTreeNode) {
-		CodeTreeNode cloneCodeTreeNode = new CodeTreeNode();
+		CodeTreeNode cloneCodeTreeNode = null;
+
+		if (codeTreeNode instanceof CodeChangeTreeNode) {
+			CodeChangeTreeNode cloneCodeChangeTreeNode = new CodeChangeTreeNode();
+			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) codeTreeNode;
+			cloneCodeChangeTreeNode.setPreRevisionId(codeChangeTreeNode.getPreRevisionId());
+			cloneCodeChangeTreeNode.setPreType(codeChangeTreeNode.getPreType());
+			cloneCodeChangeTreeNode.setPreSimpleType(codeChangeTreeNode.getPreSimpleType());
+			cloneCodeChangeTreeNode.setPreSimpleNameType(codeChangeTreeNode.getPreSimpleNameType());
+			cloneCodeChangeTreeNode.setPreNode(codeChangeTreeNode.getPreNode());
+			cloneCodeChangeTreeNode.setPreStartIndex(codeChangeTreeNode.getPreStartIndex());
+			cloneCodeChangeTreeNode.setPreEndIndex(codeChangeTreeNode.getPreEndIndex());
+			cloneCodeChangeTreeNode.setPreStartLine(codeChangeTreeNode.getPreStartLine());
+			cloneCodeChangeTreeNode.setPreStartColumn(codeChangeTreeNode.getPreStartColumn());
+			cloneCodeChangeTreeNode.setPreEndLine(codeChangeTreeNode.getEndLine());
+			cloneCodeChangeTreeNode.setPreEndColumn(codeChangeTreeNode.getEndColumn());
+			cloneCodeChangeTreeNode.setPreContent(codeChangeTreeNode.getPreContent());
+			cloneCodeChangeTreeNode.setSourceCodeChange(codeChangeTreeNode.getSourceCodeChange());
+			cloneCodeTreeNode = cloneCodeChangeTreeNode;
+		}else {
+			cloneCodeTreeNode = new CodeTreeNode();
+		}
 		cloneCodeTreeNode.setRepoName(codeTreeNode.getRepoName());
 		cloneCodeTreeNode.setRevisionId(codeTreeNode.getRevisionId());
 		cloneCodeTreeNode.setFileName(codeTreeNode.getFileName());
