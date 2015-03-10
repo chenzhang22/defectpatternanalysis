@@ -23,5 +23,5 @@ public abstract class AbsCodeTreeNodePatternMiner {
 		this.nodeSimilarity = similarity;
 	}
 
-	public abstract CodeTreeNode mine(List<CodeTreeNode> codeNodeList);
+	public abstract List<CodeTreeNode> mine(List<CodeTreeNode> codeNodeList);
 }

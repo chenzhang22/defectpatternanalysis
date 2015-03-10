@@ -21,6 +21,9 @@ import cn.edu.fudan.se.code.change.tree.replace.DirectNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.code.change.tree.split.AbsCodeTreeSpliter;
 import cn.edu.fudan.se.code.change.tree.split.MethodLevelCodeTreeSpliter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
+import cn.edu.fudan.se.tree.pattern.mining.AbsCodeTreeNodePatternMiner;
+import cn.edu.fudan.se.tree.pattern.mining.CodeTreeNodePatternMinerImpl;
+import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
 
 /**
  * @author Lotay
@@ -62,6 +65,8 @@ public class CodeChangeDistillerMain {
 		AbsNodeTypeReplaceStrategy replaceStrategy = new DirectNodeTypeReplaceStrategy();
 		AbsTreeNodeAggregation aggregationStrategy = new NormalTreeNodeAggregation();
 		AbsCodeTreeSpliter splitStrategy = new MethodLevelCodeTreeSpliter();
+		AbsCodeTreeNodePatternMiner codeTreeNodePatternMiner = new CodeTreeNodePatternMinerImpl(
+				new CodeTreeNodeSimilarityImpl());
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
 			if (sourceFile == null) {
@@ -84,10 +89,8 @@ public class CodeChangeDistillerMain {
 						preSourceFile, sourceFile, revBlameLines);
 			}
 			CodeTreeNode codeTree = fileRevisionDiffer.diff();
-			List<CodeTreeNode> splitedCodeTreeNode = null; // reference to the
-															// code tree node
-															// after split the
-															// change node.....
+			// reference to the code tree node after split the change node.....
+			List<CodeTreeNode> splitedCodeTreeNode = null;
 
 			if (codeTree != null) {
 				// replace the code tree simpleName with corresponding Type...
@@ -100,7 +103,11 @@ public class CodeChangeDistillerMain {
 
 			// CodeTreePrinter.treeNormalPrint(codeTree);
 			if (splitedCodeTreeNode != null && !splitedCodeTreeNode.isEmpty()) {
-				// TODO: aggregate the splited code tree node
+				
+				List<CodeTreeNode> treePatterns = codeTreeNodePatternMiner.mine(splitedCodeTreeNode);
+				
+				
+				// aggregate the splited code tree node
 				// (NormalTreeNodeAggregation).....
 				AggregateTypeNode aggregateTypeNode = aggregationStrategy
 						.aggregate(splitedCodeTreeNode.get(0));
