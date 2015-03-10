@@ -14,6 +14,12 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
+import ch.uzh.ifi.seal.changedistiller.model.entities.Delete;
+import ch.uzh.ifi.seal.changedistiller.model.entities.Insert;
+import ch.uzh.ifi.seal.changedistiller.model.entities.Move;
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
+import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
+import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 
 /**
@@ -27,13 +33,64 @@ public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 		if (codeNode1 == null || codeNode2 == null) {
 			return 0;
 		}
+		if (codeNode1 instanceof CodeChangeTreeNode
+				|| codeNode2 instanceof CodeChangeTreeNode) {
+			return 0;
+		}
 		ASTNode node1 = codeNode1.getNode();
 		ASTNode node2 = codeNode2.getNode();
 		return similarity(node1, node2);
 	}
 
+	@Override
+	public double similarity(CodeChangeTreeNode aggreTreeNode1,
+			CodeChangeTreeNode aggreTreeNode2) {
+		// both node should be CodeChangeTreeNode
+		if (!(aggreTreeNode1 instanceof CodeChangeTreeNode && aggreTreeNode2 instanceof CodeChangeTreeNode)) {
+			return 0;
+		}
+		CodeChangeTreeNode changeTreeNode1 = (CodeChangeTreeNode) aggreTreeNode1;
+		CodeChangeTreeNode changeTreeNode2 = (CodeChangeTreeNode) aggreTreeNode2;
+		SourceCodeChange sourceCodeChange1 = changeTreeNode1
+				.getSourceCodeChange();
+		SourceCodeChange sourceCodeChange2 = changeTreeNode2
+				.getSourceCodeChange();
+
+		Class<? extends SourceCodeChange> sourceCodeClass1 = sourceCodeChange1
+				.getClass();
+		Class<? extends SourceCodeChange> sourceCodeClass2 = sourceCodeChange2
+				.getClass();
+		ASTNode preAstNode1 = changeTreeNode1.getPreNode();
+		ASTNode preAstNode2 = changeTreeNode2.getPreNode();
+		ASTNode postAstNode1 = changeTreeNode1.getNode();
+		ASTNode postAstNode2 = changeTreeNode2.getNode();
+		if (sourceCodeClass1.equals(sourceCodeClass2)) {
+			if (sourceCodeChange1 instanceof Insert) {
+				// Insert statement/node.
+				if (postAstNode1 != null && postAstNode2 != null) {
+					return this.similarity(postAstNode1, postAstNode2);
+				}
+			} else if (sourceCodeChange1 instanceof Update
+					|| sourceCodeChange1 instanceof Move) {
+				// update or move...
+				if ((postAstNode1 != null && postAstNode2 != null)
+						&& (preAstNode1 != null && preAstNode2 != null)) {
+					return this.similarity(preAstNode1, preAstNode2)
+							* this.similarity(postAstNode1, postAstNode2);
+				}
+			} else if (sourceCodeChange1 instanceof Delete) {
+				// Delete statement/node..
+				if (preAstNode1 != null && preAstNode2 != null) {
+					return this.similarity(preAstNode1, preAstNode2);
+				}
+			}
+		}
+
+		return 0;
+	}
+
 	/* calculate the similarity between the node1 and node3 */
-	protected double similarity(ASTNode node1, ASTNode node2) {
+	private double similarity(ASTNode node1, ASTNode node2) {
 		if (node1 == null || node2 == null) {
 			return 0;
 		}
@@ -143,4 +200,5 @@ public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 			return nodeType1 == nodeType2 ? 1 : 0;
 		}
 	}
+
 }
