@@ -14,6 +14,7 @@ import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
  */
 public abstract class AbsCodeTreeNodePatternMiner {
 	protected ICodeTreeNodeSimilarity nodeSimilarity = null;
+	protected double minFrequency = 1;
 
 	/**
 	 * @param similarity
@@ -24,4 +25,12 @@ public abstract class AbsCodeTreeNodePatternMiner {
 	}
 
 	public abstract List<CodeTreeNode> mine(List<CodeTreeNode> codeNodeList);
+
+	public double getMinFrequency() {
+		return minFrequency;
+	}
+
+	public void setMinFrequency(double minFrequency) {
+		this.minFrequency = minFrequency;
+	}
 }

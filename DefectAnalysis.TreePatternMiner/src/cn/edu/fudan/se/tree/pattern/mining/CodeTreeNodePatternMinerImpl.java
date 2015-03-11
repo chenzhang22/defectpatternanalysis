@@ -18,16 +18,32 @@ import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
  *
  */
 public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
-
 	// The first level map is used for the CodeChangeTreeNode, and the second
 	// Map is a change/unchange codeTreeNode identifier/(the root), the last
 	// list store the same
 	// change/unchange node list
 	// occur in current codeTreeNode
 	private Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> codeCodeTreeNodeGroup = new HashMap<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>>();
+	private Map<CodeTreeNode, List<CodeChangeTreeNode>> treeCodeChangeNodesMap = new HashMap<CodeTreeNode, List<CodeChangeTreeNode>>();
 
 	public CodeTreeNodePatternMinerImpl(ICodeTreeNodeSimilarity nodeSimilary) {
 		super(nodeSimilary);
+		codeCodeTreeNodeGroup.clear();
+		treeCodeChangeNodesMap.clear();
+	}
+
+	private Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> oneCodeChangeElementMine() {
+		Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> freECdeCodeTreeNodeGroup = new HashMap<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>>();
+		for (CodeTreeNode codeTreeNode : codeCodeTreeNodeGroup.keySet()) {
+			if (codeTreeNode instanceof CodeChangeTreeNode) {
+				Map<CodeTreeNode, List<CodeTreeNode>> codeTrees = codeCodeTreeNodeGroup
+						.get(codeTreeNode);
+				if (codeTrees.size() >= minFrequency) {
+					freECdeCodeTreeNodeGroup.put(codeTreeNode, codeTrees);
+				}
+			}
+		}
+		return freECdeCodeTreeNodeGroup;
 	}
 
 	/*
@@ -36,22 +52,37 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 	@Override
 	public List<CodeTreeNode> mine(List<CodeTreeNode> codeTreeNodeList) {
 		// group the code tree node into a map with same change node.
+		codeCodeTreeNodeGroup.clear();
+		treeCodeChangeNodesMap.clear();
 		for (CodeTreeNode codeTreeNodeInstance : codeTreeNodeList) {
+			treeCodeChangeNodesMap.put(codeTreeNodeInstance,
+					new ArrayList<CodeChangeTreeNode>());
 			groupCodeTreeNode(codeTreeNodeInstance, codeTreeNodeInstance);
 		}
 
-		for (Map<CodeTreeNode, List<CodeTreeNode>> codeTreeNode : codeCodeTreeNodeGroup.values()) {
-			if(codeTreeNode.size()>1){
+		Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> freECdeCodeTreeNodeGroup = oneCodeChangeElementMine();
+
+		printNodeChangeInfo(freECdeCodeTreeNodeGroup);
+		return null;
+	}
+
+	/**
+	 * @param freECdeCodeTreeNodeGroup
+	 */
+	private void printNodeChangeInfo(
+			Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> freECdeCodeTreeNodeGroup) {
+		// print the b
+		for (Map<CodeTreeNode, List<CodeTreeNode>> codeTreeNode : freECdeCodeTreeNodeGroup
+				.values()) {
+			if (codeTreeNode.size() > 1) {
 				for (List<CodeTreeNode> codeTreeNode1 : codeTreeNode.values()) {
 					for (int i = 0; i < codeTreeNode1.size(); i++) {
-						System.out.print(codeTreeNode1.get(i).getType()+"\t");
+						System.out.print(codeTreeNode1.get(i).getType() + "\t");
 					}
 					System.out.println();
 				}
 			}
 		}
-		
-		return null;
 	}
 
 	/*
@@ -64,6 +95,12 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 	 */
 	private void groupCodeTreeNode(CodeTreeNode rootNode,
 			CodeTreeNode codeTreeNode) {
+		// store the change treenode of each tree...
+		if (codeTreeNode instanceof CodeChangeTreeNode) {
+			treeCodeChangeNodesMap.get(rootNode).add(
+					(CodeChangeTreeNode) codeTreeNode);
+		}
+		
 		Set<CodeTreeNode> codeTreeNodes = codeCodeTreeNodeGroup.keySet();
 		CodeTreeNode groupHeadNode = codeTreeNode;
 		// search whether the codeTreeNode has the same node in the group.
