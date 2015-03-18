@@ -11,7 +11,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  *
  */
 public class CodeTreeNodeClone {
-	public static CodeTreeNode clone(CodeTreeNode codeTreeNode) {
+	public static CodeTreeNode cloneNoChildren(CodeTreeNode codeTreeNode) {
 		CodeTreeNode cloneCodeTreeNode = null;
 
 		if (codeTreeNode instanceof CodeChangeTreeNode) {
@@ -54,5 +54,13 @@ public class CodeTreeNodeClone {
 		cloneCodeTreeNode.setStartIndex(codeTreeNode.getStartIndex());
 		cloneCodeTreeNode.setStartLine(codeTreeNode.getStartLine());
 		return cloneCodeTreeNode;
+	}
+	
+	public static CodeTreeNode clone(CodeTreeNode codeTreeNode) {
+		CodeTreeNode clonedCodeTreeNode = cloneNoChildren(codeTreeNode);
+		for (CodeTreeNode childCodeTreeNode : codeTreeNode.getChildren()) {
+			clonedCodeTreeNode.addChild(childCodeTreeNode);
+		}
+		return clonedCodeTreeNode;
 	}
 }

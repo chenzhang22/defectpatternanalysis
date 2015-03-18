@@ -32,7 +32,7 @@ public class NormalCodeTreeSpliter implements AbsCodeTreeSpliter {
 	private boolean splits(CodeTreeNode treeNode,
 			CodeTreeNode parentCodeTreeNode) {
 		if (parentCodeTreeNode == null) {
-			parentCodeTreeNode = CodeTreeNodeClone.clone(treeNode);
+			parentCodeTreeNode = CodeTreeNodeClone.cloneNoChildren(treeNode);
 			parentNode = parentCodeTreeNode;
 		}
 		if (treeNode instanceof CodeChangeTreeNode) {
@@ -41,7 +41,7 @@ public class NormalCodeTreeSpliter implements AbsCodeTreeSpliter {
 		} else {
 			boolean isChildHasModified = false;
 			for (CodeTreeNode node : treeNode.getChildren()) {
-				CodeTreeNode cloneCodeTreeNode = CodeTreeNodeClone.clone(node);
+				CodeTreeNode cloneCodeTreeNode = CodeTreeNodeClone.cloneNoChildren(node);
 				parentCodeTreeNode.addChild(cloneCodeTreeNode);
 				boolean isChanged = this.splits(node, cloneCodeTreeNode);
 				isChildHasModified |= isChanged;
