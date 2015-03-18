@@ -28,9 +28,9 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
  */
 public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 
-	
-	/* (non-Javadoc)
-	 * If all child nodes of node1 and node2 are equal, then node1 and node2 are equal.
+	/*
+	 * (non-Javadoc) If all child nodes of node1 and node2 are equal, then node1
+	 * and node2 are equal.
 	 */
 	@Override
 	public double treeNodeSimilarity(CodeTreeNode node1, CodeTreeNode node2) {
@@ -55,6 +55,10 @@ public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 			return 0;
 		}
 		if (codeNode1 instanceof CodeChangeTreeNode
+				&& codeNode2 instanceof CodeChangeTreeNode) {
+			return this.similarity((CodeChangeTreeNode) codeNode1,
+					(CodeChangeTreeNode) codeNode2);
+		} else if (codeNode1 instanceof CodeChangeTreeNode
 				|| codeNode2 instanceof CodeChangeTreeNode) {
 			return 0;
 		}
