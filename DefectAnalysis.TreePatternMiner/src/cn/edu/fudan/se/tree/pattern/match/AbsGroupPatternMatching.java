@@ -18,4 +18,6 @@ public abstract class AbsGroupPatternMatching implements IPatternMatching {
 		super();
 		this.groupPatterns = groupPattern;
 	}
+	
+	public abstract CodeTreeNode matchOne(CodeTreeNode codeTreeNode);
 }

@@ -26,4 +26,10 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 		return false;
 	}
 
+	@Override
+	public CodeTreeNode matchOne(CodeTreeNode codeTreeNode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
