@@ -17,8 +17,9 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 		super(groupPattern);
 	}
 
-	/* (non-Javadoc)
-	 * @see cn.edu.fudan.se.tree.pattern.match.IPatternMatching#match(cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode)
+	/**
+	 * This is the matching method for the @instanceCodeTreeNode should match
+	 * all the groupPattern partially, used for mining the tree pattern.
 	 */
 	@Override
 	public boolean match(CodeTreeNode instanceCodeTreeNode) {
