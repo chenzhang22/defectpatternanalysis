@@ -6,15 +6,14 @@ package cn.edu.fudan.se.tree.pattern.mining;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreePrinter;
 import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
 
 /**
@@ -49,6 +48,8 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 					new ArrayList<CodeChangeTreeNode>());
 			groupCodeTreeNode(codeTreeNodeInstance, codeTreeNodeInstance);
 		}
+
+		List<CodeTreeNode> frequentComponents = new ArrayList<CodeTreeNode>();
 
 		Map<CodeChangeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> oneElementFreCodeComponents = mineOneCodeChangeElement();
 		Map<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> curFreChangeNodeComponents = new HashMap<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>>();
@@ -88,9 +89,14 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 					// for @codeTreeNodeInstance: the changeNode in cluster
 					// instance, and @instanceChangeNodes are the change node in
 					// @codeTreeNodeInstance
-					List<CodeTreeNode> instanceChangeNodes = clusterInstances
+					List<CodeTreeNode> instanceFreChangeNodes = clusterInstances
 							.get(codeTreeNodeInstance);
-					for (CodeTreeNode instanceCodeTreeNode : instanceChangeNodes) {
+					/**
+					 * The changeNode of the instance
+					 * */
+					List<CodeChangeTreeNode> instanceChangeNodes = this.treeCodeChangeNodesMap
+							.get(codeTreeNodeInstance);
+					for (CodeChangeTreeNode instanceCodeChangeTreeNode : instanceChangeNodes) {
 
 						/*
 						 * for each change node @codeChangeTreeNodeEntry<Change
@@ -98,24 +104,18 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 						 * 
 						 * @instanceCodeTreeNode in oneElementFreNodeComponents
 						 */
-						if (instanceCodeTreeNode instanceof CodeChangeTreeNode
-								&& /*
-									 * check @instanceCodeChangeTreeNode not in
-									 * {changeClusterComponent}
-									 */
-								(this.checkWhetherChangeNodeInOneFreComponent(
-										oneElementFreCodeComponents,
-										codeTreeNodeInstance,
-										(CodeChangeTreeNode) instanceCodeTreeNode))) {
-							CodeChangeTreeNode instanceCodeChangeTreeNode = (CodeChangeTreeNode) instanceCodeTreeNode;
-
+						if (/*
+							 * check @instanceCodeChangeTreeNode not in
+							 * {changeClusterComponent}
+							 */
+						this.checkWhetherChangeNodeInFreComponent(instanceCodeChangeTreeNode)) {
 							boolean isCodeTreeNodeInComponent = false;
 							/*
 							 * check whether the the @instanceCodeChangeTreeNode
 							 * already as the component in the current frequent
 							 * component set @changeClusterComponent
 							 */
-							for (CodeTreeNode entry : instanceChangeNodes) {
+							for (CodeTreeNode entry : instanceFreChangeNodes) {
 								if (instanceCodeChangeTreeNode == entry) {
 									isCodeTreeNodeInComponent = true;
 									break;
@@ -123,34 +123,59 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 							}
 
 							if (!isCodeTreeNodeInComponent) {
+								Map.Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> newFrequentComponents = this
+										.copyFrequentComponent(
+												changeClusterComponent,
+												clusterInstances);
 								/*
 								 * check the @instanceCodeChangeTreeNode has
 								 * parent relationship with any nodes in
-								 * {changeClusterComponent}
+								 * {changeClusterComponent} The parent of the
+								 * frequent node @instParentOfFrequentNode list
+								 * is instanceCodeTreeNode.
 								 */
-								CodeChangeTreeNode instParentOfFrequentNode = exploreInstanceParentOfRelation(
+								List<CodeChangeTreeNode> instParentOfFrequentNode = exploreInstanceParentOfFrequentNodes(
 										changeClusterComponent,
-										instanceCodeTreeNode);
-
+										instanceCodeChangeTreeNode);
+								// if (instParentOfFrequentNode != null
+								// && !instParentOfFrequentNode.isEmpty()) {
+								// // current node as a parent node of frequent
+								// // node.
+								//
+								// System.out.println();
+								// }
 								/*
 								 * check the @instanceCodeChangeTreeNode has
 								 * child relationship with any nodes in
-								 * {changeClusterComponent}
+								 * {changeClusterComponent} The
+								 * instanceCodeTreeNode node is a child of the
+								 * Map.Entry<CodeChangeTreeNode,
+								 * CodeChangeTreeNode>. where The key the
+								 * frequent component, and the value is the
+								 * direct parent of instanceCodeTreeNode
 								 */
 								Map.Entry<CodeChangeTreeNode, CodeChangeTreeNode> instChildFrequentNodeEntry = exploreInstanceChildOfRelation(
 										changeClusterComponent,
-										instParentOfFrequentNode);
-								if (instParentOfFrequentNode != null) {
-									// current node as a parent node of frequent
-									// node.
-									// TODO:
+										instanceCodeChangeTreeNode);
+								//
+								// if (instChildFrequentNodeEntry != null) {
+								// // Current Node as a child node of the
+								// // frequent node.
+								// System.out.println();
+								// }
 
-								}
-								if (instChildFrequentNodeEntry != null) {
-									// Current Node as a child node of the
-									// frequent node.
+								/*
+								 * Build the new frequent components based on
+								 * the relationship between the
+								 * instanceCodeChangeTreeNode and component's
+								 * nodes.
+								 */
+								this.buildNewCurrentComponents(
+										newFrequentComponents,
+										instanceCodeChangeTreeNode,
+										instParentOfFrequentNode,
+										instChildFrequentNodeEntry);
 
-								}
 								/*
 								 * if changeClusterComponent’ =
 								 * {changeClusterComponent}U{
@@ -159,20 +184,33 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 								 */
 								if (this.checkWhetherAlreadyInClusterComponent(
 										nextFreChangeNodeComponents,
-										changeClusterComponent,
-										instanceCodeChangeTreeNode,
-										instParentOfFrequentNode,
-										instChildFrequentNodeEntry)) {
+										newFrequentComponents)) {
 									continue;
 								}
 
-								/*
-								 * calculate the frequency’ of
-								 * changeClusterComponent’, frequent instances
-								 * clusterFrequentInstances’ of
-								 * changeClusterComponent’
+								/**
+								 * TODO:calculate the frequency’ of
+								 * 
+								 * @newFrequentComponents: frequent instances
+								 *                         clusterFrequentInstances
+								 *                         ’ of
+								 *                         changeClusterComponent
+								 *                         ’
 								 */
+								
+								filterTheChangeNodeNotMeetNewFrequentComponent(newFrequentComponents);
+								
 
+								/**
+								 * TODO: check whether the frequency' of
+								 * @newFrequentComponents: is larger than
+								 * @minFrequencyThredhold, then add @newFrequentComponents
+								 * into the @nextFreChangeNodeComponents
+								 * */
+								
+								
+								
+								
 							}
 						}
 					}
@@ -182,13 +220,75 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 					// frequency) in freChangeNodeComponents
 				}
 			}
+			printFrequentComponents(curFreChangeNodeComponents);
 
 			// Update the curFreChangeNodeComponents for next level..
 			curFreChangeNodeComponents = nextFreChangeNodeComponents;
 		}
 
 		printNodeChangeInfo(oneElementFreCodeComponents);
-		return null;
+		return frequentComponents;
+	}
+
+	private void filterTheChangeNodeNotMeetNewFrequentComponent(
+			Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> newFrequentComponents) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param newFrequentComponents
+	 *            : the new frequent components to be updated..
+	 * @param instanceCodeChangeTreeNode
+	 *            : the instance code change node
+	 * @param instanceParentOfFrequentNode
+	 *            : the instanceCodeChangeTreeNode is the parent node of
+	 *            instParentOfFrequentNode
+	 * @param instanceChildFrequentNodeEntry
+	 *            : the instanceCodeChangeTreeNode is a child node of
+	 *            instChildFrequentNodeEntry(key: component, value: direct
+	 *            parent node)
+	 */
+	private void buildNewCurrentComponents(
+			Map.Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> newFrequentComponents,
+			CodeChangeTreeNode instanceCodeChangeTreeNode,
+			List<CodeChangeTreeNode> instanceParentOfFrequentNode,
+			Map.Entry<CodeChangeTreeNode, CodeChangeTreeNode> instanceChildFrequentNodeEntry) {
+		List<CodeChangeTreeNode> frequentComponents = newFrequentComponents
+				.getKey();
+		boolean alreadyAdd2NewFreComponents = false;
+		if (instanceParentOfFrequentNode != null
+				&& !instanceParentOfFrequentNode.isEmpty()) {
+			/*
+			 * Remove the child node from the @frequentComponents. And add the
+			 * corresponding child node @codeChangeTreeNode as child of
+			 * instanceCodeChangeTreeNode
+			 */
+			for (CodeChangeTreeNode codeChangeTreeNode : instanceParentOfFrequentNode) {
+				frequentComponents.remove(codeChangeTreeNode);
+				instanceCodeChangeTreeNode.addChild(codeChangeTreeNode);
+			}
+			frequentComponents.add(instanceCodeChangeTreeNode);
+			alreadyAdd2NewFreComponents = true;
+		}
+
+		/**
+		 * the node @instanceCodeChangeTreeNode as a child of
+		 * 
+		 * @instanceChildFrequentNodeEntry
+		 * */
+		if (instanceChildFrequentNodeEntry != null) {
+			CodeChangeTreeNode directParentChangeTreeNode = instanceChildFrequentNodeEntry
+					.getValue();
+			directParentChangeTreeNode.addChild(instanceCodeChangeTreeNode);
+			alreadyAdd2NewFreComponents = true;
+		}
+
+		// If there are no child/parnet relationship, then add into the
+		// frequentComponents directly.
+		if (!alreadyAdd2NewFreComponents) {
+			frequentComponents.add(instanceCodeChangeTreeNode);
+		}
 	}
 
 	/**
@@ -253,39 +353,78 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 	}
 
 	/**
-	 * check whether the next generate-ing frequent component is already in
+	 * check whether the next generating frequent component is already in
 	 * nextFreChangeNodeComponents,
 	 * */
 	private boolean checkWhetherAlreadyInClusterComponent(
 			Map<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> nextFreChangeNodeComponents,
-			List<CodeChangeTreeNode> changeClusterComponent,
-			CodeChangeTreeNode instCodeChangeTreeNode,
-			CodeChangeTreeNode instParentOfFrequentNode,
-			Map.Entry<CodeChangeTreeNode, CodeChangeTreeNode> instChildFrequentNodeEntry) {
-
-		// TODO: modify the child and parent node of the @instCodeChangeTreeNode
-		// with @instParentOfFrequentNode and @parentFrequentNodeEntry.
-
+			Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> newFrequentComponentsEntry) {
+		List<CodeChangeTreeNode> newFrequentComponents = newFrequentComponentsEntry
+				.getKey();
 		for (List<CodeChangeTreeNode> frequentComponent : nextFreChangeNodeComponents
 				.keySet()) {
-			ArrayList<CodeChangeTreeNode> componentNodes = new ArrayList<CodeChangeTreeNode>(
+			ArrayList<CodeChangeTreeNode> nextFrequentComponents = new ArrayList<CodeChangeTreeNode>(
 					frequentComponent);
-			// TODO:check the size for componentNodes and
-			// changeClusterComponent...
 
-			// TODO: add the code to check whether the component is the same.
-			for (CodeChangeTreeNode codeChangeTreeNode : changeClusterComponent) {
-				// TODO：Attention: since the treeNode tree just as the original
-				// tree, this can
-				// not be used.....
-				this.nodeSimilarity.treeNodeSimilarity(instCodeChangeTreeNode,
-						codeChangeTreeNode);
-
+			/**
+			 * check the size for @newFrequentComponents and
+			 * 
+			 * @nextFrequentComponents, this is the basic requirement for the @nextFreChangeNodeComponents
+			 *                          and @nextFrequentComponents be equal.
+			 */
+			if (nextFrequentComponents.size() != newFrequentComponents.size()) {
+				continue;
 			}
 
+			/**
+			 * the code used to check whether the @newFrequentComponents has the
+			 * same component in @nextFreChangeNodeComponents
+			 */
+			for (CodeChangeTreeNode newFreComponentNode : newFrequentComponents) {
+				CodeChangeTreeNode similarNextChangeTreeNode = null;
+				for (CodeChangeTreeNode nextFreChangeTreeNode : nextFrequentComponents) {
+					if (this.nodeSimilarity.treeNodeSimilarity(
+							nextFreChangeTreeNode, newFreComponentNode) >= this.minSimilarityThrehold) {
+						similarNextChangeTreeNode = nextFreChangeTreeNode;
+						break;
+					}
+				}
+				if (similarNextChangeTreeNode != null) {
+					nextFrequentComponents.remove(similarNextChangeTreeNode);
+				} else {
+					break;
+				}
+			}
+			if (nextFrequentComponents.isEmpty()) {
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	private Map.Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> copyFrequentComponent(
+			List<CodeChangeTreeNode> freComponents,
+			Map<CodeTreeNode, List<CodeTreeNode>> frequentInstances) {
+
+		List<CodeChangeTreeNode> copyComponents = new ArrayList<CodeChangeTreeNode>();
+		for (CodeChangeTreeNode codeChangeTreeNode : freComponents) {
+			CodeTreeNode cloneNoChildren = CodeTreeNodeClone
+					.cloneNoChildren(codeChangeTreeNode);
+			if (cloneNoChildren instanceof CodeChangeTreeNode) {
+				copyComponents.add((CodeChangeTreeNode) cloneNoChildren);
+			}
+		}
+
+		Map<CodeTreeNode, List<CodeTreeNode>> componentInstances = new HashMap<CodeTreeNode, List<CodeTreeNode>>();
+		for (CodeTreeNode codeTreeNode : frequentInstances.keySet()) {
+			componentInstances.put(codeTreeNode, new ArrayList<CodeTreeNode>(
+					frequentInstances.get(codeTreeNode)));
+		}
+
+		Map.Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> copyComponentsEntry = new AbstractMap.SimpleEntry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>>(
+				copyComponents, componentInstances);
+		return copyComponentsEntry;
 	}
 
 	// Map.Entry<CodeChangeTreeNode, CodeChangeTreeNode>: key is the frequent
@@ -379,18 +518,19 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 		return copyFrequentInstances;
 	}
 
-	private CodeChangeTreeNode exploreInstanceParentOfRelation(
+	// The current analysis node is the parent node of the frequent
+	// node.
+	private List<CodeChangeTreeNode> exploreInstanceParentOfFrequentNodes(
 			List<CodeChangeTreeNode> changeClusterComponent,
 			CodeTreeNode instanceCodeTreeNode) {
+		List<CodeChangeTreeNode> childrenNodes = new ArrayList<CodeChangeTreeNode>();
 		for (CodeChangeTreeNode frequentChangeTreeNode : changeClusterComponent) {
-			if (this.exploreParentRelation(instanceCodeTreeNode,
-					frequentChangeTreeNode)) {
-				// The current analysis node is the parent node of the frequent
-				// node.
-				return frequentChangeTreeNode;
+			if (this.exploreParentRelation(frequentChangeTreeNode,
+					instanceCodeTreeNode)) {
+				childrenNodes.add(frequentChangeTreeNode);
 			}
 		}
-		return null;
+		return childrenNodes;
 	}
 
 	private boolean exploreParentRelation(CodeTreeNode potentialChildNode,
@@ -406,24 +546,17 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 	 * Chech whether the @param codeChangeTreeNode in the tree( @param
 	 * codeTreeNodeInstance ) is in the @param oneElementFreCodeComponents
 	 * */
-	private boolean checkWhetherChangeNodeInOneFreComponent(
-			Map<CodeChangeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> oneElementFreCodeComponents,
-			CodeTreeNode codeTreeNodeInstance,
+	private boolean checkWhetherChangeNodeInFreComponent(
 			CodeChangeTreeNode codeChangeTreeNode) {
-		for (CodeChangeTreeNode freCodeChangeTreeNodes : oneElementFreCodeComponents
-				.keySet()) {
-			if (this.nodeSimilarity.similarity(codeChangeTreeNode,
-					(CodeTreeNode) freCodeChangeTreeNodes) >= this.minSimilarityThrehold) {
-				Map<CodeTreeNode, List<CodeTreeNode>> freInstances = oneElementFreCodeComponents
-						.get(freCodeChangeTreeNodes);
-				if (freInstances != null && !freInstances.isEmpty()) {
-					List<CodeTreeNode> instanceFrequencyNodes = freInstances
-							.get(codeTreeNodeInstance);
-					if (instanceFrequencyNodes != null
-							&& !instanceFrequencyNodes.isEmpty()) {
-						if (instanceFrequencyNodes.contains(codeChangeTreeNode)) {
-							return true;
-						}
+		for (CodeTreeNode codeTreeNode : this.codeCodeTreeNodeGroup.keySet()) {
+			if (codeTreeNode instanceof CodeChangeTreeNode) {
+				if (super.nodeSimilarity.similarity(codeChangeTreeNode,
+						codeTreeNode) >= this.minSimilarityThrehold) {
+					Map<CodeTreeNode, List<CodeTreeNode>> instances = this.codeCodeTreeNodeGroup
+							.get(codeTreeNode);
+					if (instances != null
+							&& instances.size() >= this.minFrequencyThredhold) {
+						return true;
 					}
 				}
 			}
@@ -494,4 +627,27 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 		}
 	}
 
+	/**
+	 * @param freECdeCodeTreeNodeGroup
+	 */
+	private void printFrequentComponents(
+			Map<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> freECdeCodeTreeNodeGroup) {
+		for (List<CodeChangeTreeNode> keyChangeTreeNodes : freECdeCodeTreeNodeGroup
+				.keySet()) {
+			Map<CodeTreeNode, List<CodeTreeNode>> codeTreeNode = freECdeCodeTreeNodeGroup
+					.get(keyChangeTreeNodes);
+			for (CodeChangeTreeNode codeChangeTreeNode : keyChangeTreeNodes) {
+				System.out.println(codeChangeTreeNode.getPreSimpleType() + ":"
+						+ codeChangeTreeNode.getSimpleType());
+			}
+			if (codeTreeNode.size() > 1) {
+				for (List<CodeTreeNode> codeTreeNode1 : codeTreeNode.values()) {
+					for (int i = 0; i < codeTreeNode1.size(); i++) {
+						System.out.print(codeTreeNode1.get(i).getType() + "\t");
+					}
+					System.out.println();
+				}
+			}
+		}
+	}
 }

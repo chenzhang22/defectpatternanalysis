@@ -6,6 +6,8 @@ package cn.edu.fudan.se.tree.pattern.match;
 import java.util.List;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
+import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
 
 /**
  * @author Lotay
@@ -15,6 +17,11 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 
 	public ImplGroupPatternInstanceMatching(List<CodeTreeNode> groupPattern) {
 		super(groupPattern);
+	}
+
+	public ImplGroupPatternInstanceMatching(List<CodeTreeNode> groupPattern,
+			ICodeTreeNodeSimilarity similarityFunction) {
+		super(groupPattern,similarityFunction);
 	}
 
 	/**
@@ -32,5 +39,4 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
