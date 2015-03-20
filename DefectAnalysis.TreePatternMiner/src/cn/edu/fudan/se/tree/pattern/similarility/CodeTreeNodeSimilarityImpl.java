@@ -21,19 +21,25 @@ import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 /**
  * @author Lotay
  *
  */
-public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
+public class CodeTreeNodeSimilarityImpl implements ITreeNodeSimilarity {
 
 	/*
 	 * (non-Javadoc) If all child nodes of node1 and node2 are equal, then node1
 	 * and node2 are equal.
 	 */
 	@Override
-	public double treeNodeSimilarity(CodeTreeNode node1, CodeTreeNode node2) {
+	public double treeNodeSimilarity(TreeNode treeNode1, TreeNode treeNode2) {
+		if (!(treeNode1 instanceof CodeTreeNode)||!(treeNode2 instanceof CodeTreeNode)) {
+			return 0;
+		}
+		CodeTreeNode node1 = (CodeTreeNode) treeNode1;
+		CodeTreeNode node2 = (CodeTreeNode) treeNode2;
 		double similarity = this.similarity(node1, node2);
 		double childSimilarity = 1;
 		for (int i = 0; i < node1.getChildren().size(); i++) {
@@ -50,7 +56,12 @@ public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 	}
 
 	@Override
-	public double similarity(CodeTreeNode codeNode1, CodeTreeNode codeNode2) {
+	public double similarity(TreeNode treeNode1, TreeNode treeNode2) {
+		if (!(treeNode1 instanceof CodeTreeNode)||!(treeNode2 instanceof CodeTreeNode)) {
+			return 0;
+		}
+		CodeTreeNode codeNode1 = (CodeTreeNode) treeNode1;
+		CodeTreeNode codeNode2 = (CodeTreeNode) treeNode2;
 		if (codeNode1 == null || codeNode2 == null) {
 			return 0;
 		}
@@ -67,8 +78,7 @@ public class CodeTreeNodeSimilarityImpl implements ICodeTreeNodeSimilarity {
 		return similarity(node1, node2);
 	}
 
-	@Override
-	public double similarity(CodeChangeTreeNode aggreTreeNode1,
+	private double similarity(CodeChangeTreeNode aggreTreeNode1,
 			CodeChangeTreeNode aggreTreeNode2) {
 		// both node should be CodeChangeTreeNode
 		if (!(aggreTreeNode1 instanceof CodeChangeTreeNode && aggreTreeNode2 instanceof CodeChangeTreeNode)) {

@@ -4,16 +4,22 @@
 package cn.edu.fudan.se.tree.pattern.similarility;
 
 import cn.edu.fudan.se.code.change.tree.bean.AggregateTypeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 /**
  * @author Lotay
  *
  */
-public class TreeNodeTypeSimilarity implements ITreeNodeSimilarity {
+public class AggregateTreeNodeSimilarity implements ITreeNodeSimilarity {
 
 	@Override
-	public double similarity(AggregateTypeNode aggreTreeNode1,
-			AggregateTypeNode aggreTreeNode2) {
+	public double similarity(TreeNode treeNode1,
+			TreeNode treeNode2) {
+		if (!(treeNode1 instanceof AggregateTypeNode)|| !(treeNode2 instanceof AggregateTypeNode)) {
+			return 0;
+		}
+		AggregateTypeNode aggreTreeNode1 = (AggregateTypeNode) treeNode1;
+		AggregateTypeNode aggreTreeNode2 = (AggregateTypeNode) treeNode2;
 		double similarity = 0;
 		if (aggreTreeNode1 != null && aggreTreeNode2 != null) {
 			String changeType1 = aggreTreeNode1.getChangeType();
@@ -47,5 +53,11 @@ public class TreeNodeTypeSimilarity implements ITreeNodeSimilarity {
 			}
 		}
 		return similarity;
+	}
+
+	@Override
+	public double treeNodeSimilarity(TreeNode node1, TreeNode node2) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

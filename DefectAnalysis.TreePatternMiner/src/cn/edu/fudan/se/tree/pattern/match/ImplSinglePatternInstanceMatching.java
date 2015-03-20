@@ -22,7 +22,7 @@ public class ImplSinglePatternInstanceMatching extends AbsSinglePatternMatching 
 	}
 
 	@Override
-	public boolean match(CodeTreeNode instanceCodeTreeNode) {
+	public boolean patternMatchAll(CodeTreeNode instanceCodeTreeNode) {
 		// TODO Auto-generated method stub
 		return false;
 	}

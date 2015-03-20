@@ -29,14 +29,19 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 	 * all the groupPattern partially, used for mining the tree pattern.
 	 */
 	@Override
-	public boolean match(CodeTreeNode instanceCodeTreeNode) {
+	public boolean patternMatchAll(CodeTreeNode nodeTreeInstances) {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
-	public CodeTreeNode matchOne(CodeTreeNode codeTreeNode) {
-		// TODO Auto-generated method stub
+	public CodeTreeNode patternMatchOne(CodeTreeNode nodeTreeInstances) {
+		for (CodeTreeNode patternNodeTree : groupPatterns) {
+			if (this.patternMatch(patternNodeTree, nodeTreeInstances)!=null) {
+				
+			}
+		}
 		return null;
 	}
 }

@@ -7,20 +7,21 @@ import java.util.List;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
+import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
 /**
  * @author Lotay
  *
  */
 public abstract class AbsCodeTreeNodePatternMiner {
-	protected ICodeTreeNodeSimilarity nodeSimilarity = null;
+	protected ITreeNodeSimilarity nodeSimilarity = null;
 	protected double minFrequencyThredhold = 1;
 	protected double minSimilarityThrehold = 1.0;
 
 	/**
 	 * @param similarity
 	 */
-	public AbsCodeTreeNodePatternMiner(ICodeTreeNodeSimilarity similarity) {
+	public AbsCodeTreeNodePatternMiner(ITreeNodeSimilarity similarity) {
 		super();
 		this.nodeSimilarity = similarity;
 	}

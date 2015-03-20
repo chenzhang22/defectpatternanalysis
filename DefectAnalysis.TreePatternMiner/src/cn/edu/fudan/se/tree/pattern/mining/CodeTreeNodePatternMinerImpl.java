@@ -14,7 +14,8 @@ import java.util.Set;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
-import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
+import cn.edu.fudan.se.tree.pattern.match.ImplGroupPatternInstanceMatching;
+import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
 /**
  * @author Lotay
@@ -29,7 +30,7 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 	private Map<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>> codeCodeTreeNodeGroup = new HashMap<CodeTreeNode, Map<CodeTreeNode, List<CodeTreeNode>>>();
 	private Map<CodeTreeNode, List<CodeChangeTreeNode>> treeCodeChangeNodesMap = new HashMap<CodeTreeNode, List<CodeChangeTreeNode>>();
 
-	public CodeTreeNodePatternMinerImpl(ICodeTreeNodeSimilarity nodeSimilary) {
+	public CodeTreeNodePatternMinerImpl(ITreeNodeSimilarity nodeSimilary) {
 		super(nodeSimilary);
 		codeCodeTreeNodeGroup.clear();
 		treeCodeChangeNodesMap.clear();
@@ -197,20 +198,17 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 								 *                         changeClusterComponent
 								 *                         ’
 								 */
-								
+
 								filterTheChangeNodeNotMeetNewFrequentComponent(newFrequentComponents);
-								
 
 								/**
 								 * TODO: check whether the frequency' of
+								 * 
 								 * @newFrequentComponents: is larger than
 								 * @minFrequencyThredhold, then add @newFrequentComponents
-								 * into the @nextFreChangeNodeComponents
+								 *                         into the @nextFreChangeNodeComponents
 								 * */
-								
-								
-								
-								
+
 							}
 						}
 					}
@@ -232,8 +230,15 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 
 	private void filterTheChangeNodeNotMeetNewFrequentComponent(
 			Entry<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> newFrequentComponents) {
-		// TODO Auto-generated method stub
-		
+		Map<CodeTreeNode, List<CodeTreeNode>> patternInstances = newFrequentComponents
+				.getValue();
+		List<CodeChangeTreeNode> frequentComponent = newFrequentComponents
+				.getKey();
+		ImplGroupPatternInstanceMatching groupPatternMatching = new ImplGroupPatternInstanceMatching(new ArrayList<CodeTreeNode>(frequentComponent));
+		for (CodeTreeNode patternInstance : patternInstances.keySet()) {
+				groupPatternMatching.patternMatchOne(patternInstance);
+		}
+
 	}
 
 	/**

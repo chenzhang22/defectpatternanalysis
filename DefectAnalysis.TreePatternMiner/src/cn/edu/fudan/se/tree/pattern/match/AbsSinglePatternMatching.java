@@ -4,10 +4,7 @@ import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
 import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
 
-public abstract class AbsSinglePatternMatching implements IPatternMatching {
-	protected CodeTreeNode pattern = null;
-	private double similarityThredhold = 1.0;
-	private ICodeTreeNodeSimilarity similarityFunction = new CodeTreeNodeSimilarityImpl();
+public abstract class AbsSinglePatternMatching extends AbsPatternMatching {
 
 	public AbsSinglePatternMatching(CodeTreeNode pattern) {
 		super();
@@ -35,6 +32,4 @@ public abstract class AbsSinglePatternMatching implements IPatternMatching {
 		this.similarityThredhold = similarityThredhold;
 		this.similarityFunction = similarityFunction;
 	}
-
-
 }
