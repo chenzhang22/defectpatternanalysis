@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Lotay
  *
  */
-public class AggregateTypeNode {
+public class AggregateTypeNode implements TreeNode{
 	private String changeType = "NORMAL";
 	private String postNodeValue = null;
 	private String preNodeValue = null;

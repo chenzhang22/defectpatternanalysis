@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
  * @author Lotay
  *
  */
-public class CodeTreeNode {
+public class CodeTreeNode implements TreeNode{
 	private String repoName;
 	private String revisionId;
 	private String fileName;
