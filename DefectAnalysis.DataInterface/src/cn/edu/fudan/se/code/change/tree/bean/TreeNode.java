@@ -5,4 +5,5 @@ import java.util.List;
 public interface TreeNode {
 	@SuppressWarnings("rawtypes")
 	public List getChildren();
+	public TreeNode getParentTreeNode();
 }

@@ -13,7 +13,7 @@ public class AggregateTypeNode implements TreeNode{
 	private String changeType = "NORMAL";
 	private String postNodeValue = null;
 	private String preNodeValue = null;
-	private AggregateTypeNode parentNode = null;
+	private AggregateTypeNode parentTreeNode = null; 
 	private ArrayList<AggregateTypeNode> children = new ArrayList<AggregateTypeNode>();
 	private CodeTreeNode codeTreeNode;
 
@@ -46,12 +46,12 @@ public class AggregateTypeNode implements TreeNode{
 		this.preNodeValue = preNodeValue;
 	}
 
-	public AggregateTypeNode getParentNode() {
-		return parentNode;
+	public AggregateTypeNode getParentTreeNode() {
+		return parentTreeNode;
 	}
 
-	public void setParentNode(AggregateTypeNode parentNode) {
-		this.parentNode = parentNode;
+	public void setParentTreeNode(AggregateTypeNode parentNode) {
+		this.parentTreeNode = parentNode;
 	}
 
 	public ArrayList<AggregateTypeNode> getChildren() {
@@ -61,7 +61,7 @@ public class AggregateTypeNode implements TreeNode{
 	public void addChildNode(AggregateTypeNode child) {
 		if (child != null) {
 			this.children.add(child);
-			child.setParentNode(this);
+			child.setParentTreeNode(this);
 		}
 	}
 
