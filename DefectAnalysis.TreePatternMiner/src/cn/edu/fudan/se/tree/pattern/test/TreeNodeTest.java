@@ -1,13 +1,14 @@
 package cn.edu.fudan.se.tree.pattern.test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 public class TreeNodeTest implements TreeNode {
 	private String label = null;
 	private String nodeId = null;
-	private ArrayList<TreeNodeTest> childrenNodes = new ArrayList<TreeNodeTest>();
+	private ArrayList<TreeNodeTest> children = new ArrayList<TreeNodeTest>();
 
 	public String getLabel() {
 		return label;
@@ -26,15 +27,20 @@ public class TreeNodeTest implements TreeNode {
 		this.nodeId = nodeId;
 	}
 
-	public ArrayList<TreeNodeTest> getChildrenNodes() {
-		return childrenNodes;
+	public List<TreeNodeTest> getChildren() {
+		return children;
 	}
 
-	public void setChildrenNodes(ArrayList<TreeNodeTest> childrenNodes) {
-		this.childrenNodes = childrenNodes;
+	public void setChildren(ArrayList<TreeNodeTest> childrenNodes) {
+		this.children = childrenNodes;
 	}
 
 	public void addChild(TreeNodeTest childNode) {
-		this.childrenNodes.add(childNode);
+		this.children.add(childNode);
+	}
+
+	@Override
+	public String toString() {
+		return "TreeNodeTest [label=" + label + "]";
 	}
 }

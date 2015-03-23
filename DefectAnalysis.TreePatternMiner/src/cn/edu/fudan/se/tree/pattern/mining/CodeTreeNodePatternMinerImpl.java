@@ -13,6 +13,7 @@ import java.util.Set;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
 import cn.edu.fudan.se.tree.pattern.match.ImplGroupPatternInstanceMatching;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
@@ -234,7 +235,8 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 				.getValue();
 		List<CodeChangeTreeNode> frequentComponent = newFrequentComponents
 				.getKey();
-		ImplGroupPatternInstanceMatching groupPatternMatching = new ImplGroupPatternInstanceMatching(new ArrayList<CodeTreeNode>(frequentComponent));
+		List<TreeNode> arrayList = new ArrayList<TreeNode>(frequentComponent);
+		ImplGroupPatternInstanceMatching groupPatternMatching = new ImplGroupPatternInstanceMatching(arrayList);
 		for (CodeTreeNode patternInstance : patternInstances.keySet()) {
 				groupPatternMatching.patternMatchOne(patternInstance);
 		}

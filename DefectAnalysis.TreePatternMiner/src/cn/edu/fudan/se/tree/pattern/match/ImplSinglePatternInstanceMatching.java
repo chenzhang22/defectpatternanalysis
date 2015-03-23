@@ -3,26 +3,25 @@
  */
 package cn.edu.fudan.se.tree.pattern.match;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
-import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
-import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
+import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
 /**
  * @author Lotay
  *
  */
 public class ImplSinglePatternInstanceMatching extends AbsSinglePatternMatching {
-	public ImplSinglePatternInstanceMatching(CodeTreeNode pattern) {
+	public ImplSinglePatternInstanceMatching(TreeNode pattern) {
 		super(pattern);
 	}
 
-	public ImplSinglePatternInstanceMatching(CodeTreeNode pattern,
-			ICodeTreeNodeSimilarity similarityFunction) {
-		super(pattern);
+	public ImplSinglePatternInstanceMatching(TreeNode pattern,
+			ITreeNodeSimilarity similarityFunction) {
+		super(pattern,similarityFunction);
 	}
 
 	@Override
-	public boolean patternMatchAll(CodeTreeNode instanceCodeTreeNode) {
+	public boolean patternMatchAll(TreeNode instanceCodeTreeNode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
