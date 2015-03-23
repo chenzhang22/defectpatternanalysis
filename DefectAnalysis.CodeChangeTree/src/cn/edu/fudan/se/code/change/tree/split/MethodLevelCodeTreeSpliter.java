@@ -23,7 +23,7 @@ public class MethodLevelCodeTreeSpliter implements AbsCodeTreeSpliter {
 				.split(treeNode);
 		List<CodeTreeNode> splitedCodeTreeNodes = new ArrayList<CodeTreeNode>();
 		for (CodeTreeNode codeTreeNode : removeUnchangedNodeTree) {
-			ArrayList<CodeTreeNode> children = codeTreeNode.getChildren();
+			ArrayList<CodeTreeNode> children = (ArrayList<CodeTreeNode>) codeTreeNode.getChildren();
 			if (!children.isEmpty()) {
 				this.visiTreeNodes(children.get(children.size() - 1),
 						splitedCodeTreeNodes);
@@ -40,7 +40,7 @@ public class MethodLevelCodeTreeSpliter implements AbsCodeTreeSpliter {
 				return true;
 			}
 		}
-		ArrayList<CodeTreeNode> children = codeTreeNode.getChildren();
+		ArrayList<CodeTreeNode> children = (ArrayList<CodeTreeNode>) codeTreeNode.getChildren();
 		boolean result = false;
 		for (int i = 0; children != null && i < children.size(); i++) {
 			CodeTreeNode childNode = children.get(i);

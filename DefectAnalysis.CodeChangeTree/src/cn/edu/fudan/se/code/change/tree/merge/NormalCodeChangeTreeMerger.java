@@ -65,11 +65,11 @@ public class NormalCodeChangeTreeMerger extends
 			List<Integer> deleteLocation, int curLoc,
 			CodeChangeTreeNode changeTreeNode) {
 		CodeTreeNode codeNode = afterCodeTreeNode;
-		ArrayList<CodeTreeNode> children = codeNode.getChildren();
+		ArrayList<CodeTreeNode> children = (ArrayList<CodeTreeNode>) codeNode.getChildren();
 		// search to the
 
 		for (; curLoc < deleteLocation.size() - 1; curLoc++) {
-			children = codeNode.getChildren();
+			children = (ArrayList<CodeTreeNode>) codeNode.getChildren();
 			int index = searchNextLevelChangeNode(children, deleteLocation,
 					curLoc);
 			// System.out.print(index+"-->");

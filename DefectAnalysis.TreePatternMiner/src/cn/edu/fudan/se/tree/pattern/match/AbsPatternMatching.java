@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
@@ -23,9 +24,9 @@ public abstract class AbsPatternMatching {
 	 *            : The candidate instance to match the pattern.
 	 * @return
 	 */
-	private boolean patternMatch(CodeTreeNode patternNode,
-			List<CodeTreeNode> candidateNodeList,
-			Map<CodeTreeNode, CodeTreeNode> patternMatchedNodes) {
+	private boolean patternMatch(TreeNode patternNode,
+			List<TreeNode> candidateNodeList,
+			Map<TreeNode, TreeNode> patternMatchedNodes) {
 		if (patternNode == null) {
 			return true;
 		}
@@ -34,13 +35,13 @@ public abstract class AbsPatternMatching {
 		}
 
 		while (!candidateNodeList.isEmpty()) {
-			CodeTreeNode candidateNode = candidateNodeList.remove(0);
+			TreeNode candidateNode = candidateNodeList.remove(0);
 			if (this.similarityFunction.similarity(patternNode, candidateNode) >= this.similarityThredhold) {
-				List<CodeTreeNode> childCandidateNodeList = new ArrayList<CodeTreeNode>(
+				List<TreeNode> childCandidateNodeList = new ArrayList<TreeNode>(
 						candidateNode.getChildren());
-				for (CodeTreeNode codeTreeNode : patternNode.getChildren()) {
-					if (childCandidateNodeList.isEmpty()
-							|| !this.patternMatch(codeTreeNode,
+				for (Object codeTreeNode : patternNode.getChildren()) {
+					if (codeTreeNode instanceof TreeNode&&childCandidateNodeList.isEmpty()
+							|| !this.patternMatch((TreeNode) codeTreeNode,
 									childCandidateNodeList, patternMatchedNodes)) {
 						return false;
 					}
@@ -57,10 +58,10 @@ public abstract class AbsPatternMatching {
 		return false;
 	}
 
-	public Map<CodeTreeNode, CodeTreeNode> patternMatch(
-			CodeTreeNode patternNodeTree, CodeTreeNode instanceNodeTree) {
-		Map<CodeTreeNode, CodeTreeNode> patternMatchedNodes = new HashMap<CodeTreeNode, CodeTreeNode>();
-		List<CodeTreeNode> candidateNodeList = new ArrayList<CodeTreeNode>();
+	public Map<TreeNode, TreeNode> patternMatch(
+			TreeNode patternNodeTree, TreeNode instanceNodeTree) {
+		Map<TreeNode, TreeNode> patternMatchedNodes = new HashMap<TreeNode, TreeNode>();
+		List<TreeNode> candidateNodeList = new ArrayList<TreeNode>();
 		candidateNodeList.add(instanceNodeTree);
 		if (patternMatch(patternNodeTree, candidateNodeList,
 				patternMatchedNodes)) {

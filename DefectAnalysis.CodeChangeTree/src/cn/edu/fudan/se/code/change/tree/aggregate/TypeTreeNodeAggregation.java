@@ -54,7 +54,7 @@ public class TypeTreeNodeAggregation implements AbsTreeNodeAggregation {
 			aggregateTypeNode.setPostNodeValue(postValue);
 		}
 		
-		ArrayList<CodeTreeNode> treeNodeChildren = treeNode.getChildren();
+		ArrayList<CodeTreeNode> treeNodeChildren = (ArrayList<CodeTreeNode>) treeNode.getChildren();
 		for(CodeTreeNode childNode:treeNodeChildren){
 			AggregateTypeNode childTypeNode = this.aggregate(childNode);
 			aggregateTypeNode.addChildNode(childTypeNode);

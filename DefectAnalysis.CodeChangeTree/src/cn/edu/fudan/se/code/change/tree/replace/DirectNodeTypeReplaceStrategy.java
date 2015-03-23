@@ -32,7 +32,7 @@ public class DirectNodeTypeReplaceStrategy implements
 	public CodeTreeNode replace(CodeTreeNode codeTree) {
 		CodeTreeNode codeTreeNode = codeTree;
 
-		ArrayList<CodeTreeNode> children = codeTreeNode.getChildren();
+		ArrayList<CodeTreeNode> children = (ArrayList<CodeTreeNode>) codeTreeNode.getChildren();
 		if (!children.isEmpty()) {
 			replaceSimpleName(children.get(children.size() - 1));
 		}
@@ -56,7 +56,7 @@ public class DirectNodeTypeReplaceStrategy implements
 		String simpleNameType = resolveSimpleName(codeTreeNode, parentNodeType,
 				astNode);
 		codeTreeNode.setSimpleNameType(simpleNameType);
-		ArrayList<CodeTreeNode> children = codeTreeNode.getChildren();
+		ArrayList<CodeTreeNode> children = (ArrayList<CodeTreeNode>) codeTreeNode.getChildren();
 		for (CodeTreeNode node : children) {
 			this.replaceSimpleName(node);
 		}
