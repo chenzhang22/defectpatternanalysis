@@ -75,7 +75,7 @@ public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 					AggregateTypeNode childAggregatedTypeNode = this
 							.aggregate(chiCodeTreeNode);
 					aggregateTypeNode.addChildNode(childAggregatedTypeNode);
-					childAggregatedTypeNode.setParentNode(aggregateTypeNode);
+					childAggregatedTypeNode.setParentTreeNode(aggregateTypeNode);
 				}
 			}
 		} else {
@@ -95,7 +95,7 @@ public class NormalTreeNodeAggregation implements AbsTreeNodeAggregation {
 					AggregateTypeNode childAggregatedTypeNode = this
 							.aggregate(chiCodeTreeNode);
 					aggregateTypeNode.addChildNode(childAggregatedTypeNode);
-					childAggregatedTypeNode.setParentNode(aggregateTypeNode);
+					childAggregatedTypeNode.setParentTreeNode(aggregateTypeNode);
 				}
 			}
 		}
