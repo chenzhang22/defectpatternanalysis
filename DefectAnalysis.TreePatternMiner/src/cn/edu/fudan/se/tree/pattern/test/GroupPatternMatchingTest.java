@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
-import cn.edu.fudan.se.code.change.tree.utils.TreeNodeUtils;
 import cn.edu.fudan.se.tree.pattern.match.ImplGroupPatternInstanceMatching;
-import cn.edu.fudan.se.tree.pattern.match.ImplSinglePatternInstanceMatching;
 
 /**
  * @author Lotay

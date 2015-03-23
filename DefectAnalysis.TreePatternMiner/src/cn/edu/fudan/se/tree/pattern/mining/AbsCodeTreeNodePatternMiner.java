@@ -6,7 +6,6 @@ package cn.edu.fudan.se.tree.pattern.mining;
 import java.util.List;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
-import cn.edu.fudan.se.tree.pattern.similarility.ICodeTreeNodeSimilarity;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
 /**
