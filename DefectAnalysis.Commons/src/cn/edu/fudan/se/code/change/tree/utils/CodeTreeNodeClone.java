@@ -17,21 +17,32 @@ public class CodeTreeNodeClone {
 		if (codeTreeNode instanceof CodeChangeTreeNode) {
 			CodeChangeTreeNode cloneCodeChangeTreeNode = new CodeChangeTreeNode();
 			CodeChangeTreeNode codeChangeTreeNode = (CodeChangeTreeNode) codeTreeNode;
-			cloneCodeChangeTreeNode.setPreRevisionId(codeChangeTreeNode.getPreRevisionId());
+			cloneCodeChangeTreeNode.setPreRevisionId(codeChangeTreeNode
+					.getPreRevisionId());
 			cloneCodeChangeTreeNode.setPreType(codeChangeTreeNode.getPreType());
-			cloneCodeChangeTreeNode.setPreSimpleType(codeChangeTreeNode.getPreSimpleType());
-			cloneCodeChangeTreeNode.setPreSimpleNameType(codeChangeTreeNode.getPreSimpleNameType());
+			cloneCodeChangeTreeNode.setPreSimpleType(codeChangeTreeNode
+					.getPreSimpleType());
+			cloneCodeChangeTreeNode.setPreSimpleNameType(codeChangeTreeNode
+					.getPreSimpleNameType());
 			cloneCodeChangeTreeNode.setPreNode(codeChangeTreeNode.getPreNode());
-			cloneCodeChangeTreeNode.setPreStartIndex(codeChangeTreeNode.getPreStartIndex());
-			cloneCodeChangeTreeNode.setPreEndIndex(codeChangeTreeNode.getPreEndIndex());
-			cloneCodeChangeTreeNode.setPreStartLine(codeChangeTreeNode.getPreStartLine());
-			cloneCodeChangeTreeNode.setPreStartColumn(codeChangeTreeNode.getPreStartColumn());
-			cloneCodeChangeTreeNode.setPreEndLine(codeChangeTreeNode.getEndLine());
-			cloneCodeChangeTreeNode.setPreEndColumn(codeChangeTreeNode.getEndColumn());
-			cloneCodeChangeTreeNode.setPreContent(codeChangeTreeNode.getPreContent());
-			cloneCodeChangeTreeNode.setSourceCodeChange(codeChangeTreeNode.getSourceCodeChange());
+			cloneCodeChangeTreeNode.setPreStartIndex(codeChangeTreeNode
+					.getPreStartIndex());
+			cloneCodeChangeTreeNode.setPreEndIndex(codeChangeTreeNode
+					.getPreEndIndex());
+			cloneCodeChangeTreeNode.setPreStartLine(codeChangeTreeNode
+					.getPreStartLine());
+			cloneCodeChangeTreeNode.setPreStartColumn(codeChangeTreeNode
+					.getPreStartColumn());
+			cloneCodeChangeTreeNode.setPreEndLine(codeChangeTreeNode
+					.getEndLine());
+			cloneCodeChangeTreeNode.setPreEndColumn(codeChangeTreeNode
+					.getEndColumn());
+			cloneCodeChangeTreeNode.setPreContent(codeChangeTreeNode
+					.getPreContent());
+			cloneCodeChangeTreeNode.setSourceCodeChange(codeChangeTreeNode
+					.getSourceCodeChange());
 			cloneCodeTreeNode = cloneCodeChangeTreeNode;
-		}else {
+		} else {
 			cloneCodeTreeNode = new CodeTreeNode();
 		}
 		cloneCodeTreeNode.setRepoName(codeTreeNode.getRepoName());
@@ -55,11 +66,20 @@ public class CodeTreeNodeClone {
 		cloneCodeTreeNode.setStartLine(codeTreeNode.getStartLine());
 		return cloneCodeTreeNode;
 	}
-	
+
 	public static CodeTreeNode clone(CodeTreeNode codeTreeNode) {
 		CodeTreeNode clonedCodeTreeNode = cloneNoChildren(codeTreeNode);
 		for (CodeTreeNode childCodeTreeNode : codeTreeNode.getChildren()) {
 			clonedCodeTreeNode.addChild(childCodeTreeNode);
+		}
+		return clonedCodeTreeNode;
+	}
+
+	public static CodeTreeNode cloneWholeTree(CodeTreeNode codeTreeNode) {
+		CodeTreeNode clonedCodeTreeNode = cloneNoChildren(codeTreeNode);
+		for (CodeTreeNode childNode : codeTreeNode.getChildren()) {
+			CodeTreeNode clonedChildCodeTreeNode = cloneWholeTree(childNode);
+			clonedCodeTreeNode.addChild(clonedChildCodeTreeNode);
 		}
 		return clonedCodeTreeNode;
 	}
