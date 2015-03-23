@@ -235,12 +235,14 @@ public class CodeTreeNodePatternMinerImpl extends AbsCodeTreeNodePatternMiner {
 				.getValue();
 		List<CodeChangeTreeNode> frequentComponent = newFrequentComponents
 				.getKey();
-		List<TreeNode> arrayList = new ArrayList<TreeNode>(frequentComponent);
-		ImplGroupPatternInstanceMatching groupPatternMatching = new ImplGroupPatternInstanceMatching(arrayList);
+		List<TreeNode> groupPatterns = new ArrayList<TreeNode>(frequentComponent);
+		ImplGroupPatternInstanceMatching groupPatternMatching = new ImplGroupPatternInstanceMatching(groupPatterns);
 		for (CodeTreeNode patternInstance : patternInstances.keySet()) {
-				groupPatternMatching.patternMatchOne(patternInstance);
+			Map<TreeNode, Map<TreeNode, TreeNode>> patternMatchedNodes = groupPatternMatching.patternMatchAll(patternInstance);
+			if (patternMatchedNodes.size()==frequentComponent.size()) {
+				patternInstances.remove(patternInstance);
+			}
 		}
-
 	}
 
 	/**

@@ -14,7 +14,31 @@ public abstract class AbsPatternMatching {
 	protected double similarityThredhold = 1.0;
 	protected ITreeNodeSimilarity similarityFunction = new CodeTreeNodeSimilarityImpl();
 
-	public abstract boolean patternMatchAll(TreeNode instanceCodeTreeNode);
+	public AbsPatternMatching() {
+		super();
+	}
+
+	public AbsPatternMatching(TreeNode pattern) {
+		super();
+		this.pattern = pattern;
+	}
+
+	public AbsPatternMatching(TreeNode pattern, double similarityThredhold) {
+		this(pattern);
+		this.similarityThredhold = similarityThredhold;
+	}
+
+	public AbsPatternMatching(TreeNode pattern,
+			ITreeNodeSimilarity similarityFunction) {
+		this(pattern);
+		this.similarityFunction = similarityFunction;
+	}
+
+	public AbsPatternMatching(TreeNode pattern, double similarityThredhold,
+			ITreeNodeSimilarity similarityFunction) {
+		this(pattern, similarityThredhold);
+		this.similarityFunction = similarityFunction;
+	}
 
 	/**
 	 * @param patternNode
@@ -45,8 +69,8 @@ public abstract class AbsPatternMatching {
 				List<TreeNode> childCandidateNodeList = new ArrayList<TreeNode>(
 						candidateNode.getChildren());
 				if (childCandidateNodeList.isEmpty()) {
-//					return this.patternMatch(patternNode, candidateNodeList,
-//							patternMatchedNodes);
+					// return this.patternMatch(patternNode, candidateNodeList,
+					// patternMatchedNodes);
 					continue;
 				}
 				boolean isChildrenMatched = true;
@@ -62,14 +86,15 @@ public abstract class AbsPatternMatching {
 				if (isChildrenMatched) {
 					patternMatchedNodes.put(patternNode, candidateNode);
 					return true;
-				}else{
-//					return this.patternMatch(patternNode, candidateNodeList, patternMatchedNodes);
+				} else {
+					// return this.patternMatch(patternNode, candidateNodeList,
+					// patternMatchedNodes);
 					continue;
 				}
 			} else {
 				candidateNodeList.addAll(0, candidateNode.getChildren());
-//				return this.patternMatch(patternNode, candidateNodeList,
-//						patternMatchedNodes);
+				// return this.patternMatch(patternNode, candidateNodeList,
+				// patternMatchedNodes);
 				continue;
 			}
 		}
@@ -85,6 +110,7 @@ public abstract class AbsPatternMatching {
 				patternMatchedNodes)) {
 			return patternMatchedNodes;
 		}
+		patternMatchedNodes.clear();
 		return null;
 	}
 }

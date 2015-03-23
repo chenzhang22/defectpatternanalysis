@@ -9,6 +9,7 @@ public class TreeNodeTest implements TreeNode {
 	private String label = null;
 	private String nodeId = null;
 	private ArrayList<TreeNodeTest> children = new ArrayList<TreeNodeTest>();
+	private TreeNodeTest parent;
 
 	public String getLabel() {
 		return label;
@@ -37,10 +38,19 @@ public class TreeNodeTest implements TreeNode {
 
 	public void addChild(TreeNodeTest childNode) {
 		this.children.add(childNode);
+		childNode.setParentTreeNode(this);
 	}
 
 	@Override
 	public String toString() {
 		return "TreeNodeTest [label=" + label + "]";
+	}
+	public void setParentTreeNode(TreeNodeTest parent) {
+		this.parent = parent;
+	}
+
+	@Override
+	public TreeNode getParentTreeNode() {
+		return this.parent;
 	}
 }
