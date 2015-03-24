@@ -10,6 +10,7 @@ import cn.edu.fudan.se.code.change.tree.aggregate.AbsTreeNodeAggregation;
 import cn.edu.fudan.se.code.change.tree.aggregate.NormalTreeNodeAggregation;
 import cn.edu.fudan.se.code.change.tree.bean.AggregateTypeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
+import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
@@ -21,7 +22,7 @@ import cn.edu.fudan.se.code.change.tree.replace.DirectNodeTypeReplaceStrategy;
 import cn.edu.fudan.se.code.change.tree.split.AbsCodeTreeSpliter;
 import cn.edu.fudan.se.code.change.tree.split.MethodLevelCodeTreeSpliter;
 import cn.edu.fudan.se.defectAnalysis.bean.git.GitSourceFile;
-import cn.edu.fudan.se.tree.pattern.mining.AbsCodeTreeNodePatternMiner;
+import cn.edu.fudan.se.tree.pattern.mining.AbsTreeNodePatternMiner;
 import cn.edu.fudan.se.tree.pattern.mining.CodeTreeNodePatternMinerImpl;
 import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
 
@@ -65,7 +66,7 @@ public class CodeChangeDistillerMain {
 		AbsNodeTypeReplaceStrategy replaceStrategy = new DirectNodeTypeReplaceStrategy();
 		AbsTreeNodeAggregation aggregationStrategy = new NormalTreeNodeAggregation();
 		AbsCodeTreeSpliter splitStrategy = new MethodLevelCodeTreeSpliter();
-		AbsCodeTreeNodePatternMiner codeTreeNodePatternMiner = new CodeTreeNodePatternMinerImpl(
+		AbsTreeNodePatternMiner codeTreeNodePatternMiner = new CodeTreeNodePatternMinerImpl(
 				new CodeTreeNodeSimilarityImpl());
 		for (; i < sourceFiles.size(); i++) {
 			GitSourceFile sourceFile = sourceFiles.get(i);
@@ -103,10 +104,10 @@ public class CodeChangeDistillerMain {
 
 			// CodeTreePrinter.treeNormalPrint(codeTree);
 			if (splitedCodeTreeNode != null && !splitedCodeTreeNode.isEmpty()) {
-				
-				List<CodeTreeNode> treePatterns = codeTreeNodePatternMiner.mine(splitedCodeTreeNode);
-				
-				
+
+				Map<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> treePatterns = codeTreeNodePatternMiner
+						.mine(splitedCodeTreeNode);
+
 				// aggregate the splited code tree node
 				// (NormalTreeNodeAggregation).....
 				AggregateTypeNode aggregateTypeNode = aggregationStrategy

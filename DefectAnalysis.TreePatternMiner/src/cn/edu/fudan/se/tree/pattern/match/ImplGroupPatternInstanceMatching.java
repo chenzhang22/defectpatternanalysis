@@ -58,9 +58,10 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 			TreeNode instanceCodeTreeNode) {
 		// TODO: clone the whole tree.
 		TreeNode clonedTreeNode = null;
+		HashMap<TreeNode, TreeNode> clonedMappedNodes = new HashMap<TreeNode, TreeNode>();
 		if (instanceCodeTreeNode instanceof CodeTreeNode) {
-			clonedTreeNode = CodeTreeNodeClone
-					.cloneWholeTree((CodeTreeNode) instanceCodeTreeNode);
+			clonedTreeNode = CodeTreeNodeClone.cloneWholeTree(
+					(CodeTreeNode) instanceCodeTreeNode, clonedMappedNodes);
 		} else {
 			clonedTreeNode = instanceCodeTreeNode;
 		}
@@ -87,6 +88,26 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 				Map<TreeNode, TreeNode> matchedNodes = super.patternMatch(
 						pattern, candidateInstance);
 				if (matchedNodes != null && !matchedNodes.isEmpty()) {
+
+					for (TreeNode patternedNode : matchedNodes.keySet()) {
+						TreeNode clonedMatchedNode = matchedNodes
+								.get(patternedNode);
+						if (clonedMatchedNode == null) {
+							System.err
+									.println("ImplGroupPatternInstanceMatching: Match Error..");
+						} else {
+							TreeNode originalMatchedNode = clonedMappedNodes
+									.get(clonedMatchedNode);
+							if (originalMatchedNode == null) {
+								System.err
+										.println("ImplGroupPatternInstanceMatching: Clone Error..");
+							} else {
+								matchedNodes.replace(patternedNode,
+										originalMatchedNode);
+							}
+						}
+					}
+
 					matchedPatternNodes.put(pattern, matchedNodes);
 					List<TreeNode> splitedTreesList = super.splitTree(
 							candidateInstance, matchedNodes.values());

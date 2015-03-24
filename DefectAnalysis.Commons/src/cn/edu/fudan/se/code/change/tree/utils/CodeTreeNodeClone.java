@@ -3,8 +3,11 @@
  */
 package cn.edu.fudan.se.code.change.tree.utils;
 
+import java.util.HashMap;
+
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 /**
  * @author Lotay
@@ -75,10 +78,11 @@ public class CodeTreeNodeClone {
 		return clonedCodeTreeNode;
 	}
 
-	public static CodeTreeNode cloneWholeTree(CodeTreeNode codeTreeNode) {
+	public static CodeTreeNode cloneWholeTree(CodeTreeNode codeTreeNode, HashMap<TreeNode, TreeNode> clonedMappedNodes) {
 		CodeTreeNode clonedCodeTreeNode = cloneNoChildren(codeTreeNode);
+		clonedMappedNodes.put(clonedCodeTreeNode, codeTreeNode);
 		for (CodeTreeNode childNode : codeTreeNode.getChildren()) {
-			CodeTreeNode clonedChildCodeTreeNode = cloneWholeTree(childNode);
+			CodeTreeNode clonedChildCodeTreeNode = cloneWholeTree(childNode,clonedMappedNodes);
 			clonedCodeTreeNode.addChild(clonedChildCodeTreeNode);
 		}
 		return clonedCodeTreeNode;
