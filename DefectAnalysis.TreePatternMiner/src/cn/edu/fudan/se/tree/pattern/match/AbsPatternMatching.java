@@ -41,6 +41,13 @@ public abstract class AbsPatternMatching {
 	}
 
 	/**
+	 * @param instanceCodeTreeNode
+	 *            , this method used to match one of the @groupPattern for the @param
+	 *            instanceCodeTreeNode, and return the matched pattern.
+	 * @return
+	 */
+	public abstract List<TreeNode> patternMatch(TreeNode instanceCodeTreeNode);
+	/**
 	 * @param patternNode
 	 *            : The pattern for mining,
 	 * @param instanceCodeTreeNode

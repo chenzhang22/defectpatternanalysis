@@ -44,7 +44,7 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 	 */
 
 	@Override
-	public TreeNode patternMatchOne(TreeNode nodeTreeInstances) {
+	public List<TreeNode> patternMatch(TreeNode nodeTreeInstances) {
 		for (TreeNode patternNodeTree : groupPatterns) {
 			if (this.patternMatch(patternNodeTree, nodeTreeInstances) != null) {
 

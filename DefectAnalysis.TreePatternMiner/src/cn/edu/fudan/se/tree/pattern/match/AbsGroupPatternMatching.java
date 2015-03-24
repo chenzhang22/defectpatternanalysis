@@ -44,14 +44,6 @@ public abstract class AbsGroupPatternMatching extends AbsPatternMatching {
 		this.similarityThredhold = similarityThredhold;
 	}
 
-	/**
-	 * @param instanceCodeTreeNode
-	 *            , this method used to match one of the @groupPattern for the @param
-	 *            instanceCodeTreeNode, and return the matched pattern.
-	 * @return
-	 */
-	public abstract TreeNode patternMatchOne(TreeNode instanceCodeTreeNode);
-
 	public abstract Map<TreeNode, Map<TreeNode, TreeNode>> patternMatchAll(
 			TreeNode instanceCodeTreeNode);
 
