@@ -2,7 +2,6 @@ package cn.edu.fudan.se.code.change.tree.utils;
 
 import java.util.HashMap;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 public interface ITreeNodeClone {
