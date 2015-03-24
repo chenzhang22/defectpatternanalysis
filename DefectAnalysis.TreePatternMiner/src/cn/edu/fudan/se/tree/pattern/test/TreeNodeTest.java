@@ -53,4 +53,12 @@ public class TreeNodeTest implements TreeNode {
 	public TreeNode getParentTreeNode() {
 		return this.parent;
 	}
+
+	@Override
+	public void addChild(TreeNode child) {
+		if (child instanceof TreeNodeTest) {
+			this.children.add((TreeNodeTest) child);
+			((TreeNodeTest) child).setParentTreeNode(this);
+		}
+	}
 }

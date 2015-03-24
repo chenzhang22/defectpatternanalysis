@@ -79,4 +79,12 @@ public class AggregateTypeNode implements TreeNode{
 				+ ", postNodeValue=" + postNodeValue + ", preNodeValue="
 				+ preNodeValue + "]";
 	}
+
+	@Override
+	public void addChild(TreeNode child) {
+		if (child instanceof AggregateTypeNode) {
+			this.children.add((AggregateTypeNode) child);
+			((AggregateTypeNode) child).setParentTreeNode(this);
+		}
+	}
 }

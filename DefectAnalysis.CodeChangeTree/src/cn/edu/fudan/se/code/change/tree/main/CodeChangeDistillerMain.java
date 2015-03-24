@@ -3,6 +3,8 @@
  */
 package cn.edu.fudan.se.code.change.tree.main;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import cn.edu.fudan.se.code.change.tree.bean.AggregateTypeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeBlameLineRangeList;
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.db.LineRangeGenerator;
 import cn.edu.fudan.se.code.change.tree.diff.FileAddRevisionDiffer;
 import cn.edu.fudan.se.code.change.tree.diff.FileChangeRevisionDiffer;
@@ -104,9 +107,10 @@ public class CodeChangeDistillerMain {
 
 			// CodeTreePrinter.treeNormalPrint(codeTree);
 			if (splitedCodeTreeNode != null && !splitedCodeTreeNode.isEmpty()) {
-
-				Map<List<CodeChangeTreeNode>, Map<CodeTreeNode, List<CodeTreeNode>>> treePatterns = codeTreeNodePatternMiner
-						.mine(splitedCodeTreeNode);
+				List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+				treeNodes.addAll((Collection<? extends TreeNode>) splitedCodeTreeNode);
+				Map<List<TreeNode>, Map<TreeNode, List<TreeNode>>> treePatterns = codeTreeNodePatternMiner
+						.mine(treeNodes);
 
 				// aggregate the splited code tree node
 				// (NormalTreeNodeAggregation).....

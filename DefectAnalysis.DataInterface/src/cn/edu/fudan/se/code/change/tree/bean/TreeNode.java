@@ -6,4 +6,5 @@ public interface TreeNode {
 	@SuppressWarnings("rawtypes")
 	public List getChildren();
 	public TreeNode getParentTreeNode();
+	public void addChild(TreeNode child);
 }

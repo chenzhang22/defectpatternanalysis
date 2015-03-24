@@ -10,7 +10,6 @@ import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
-import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
 /**
@@ -18,7 +17,6 @@ import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
  *
  */
 public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
-
 	public ImplGroupPatternInstanceMatching(List<TreeNode> groupPattern) {
 		super(groupPattern);
 	}
@@ -60,8 +58,8 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 		TreeNode clonedTreeNode = null;
 		HashMap<TreeNode, TreeNode> clonedMappedNodes = new HashMap<TreeNode, TreeNode>();
 		if (instanceCodeTreeNode instanceof CodeTreeNode) {
-			clonedTreeNode = CodeTreeNodeClone.cloneWholeTree(
-					(CodeTreeNode) instanceCodeTreeNode, clonedMappedNodes);
+			clonedTreeNode = treeNodeClone.cloneWholeTree(instanceCodeTreeNode,
+					clonedMappedNodes);
 		} else {
 			clonedTreeNode = instanceCodeTreeNode;
 		}

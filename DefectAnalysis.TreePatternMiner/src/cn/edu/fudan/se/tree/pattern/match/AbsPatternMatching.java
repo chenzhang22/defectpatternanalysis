@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
+import cn.edu.fudan.se.code.change.tree.utils.CodeTreeNodeClone;
+import cn.edu.fudan.se.code.change.tree.utils.ITreeNodeClone;
 import cn.edu.fudan.se.tree.pattern.similarility.CodeTreeNodeSimilarityImpl;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
@@ -13,6 +15,15 @@ public abstract class AbsPatternMatching {
 	protected TreeNode pattern = null;
 	protected double similarityThredhold = 1.0;
 	protected ITreeNodeSimilarity similarityFunction = new CodeTreeNodeSimilarityImpl();
+	protected ITreeNodeClone treeNodeClone = new CodeTreeNodeClone();
+
+	public ITreeNodeClone getTreeNodeClone() {
+		return treeNodeClone;
+	}
+
+	public void setTreeNodeClone(ITreeNodeClone treeNodeClone) {
+		this.treeNodeClone = treeNodeClone;
+	}
 
 	public AbsPatternMatching() {
 		super();
@@ -82,8 +93,7 @@ public abstract class AbsPatternMatching {
 				}
 				boolean isChildrenMatched = true;
 				for (TreeNode codeTreeNode : patternChildren) {
-					if (codeTreeNode instanceof TreeNode
-							&& childCandidateNodeList.isEmpty()
+					if ( childCandidateNodeList.isEmpty()
 							|| !this.patternMatch((TreeNode) codeTreeNode,
 									childCandidateNodeList, patternMatchedNodes)) {
 						isChildrenMatched = false;
