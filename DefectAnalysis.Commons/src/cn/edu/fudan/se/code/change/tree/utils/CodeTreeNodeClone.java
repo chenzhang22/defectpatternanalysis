@@ -5,6 +5,7 @@ package cn.edu.fudan.se.code.change.tree.utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.CodeChangeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
@@ -92,7 +93,7 @@ public class CodeTreeNodeClone implements ITreeNodeClone {
 	}
 
 	public TreeNode cloneWholeTree(TreeNode codeTreeNode,
-			HashMap<TreeNode, TreeNode> clonedMappedNodes) {
+			Map<TreeNode, TreeNode> clonedMappedNodes) {
 		if (codeTreeNode instanceof CodeTreeNode) {
 			CodeTreeNode clonedCodeTreeNode = (CodeTreeNode) this
 					.cloneNoChildren(codeTreeNode);
