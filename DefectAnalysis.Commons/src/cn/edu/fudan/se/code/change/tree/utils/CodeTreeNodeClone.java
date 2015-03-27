@@ -107,4 +107,8 @@ public class CodeTreeNodeClone implements ITreeNodeClone {
 		}
 		return null;
 	}
+	@Override
+	public TreeNode cloneWholeTree(TreeNode codeTreeNode) {
+		return this.cloneWholeTree(codeTreeNode, new HashMap<TreeNode, TreeNode>());
+	}
 }
