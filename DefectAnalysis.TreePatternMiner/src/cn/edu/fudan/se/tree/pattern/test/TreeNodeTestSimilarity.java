@@ -3,6 +3,8 @@
  */
 package cn.edu.fudan.se.tree.pattern.test;
 
+import java.util.List;
+
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 
@@ -26,7 +28,7 @@ public class TreeNodeTestSimilarity implements ITreeNodeSimilarity {
 				&& treeNode2 instanceof TreeNodeTest) {
 			TreeNodeTest treeNodeTest1 = (TreeNodeTest) treeNode1;
 			TreeNodeTest treeNodeTest2 = (TreeNodeTest) treeNode2;
-			if(treeNodeTest1.getLabel().equals(treeNodeTest2.getLabel())){
+			if (treeNodeTest1.getNodeId().equals(treeNodeTest2.getNodeId())) {
 				return 1;
 			}
 		}
@@ -42,8 +44,16 @@ public class TreeNodeTestSimilarity implements ITreeNodeSimilarity {
 	 */
 	@Override
 	public double treeNodeSimilarity(TreeNode node1, TreeNode node2) {
-		// TODO Auto-generated method stub
-		return 0;
+		double currentSimilarity = this.similarity(node1, node2);
+		if (node1.getChildren().size() != node2.getChildren().size()) {
+			return 0;
+		}
+		for (int i = 0; i < node1.getChildren().size(); i++) {
+			currentSimilarity *= this.similarity(
+					((List<TreeNode>) node1.getChildren()).get(i),
+					((List<TreeNode>) node2.getChildren()).get(i));
+		}
+		return currentSimilarity;
 	}
 
 }

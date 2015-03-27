@@ -88,7 +88,6 @@ public class GroupPatternMatchingTest {
 	private static TreeNodeTest buildTree(String id) {
 		TreeNodeTest patterNodeTest = new TreeNodeTest();
 		patterNodeTest.setNodeId(id);
-		patterNodeTest.setLabel(id);
 		return patterNodeTest;
 	}
 

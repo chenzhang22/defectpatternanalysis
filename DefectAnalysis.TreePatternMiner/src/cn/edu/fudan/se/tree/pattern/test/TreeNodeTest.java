@@ -6,19 +6,9 @@ import java.util.List;
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 
 public class TreeNodeTest implements TreeNode {
-	private String label = null;
 	private String nodeId = null;
 	private ArrayList<TreeNodeTest> children = new ArrayList<TreeNodeTest>();
 	private TreeNodeTest parent;
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
 
 	public String getNodeId() {
 		return nodeId;
@@ -41,10 +31,6 @@ public class TreeNodeTest implements TreeNode {
 		childNode.setParentTreeNode(this);
 	}
 
-	@Override
-	public String toString() {
-		return "TreeNodeTest [label=" + label + "]";
-	}
 	public void setParentTreeNode(TreeNodeTest parent) {
 		this.parent = parent;
 	}
