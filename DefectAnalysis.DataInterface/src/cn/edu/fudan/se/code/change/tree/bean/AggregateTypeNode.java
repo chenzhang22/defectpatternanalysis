@@ -87,4 +87,12 @@ public class AggregateTypeNode implements TreeNode{
 			((AggregateTypeNode) child).setParentTreeNode(this);
 		}
 	}
+
+	@Override
+	public void addChild(int index, TreeNode child) {
+		if (child instanceof AggregateTypeNode) {
+			this.children.add(index,(AggregateTypeNode) child);
+			((AggregateTypeNode) child).setParentTreeNode(this);
+		}
+	}
 }

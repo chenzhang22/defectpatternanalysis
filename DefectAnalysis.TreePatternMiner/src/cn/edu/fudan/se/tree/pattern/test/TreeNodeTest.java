@@ -47,4 +47,12 @@ public class TreeNodeTest implements TreeNode {
 			((TreeNodeTest) child).setParentTreeNode(this);
 		}
 	}
+
+	@Override
+	public void addChild(int index, TreeNode child) {
+		if (child instanceof TreeNodeTest) {
+			this.children.add(index, (TreeNodeTest) child);
+			((TreeNodeTest) child).setParentTreeNode(this);
+		}
+	}
 }

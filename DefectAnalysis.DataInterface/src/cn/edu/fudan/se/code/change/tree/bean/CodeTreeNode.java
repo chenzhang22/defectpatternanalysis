@@ -127,7 +127,13 @@ public class CodeTreeNode implements TreeNode{
 			((CodeTreeNode) treeNode).setParentTreeNode(this);
 		}
 	}
-	
+
+	public void addChild(int index, TreeNode child) {
+		if (child instanceof CodeTreeNode) {
+			this.children.add(index,(CodeTreeNode) child);
+			((CodeTreeNode) child).setParentTreeNode(this);
+		}
+	}
 	public void removeAllChildren() {
 		this.children.clear();
 	}
