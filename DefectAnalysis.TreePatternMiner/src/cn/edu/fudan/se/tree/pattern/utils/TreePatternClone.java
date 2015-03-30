@@ -28,6 +28,19 @@ public class TreePatternClone {
 	}
 
 	public TreePattern clone(TreePattern treePattern) {
+		return this.clone(treePattern, new HashMap<TreeNode, TreeNode>());
+	};
+
+	/**
+	 * @param treePattern
+	 * @param matchedPatternTree
+	 * @return
+	 * 
+	 * The treePattern is the tree pattern to be cloned.
+	 * And the matchedPatternTree will record original tree node(key) and the cloned pattern node(value). 
+	 */
+	public TreePattern clone(TreePattern treePattern,
+			Map<TreeNode, TreeNode> matchedPatternTree) {
 		if (treePattern == null) {
 			return null;
 		}
@@ -41,6 +54,10 @@ public class TreePatternClone {
 					patternTree, clonedNodesMap);
 			if (clonedPatternNode != null) {
 				clonePattern.addTreePattern(clonedPatternNode);
+				// store the clone pattern and original tree pattern node
+				for (TreeNode clonedPatNode : clonedNodesMap.keySet()) {
+					matchedPatternTree.put(clonedNodesMap.get(clonedPatNode), clonedPatNode);
+				}
 			} else {
 				System.err.println("TreePatternClone: Clone Error 1.");
 			}
@@ -57,12 +74,14 @@ public class TreePatternClone {
 							.get(patternTree);
 					Map<TreeNode, TreeNode> cloneMatchedNodes = new HashMap<TreeNode, TreeNode>();
 					for (TreeNode clonePNode : clonedNodesMap.keySet()) {
-						TreeNode clonedTreeNode = clonedNodesMap.get(clonePNode);
-						if (clonedTreeNode!=null) {
-							cloneMatchedNodes.put(clonePNode, orginalNodeMap
-									.get(clonedTreeNode));
-						}else {
-							System.err.println("TreePatternClone: Clone Error 2.");
+						TreeNode clonedTreeNode = clonedNodesMap
+								.get(clonePNode);
+						if (clonedTreeNode != null) {
+							cloneMatchedNodes.put(clonePNode,
+									orginalNodeMap.get(clonedTreeNode));
+						} else {
+							System.err
+									.println("TreePatternClone: Clone Error 2.");
 						}
 					}
 					cloneTreePatternInstance.addMatchedNode(clonedPatternNode,
@@ -72,7 +91,6 @@ public class TreePatternClone {
 				clonePattern.addPatternInstances(patternInstance,
 						cloneTreePatternInstances);
 			}
-
 		}
 
 		return clonePattern;
