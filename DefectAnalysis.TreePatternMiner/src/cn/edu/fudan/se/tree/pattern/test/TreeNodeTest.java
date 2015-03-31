@@ -55,4 +55,9 @@ public class TreeNodeTest implements TreeNode {
 			((TreeNodeTest) child).setParentTreeNode(this);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "TreeNodeTest [nodeId=" + nodeId + "]";
+	}
 }
