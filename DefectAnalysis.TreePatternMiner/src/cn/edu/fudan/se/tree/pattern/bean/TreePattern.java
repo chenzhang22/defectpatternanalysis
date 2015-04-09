@@ -48,7 +48,9 @@ public class TreePattern {
 	}
 
 	public void addTreePatterns(Collection<TreeNode> patternNodes) {
-		this.treePatterns.addAll(patternNodes);
+		for (TreeNode patternNode : patternNodes) {
+			this.addTreePattern(patternNode);
+		}
 	}
 
 	public void addPatternInstances(TreeNode instanceTree,
@@ -75,7 +77,7 @@ public class TreePattern {
 
 	@Override
 	public String toString() {
-		return "TreePattern [treePatterns=" + treePatterns
+		return "treePatterns=" + treePatterns
 				+ ", patternInstances=" + patternInstances + "]";
 	}
 }

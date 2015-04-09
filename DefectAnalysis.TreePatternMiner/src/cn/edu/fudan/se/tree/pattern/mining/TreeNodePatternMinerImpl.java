@@ -15,11 +15,12 @@ import java.util.Set;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.ITreeNodeClone;
+import cn.edu.fudan.se.code.change.tree.utils.TreeNodeUtils;
 import cn.edu.fudan.se.tree.pattern.bean.TreePattern;
 import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreePatternSimilarity;
-import cn.edu.fudan.se.tree.pattern.utils.ListPermutation;
+import cn.edu.fudan.se.tree.pattern.test.TreeNodeTest;
 import cn.edu.fudan.se.tree.pattern.utils.TreePatternClone;
 
 /**
@@ -92,176 +93,257 @@ public class TreeNodePatternMinerImpl {
 			List<TreePattern> currentTreePatterns,
 			Map<TreeNode, Map<TreeNode, List<TreePatternInstance>>> treeOneNodeFrequentPatterns) {
 		List<TreePattern> frequentPatterns = new ArrayList<TreePattern>();
-
-		
-		List<List<TreeNode>> builtTreePatternsList = new ArrayList<List<TreeNode>>();
+		System.out.println(treeOneNodeFrequentPatterns);
+		Collection<TreePattern> builtTreePatternsList = new ArrayList<TreePattern>();
 		List<TreePattern> nextFrequentPatterns = new ArrayList<TreePattern>();
 
 		for (TreePattern treePattern : currentTreePatterns) {
-			builtTreePatternsList.add(treePattern.getTreePatterns());
+			builtTreePatternsList.add(treePattern);
 		}
-		
-		while (!currentTreePatterns.isEmpty()||!nextFrequentPatterns.isEmpty()) {
-			//If the currentTreePatterns is empty and nextFrequentPatterns is not empty,
-			//then extend for the nextFrequentPatterns
+		System.out.println(builtTreePatternsList);
+		while (!currentTreePatterns.isEmpty()
+				|| !nextFrequentPatterns.isEmpty()) {
+			// If the currentTreePatterns is empty and nextFrequentPatterns is
+			// not empty,
+			// then extend for the nextFrequentPatterns
 			if (currentTreePatterns.isEmpty()) {
 				currentTreePatterns = nextFrequentPatterns;
 				nextFrequentPatterns = new ArrayList<TreePattern>();
 			}
-			
+
 			TreePattern treePattern = currentTreePatterns.remove(0);
 			int currentFrequency = treePattern.getFrequency();
 			int maxFrequency = 0;
-			List<TreeNode> treePatterns = treePattern.getTreePatterns();
 			Map<TreeNode, List<TreePatternInstance>> treePatternInstancesMap = treePattern
 					.getPatternInstances();
 
 			// For each tree instance in current frequent pattern
 			for (TreeNode treeInstance : treePatternInstancesMap.keySet()) {
 				List<TreePatternInstance> treePatternInstances = treePatternInstancesMap
-							.get(treeInstance);
+						.get(treeInstance);
 				Map<TreeNode, List<TreePatternInstance>> oneNodeFrequentPatternInstanceMap = treeOneNodeFrequentPatterns
-							.get(treeInstance);
-					
-				//for each treePatternInstance in the current tree instance.
+						.get(treeInstance);
+
+				// for each treePatternInstance in the current tree instance.
 				for (TreePatternInstance treePatternInstance : treePatternInstances) {
 					// For the one node pattern for current treeInstance
 					for (TreeNode oneNodePattern : oneNodeFrequentPatternInstanceMap
 							.keySet()) {
 						// for each frequent tree instance of one node
-						// pattern in current tree instance. 
-						// Actually, there is only one node in the oneNodeFrequentTreePatternInstance
+						// pattern in current tree instance.
+						// Actually, there is only one node in the
+						// oneNodeFrequentTreePatternInstance
 						for (TreePatternInstance oneNodeFrequentTreePatternInstance : oneNodeFrequentPatternInstanceMap
 								.get(oneNodePattern)) {
-							//TODO: check whether the oneNodeFrequentTreePatternInstance already in treePatternInstance
-							TreeNode oneTreePatternFrequentNode = oneNodeFrequentTreePatternInstance.getMatchedNodes().get(oneNodePattern).get(oneNodePattern);
-							System.out.println(oneTreePatternFrequentNode);
-							Map.Entry<TreeNode, TreeNode> existedEntry = this.isExistInCurrentTreePatternInstance(treePatternInstance, oneTreePatternFrequentNode);
-							if (existedEntry!=null) {
+							// check whether the
+							// oneNodeFrequentTreePatternInstance already in
+							// treePatternInstance
+							TreeNode oneTreePatternFrequentNode = oneNodeFrequentTreePatternInstance
+									.getMatchedNodes().get(oneNodePattern)
+									.get(oneNodePattern);
+							Map.Entry<TreeNode, TreeNode> existedEntry = this
+									.isExistInCurrentTreePatternInstance(
+											treePatternInstance,
+											oneTreePatternFrequentNode);
+							if (existedEntry != null) {
 								continue;
 							}
-							//TODO: check the relationship(child of) between the treePatternInstance and oneNodeFrequentTreePatternInstance
+							// check the relationship(child of) between the
+							// treePatternInstance and
+							// oneNodeFrequentTreePatternInstance
 							Map.Entry<TreeNode, Map.Entry<TreeNode, TreeNode>> parentNodeEntry = null;
-							if (oneTreePatternFrequentNode.getParentTreeNode()!=null) {
-								parentNodeEntry = this.checkParentOfOneFrequentInstanceNode(treePatternInstance, oneTreePatternFrequentNode);			
+							if (oneTreePatternFrequentNode.getParentTreeNode() != null) {
+								parentNodeEntry = this
+										.checkParentOfOneFrequentInstanceNode(
+												treePatternInstance,
+												oneTreePatternFrequentNode);
 							}
 
-							//TODO: check the relationship(parent of) between the treePatternInstance and oneNodeFrequentTreePatternInstance 
+							// check the relationship(parent of) between the
+							// treePatternInstance and
+							// oneNodeFrequentTreePatternInstance
 							Map<TreeNode, TreeNode> childrenNodesEntries = null;
-							if(!oneTreePatternFrequentNode.getChildren().isEmpty()){
-								childrenNodesEntries = this.checkChildrenOfFrequentInstanceNode(treePatternInstance, oneTreePatternFrequentNode);
+							if (!oneTreePatternFrequentNode.getChildren()
+									.isEmpty()) {
+								childrenNodesEntries = this
+										.checkChildRelationOfFrequentInstanceNode(
+												treePatternInstance,
+												oneTreePatternFrequentNode);
 							}
-								
-							//TODO: Build the new tree pattern and filte the not meet pattern instance/tree.
-							//TODO: check whether the new tree pattern already in builtTreePatternsList
-							TreePattern newBuilTreePattern = generateNewTreePattern(treePattern,treeOneNodeFrequentPatterns,
-									treeInstance,treePatternInstance, parentNodeEntry,childrenNodesEntries,
-									oneTreePatternFrequentNode,builtTreePatternsList);
-								
-							//TODO: check the frequency of the new tree pattern, update maxFrequency, builtTreePatternsList and nextFrequentPatterns
-							if (newBuilTreePattern.getFrequency() >= this.frequencyThreshold) {
-								nextFrequentPatterns.add(newBuilTreePattern);
+
+							// Build the new tree pattern and filte the not meet
+							// pattern instance/tree.
+							// check whether the new tree pattern already in
+							// builtTreePatternsList
+							if (((TreeNodeTest) oneTreePatternFrequentNode)
+									.getNodeId().equals("1")
+									&& ((TreeNodeTest) treePattern
+											.getTreePatterns().get(0))
+											.getNodeId().equals("6")) {
+								System.out.println();
 							}
-							if (newBuilTreePattern.getFrequency() > maxFrequency) {
-								maxFrequency = newBuilTreePattern
+							TreePattern newBuiltTreePattern = generateNewTreePattern(
+									treePattern, treeOneNodeFrequentPatterns,
+									treeInstance, treePatternInstance,
+									parentNodeEntry, childrenNodesEntries,
+									oneTreePatternFrequentNode);
+
+							// check whether newBuilTreePattern already in the
+							// builtTreePatternsList
+							if (this.checkPatternInCollection(
+									builtTreePatternsList, newBuiltTreePattern) != null) {
+								continue;
+							}
+
+							builtTreePatternsList.add(newBuiltTreePattern);
+							System.out.println(newBuiltTreePattern);
+
+							// TODO: check the frequency of the new tree
+							// pattern, update maxFrequency,
+							// builtTreePatternsList and nextFrequentPatterns
+							if (newBuiltTreePattern.getFrequency() >= this.frequencyThreshold) {
+								nextFrequentPatterns.add(newBuiltTreePattern);
+							}
+							if (newBuiltTreePattern.getFrequency() > maxFrequency) {
+								maxFrequency = newBuiltTreePattern
 										.getFrequency();
 							}
 						}
 					}
 				}
 			}
-				
-			if (currentFrequency>maxFrequency) {
-				//TODO: add to frequent pattern.
-				
+
+			if (currentFrequency > maxFrequency) {
+				// TODO: add to frequent pattern.
+				frequentPatterns.add(treePattern);
 			}
 		}
 
 		return frequentPatterns;
 	}
-	
+
 	/**
 	 * @param treePattern
 	 * @param parentNodeEntry
 	 * @param childrenNodesEntries
 	 * @param oneTreePatternFrequentNode
 	 * 
-	 * build the new TreePattern based on the new relation(parent/children of the oneTreePatternFrequentNode)
+	 *            build the new TreePattern based on the new
+	 *            relation(parent/children of the oneTreePatternFrequentNode)
 	 */
-	@SuppressWarnings("unchecked")
 	private TreePattern generateNewTreePattern(
 			TreePattern treePattern,
-			Map<TreeNode, Map<TreeNode, List<TreePatternInstance>>> treeOneNodeFrequentPatterns,
+			Map<TreeNode, Map<TreeNode, List<TreePatternInstance>>> oneNodeFrequentPatterns,
 			TreeNode treeInstance, TreePatternInstance treePatternInstance,
 			Entry<TreeNode, Entry<TreeNode, TreeNode>> parentNodeEntry,
 			Map<TreeNode, TreeNode> childrenNodesEntries,
-			TreeNode oneTreePatternFrequentNode,
-			List<List<TreeNode>> builtTreePatternsList) {
+			TreeNode oneTreePatternFrequentNode) {
 		HashMap<TreeNode, TreeNode> matchedPatternNodes = new HashMap<TreeNode, TreeNode>();
-		List<TreeNode> childPatternTreeNodes = new ArrayList<TreeNode>();
-		List<TreeNode> addedPatternTrees = new ArrayList<TreeNode>();
-
+		System.out.println("Previous Pattern:"+treePattern+",oneTreePatternFrequentNode："+oneTreePatternFrequentNode+",root:"+TreeNodeUtils.rootOf(oneTreePatternFrequentNode));
 		TreePattern clonedTreePattern = this.treePatternClone.clone(
 				treePattern, matchedPatternNodes);
 		TreeNode cloneNewPatternTree = this.treeNodeClone
 				.cloneNoChildren(oneTreePatternFrequentNode);
+		// Added the new pattern node into the pattern tree.
+		clonedTreePattern.addTreePattern(cloneNewPatternTree);
 
-		// If the new pattern tree node has other pattern as child.
-		if (childrenNodesEntries != null && !childrenNodesEntries.isEmpty()) {
-			for (TreeNode childInstanceNode : (List<TreeNode>) oneTreePatternFrequentNode
-					.getChildren()) {
-				// meaning that the pattern tree is the child of
-				// oneTreePatternFrequentNode
-				if (childrenNodesEntries.containsKey(childInstanceNode)) {
-					TreeNode childPatternNodeTree = childrenNodesEntries
-							.get(childInstanceNode);
-					if (childPatternNodeTree != null
-							&& matchedPatternNodes
-									.containsKey(childPatternNodeTree)) {
-						TreeNode clonedChildPatternNodeTree = matchedPatternNodes
-								.get(childPatternNodeTree);
-						if (clonedTreePattern.getTreePatterns().contains(
-								clonedChildPatternNodeTree)) {
-							clonedTreePattern.getTreePatterns().remove(
-									clonedChildPatternNodeTree);
-							childPatternTreeNodes
-									.add(clonedChildPatternNodeTree);
-						} else {
-							System.err
-									.println("TreeNodePatternMinerImpl: Clone Error 1...");
-						}
-						cloneNewPatternTree
-								.addChild(clonedChildPatternNodeTree);
+		// If the new pattern tree node has other pattern as children.
+		List<TreeNode> clonedChildPatternTreeNodes = new ArrayList<TreeNode>();
+
+		if (childrenNodesEntries != null) {
+			List<TreeNode> childPatternTreeNodes = new ArrayList<TreeNode>();
+			this.arrangeChildPatterns(oneTreePatternFrequentNode,
+					childPatternTreeNodes, childrenNodesEntries);
+			for (TreeNode childPatternNodeTree : childPatternTreeNodes) {
+				if (childPatternNodeTree != null
+						&& matchedPatternNodes
+								.containsKey(childPatternNodeTree)) {
+					TreeNode clonedChildPatternNodeTree = matchedPatternNodes
+							.get(childPatternNodeTree);
+					if (clonedTreePattern.getTreePatterns().contains(
+							clonedChildPatternNodeTree)) {
+						clonedTreePattern.getTreePatterns().remove(
+								clonedChildPatternNodeTree);
+						clonedChildPatternTreeNodes
+								.add(clonedChildPatternNodeTree);
 					} else {
 						System.err
-								.println("TreeNodePatternMinerImpl: Clone Error 2...");
+								.println("TreeNodePatternMinerImpl: Clone Error 1...");
 					}
+					cloneNewPatternTree.addChild(clonedChildPatternNodeTree);
+				} else {
+					System.err
+							.println("TreeNodePatternMinerImpl: Clone Error 2...");
 				}
 			}
-			addedPatternTrees.add(cloneNewPatternTree);
 		}
 
+		// if (childrenNodesEntries != null && !childrenNodesEntries.isEmpty())
+		// {
+		// for (TreeNode instanceChildNode : (List<TreeNode>)
+		// oneTreePatternFrequentNode
+		// .getChildren()) {
+		// // meaning that the pattern tree is the child of
+		// // oneTreePatternFrequentNode
+		// if (childrenNodesEntries.containsKey(instanceChildNode)) {
+		// TreeNode childPatternNodeTree = childrenNodesEntries
+		// .get(instanceChildNode);
+		// if (childPatternNodeTree != null
+		// && matchedPatternNodes
+		// .containsKey(childPatternNodeTree)) {
+		// TreeNode clonedChildPatternNodeTree = matchedPatternNodes
+		// .get(childPatternNodeTree);
+		// if (clonedTreePattern.getTreePatterns().contains(
+		// clonedChildPatternNodeTree)) {
+		// clonedTreePattern.getTreePatterns().remove(
+		// clonedChildPatternNodeTree);
+		// clonedChildPatternTreeNodes
+		// .add(clonedChildPatternNodeTree);
+		// } else {
+		// System.err
+		// .println("TreeNodePatternMinerImpl: Clone Error 1...");
+		// }
+		// cloneNewPatternTree
+		// .addChild(clonedChildPatternNodeTree);
+		// } else {
+		// System.err
+		// .println("TreeNodePatternMinerImpl: Clone Error 2...");
+		// }
+		// }
+		// }
+		// }
+
 		// If the other pattern node is the parent node of the new pattern node
+		Entry<TreeNode, Entry<TreeNode, TreeNode>> clonedParentNodeEntry = null;
 		TreeNode cloneParantPatternNodeTree = null;
 		TreeNode cloneDirectParentPatternTreeNode = null;
 		if (parentNodeEntry != null) {
 			TreeNode patternNodeTree = parentNodeEntry.getKey();
-			cloneParantPatternNodeTree = matchedPatternNodes.get(patternNodeTree);
+			cloneParantPatternNodeTree = matchedPatternNodes
+					.get(patternNodeTree);
 			Entry<TreeNode, TreeNode> relatedPatternNodes = parentNodeEntry
 					.getValue();
 			TreeNode directPatternNode = relatedPatternNodes.getKey();
 			cloneDirectParentPatternTreeNode = matchedPatternNodes
 					.get(directPatternNode);
 			TreeNode previousPatternNode = relatedPatternNodes.getValue();
+			Entry<TreeNode, TreeNode> clonedRelatedPatternNodes = null;
 			if (previousPatternNode == null) {
-				System.err.println("Find Parent Node Entry Wrong.");
-				directPatternNode.addChild(0, cloneNewPatternTree);
+				// System.err.println("Find Parent Node Entry Wrong.");
+				cloneDirectParentPatternTreeNode.addChild(0,
+						cloneNewPatternTree);
+				clonedRelatedPatternNodes = new AbstractMap.SimpleEntry<TreeNode, TreeNode>(
+						cloneDirectParentPatternTreeNode, null);
 			} else {
 				TreeNode clonePreviousPatternNode = matchedPatternNodes
 						.get(previousPatternNode);
+				clonedRelatedPatternNodes = new AbstractMap.SimpleEntry<TreeNode, TreeNode>(
+						cloneDirectParentPatternTreeNode,
+						clonePreviousPatternNode);
+
 				if (clonePreviousPatternNode != null) {
-					int childIndex = cloneDirectParentPatternTreeNode.getChildren()
-							.indexOf(clonePreviousPatternNode);
+					int childIndex = cloneDirectParentPatternTreeNode
+							.getChildren().indexOf(clonePreviousPatternNode);
 					if (childIndex >= 0) {
 						cloneDirectParentPatternTreeNode.addChild(childIndex,
 								cloneNewPatternTree);
@@ -274,35 +356,66 @@ public class TreeNodePatternMinerImpl {
 							.println("TreeNodePatternMinerImpl: Clone Error 3: directPatternNode does not contain the previousPatternNode");
 				}
 			}
+			clonedParentNodeEntry = new AbstractMap.SimpleEntry<TreeNode, Entry<TreeNode, TreeNode>>(
+					cloneParantPatternNodeTree, clonedRelatedPatternNodes);
+			// remove the new pattern node in the pattern tree.
+			if (clonedTreePattern.getTreePatterns().contains(
+					cloneNewPatternTree)) {
+				clonedTreePattern.getTreePatterns().remove(cloneNewPatternTree);
+			}
 		}
 
 		// TODO: make sure other PatternTreeInstance and TreeInstance meet the
 		// new pattern...
-		this.filtedPatternTreeInstance(clonedTreePattern,cloneNewPatternTree,
-				treeOneNodeFrequentPatterns, treeInstance, treePatternInstance,
-				childPatternTreeNodes, addedPatternTrees, cloneParantPatternNodeTree,
-				cloneDirectParentPatternTreeNode);
+		this.filtedPatternTreeInstance(clonedTreePattern, cloneNewPatternTree,
+				oneNodeFrequentPatterns, treeInstance, treePatternInstance,
+				clonedChildPatternTreeNodes, clonedParentNodeEntry);
 		return clonedTreePattern;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private void arrangeChildPatterns(TreeNode instanceNode,
+			List<TreeNode> childInstanceNodes,
+			Map<TreeNode, TreeNode> childrenNodesEntries) {
+		if (childrenNodesEntries.containsKey(instanceNode)) {
+			childInstanceNodes.add(childrenNodesEntries.get(instanceNode));
+			return;
+		}
+		for (TreeNode treeNode : (List<TreeNode>) instanceNode.getChildren()) {
+			this.arrangeChildPatterns(treeNode, childInstanceNodes,
+					childrenNodesEntries);
+		}
+	}
+
 	/**
 	 * filter the pattern tree instance not meet new pattern
 	 */
 	private void filtedPatternTreeInstance(
-			TreePattern treePattern,
+			TreePattern cloneTreePattern,
 			TreeNode cloneNewPatternTree,
-			Map<TreeNode, Map<TreeNode, List<TreePatternInstance>>> treeOneNodeFrequentPatterns,
+			Map<TreeNode, Map<TreeNode, List<TreePatternInstance>>> oneNodeFrequentPatterns,
 			TreeNode currentTreeInstance,
 			TreePatternInstance currentTreePatternInstance,
 			List<TreeNode> removePatternTrees,
-			List<TreeNode> addedPatternTrees, TreeNode clonePatternNodeTree,
-			TreeNode cloneDirectPatternTreeNode) {
-		Map<TreeNode, List<TreePatternInstance>> patternTreeInstances = treePattern
+			Entry<TreeNode, Entry<TreeNode, TreeNode>> clonedParentNodeEntry) {
+		Map<TreeNode, List<TreePatternInstance>> patternTreeInstances = cloneTreePattern
 				.getPatternInstances();
+		List<TreeNode> notMatchedTreeInstances = new ArrayList<TreeNode>();
+
+		TreeNode cloneParentPatternNodeTree = null;
+		TreeNode cloneDirectParentPatternTreeNode = null;
+		TreeNode clonePreviousPatternNode = null;
+		if (clonedParentNodeEntry != null) {
+			cloneParentPatternNodeTree = (clonedParentNodeEntry.getKey());
+			cloneDirectParentPatternTreeNode = clonedParentNodeEntry.getValue()
+					.getKey();
+			clonePreviousPatternNode = clonedParentNodeEntry.getValue()
+					.getValue();
+		}
 		for (TreeNode treeInstance : patternTreeInstances.keySet()) {
 			List<TreePatternInstance> treePatternInstances = patternTreeInstances
 					.get(treeInstance);
-			Map<TreeNode, List<TreePatternInstance>> oneNodeTreePatternInstances = treeOneNodeFrequentPatterns
+			Map<TreeNode, List<TreePatternInstance>> oneNodeTreePatternInstances = oneNodeFrequentPatterns
 					.get(treeInstance);
 			List<TreePatternInstance> onePatternNodeInstances = this
 					.getOneNodeTreePatternInstances(
@@ -310,9 +423,7 @@ public class TreeNodePatternMinerImpl {
 			// There are no onePatternNodeInstances for pattern node
 			// cloneNewPatternTree in treeInstance
 			if (onePatternNodeInstances == null) {
-				while (!treePatternInstances.isEmpty()) {
-					treePatternInstances.remove(0);
-				}
+				treePatternInstances.clear();
 				continue;
 			} else {
 				// relocate the matched instance node
@@ -324,25 +435,304 @@ public class TreeNodePatternMinerImpl {
 								.addAll(onePatternNodeMatchedInstance.values());
 					}
 				}
-
+				List<TreePatternInstance> notMatchedPatternInstances = new ArrayList<TreePatternInstance>();
 				for (TreePatternInstance treePatternInstance : treePatternInstances) {
+					boolean patternInstanceMatched = false;
+					TreeNode newMatchedInstanceNode = null;
+					treePatternInstance.getMatchedNodes();
 					for (TreeNode onePatternTreeInstanceNode : onePatternNodeMatchedInstanceNodes) {
+
+						// check whether the onePatternTreeInstanceNode
+						// matched the cloneNewPatternTree position.
 						Map.Entry<TreeNode, TreeNode> existedMatchedEntry = this
 								.isExistInCurrentTreePatternInstance(
 										treePatternInstance,
 										onePatternTreeInstanceNode);
-						if (existedMatchedEntry!=null) {
-							continue;
-						}else {
-							//check whether the onePatternTreeInstanceNode matched the cloneNewPatternTree position.
+						if (existedMatchedEntry == null) {
+
+							// add all the child instance node in the
+							// matchedTreeNodes
+							// check whether child instance match the children
+							// node list
+							Set<TreeNode> matchedTreeInstanceNodes = new HashSet<TreeNode>();
+							boolean allChildrenMeet = true;
+							Map<TreeNode, Map<TreeNode, TreeNode>> patternInstanceMatchedNodes = treePatternInstance
+									.getMatchedNodes();
+							for (TreeNode patternNode : removePatternTrees) {
+								Map<TreeNode, TreeNode> map = patternInstanceMatchedNodes
+										.get(patternNode);
+								if (map != null && map.containsKey(patternNode)) {
+									TreeNode patternMatchedInstanceNode = map
+											.get(patternNode);
+									matchedTreeInstanceNodes
+											.add(patternMatchedInstanceNode);
+									if (!this.checkChildRelation(
+											onePatternTreeInstanceNode,
+											patternMatchedInstanceNode,
+											matchedTreeInstanceNodes)) {
+										allChildrenMeet = false;
+										break;
+									}
+								} else {
+									allChildrenMeet = false;
+									break;
+								}
+							}
+
+							boolean notParentOf = checkShouldNotAsParentOfFrequentInstance(
+									removePatternTrees,
+									onePatternTreeInstanceNode,
+									patternInstanceMatchedNodes);
+
+							allChildrenMeet = allChildrenMeet && notParentOf;
+
+							if (!allChildrenMeet) {
+								// should remove the patternInstance
+								continue;
+							}
+
+							// now all child patterns are matched.
+							// matched parent..
+							if (cloneParentPatternNodeTree != null
+									&& cloneDirectParentPatternTreeNode != null) {
+								Map<TreeNode, TreeNode> instanceMatchedNodes = patternInstanceMatchedNodes
+										.get(cloneParentPatternNodeTree);
+								if (instanceMatchedNodes != null
+										&& instanceMatchedNodes
+												.containsKey(cloneDirectParentPatternTreeNode)) {
+									TreeNode treeInstanceParentNode = instanceMatchedNodes
+											.get(cloneDirectParentPatternTreeNode);
+									if (this.checkChildRelation(
+											treeInstanceParentNode,
+											onePatternTreeInstanceNode,
+											new HashSet<TreeNode>())) {
+										patternInstanceMatched = true;
+										newMatchedInstanceNode = onePatternTreeInstanceNode;
+										break;
+									}
+								}
+							} else if (cloneParentPatternNodeTree == null
+									&& cloneDirectParentPatternTreeNode == null) {
+								patternInstanceMatched = true;
+								for (TreeNode treeNode : patternInstanceMatchedNodes
+										.keySet()) {
+									TreeNode instanceTreeNode = patternInstanceMatchedNodes
+											.get(treeNode).get(treeNode);
+									if (this.checkChildRelation(
+											instanceTreeNode,
+											onePatternTreeInstanceNode,
+											new HashSet<TreeNode>())) {
+										patternInstanceMatched = false;
+
+									}
+								}
+								if (patternInstanceMatched) {
+									newMatchedInstanceNode = onePatternTreeInstanceNode;
+								}
+								break;
+							} else {
+								System.err
+										.println("TreeNodePatternMinerImpl: Find parent node error.");
+							}
+
+							if (patternInstanceMatched) {
+								System.out.println("Matched Nodes: found..");
+							}
 						}
 					}
+					if (!patternInstanceMatched
+							|| newMatchedInstanceNode == null) {
+						notMatchedPatternInstances.add(treePatternInstance);
+					} else {
+						HashMap<TreeNode, TreeNode> matchedNodes = new HashMap<TreeNode, TreeNode>();
+						matchedNodes.put(cloneNewPatternTree,
+								newMatchedInstanceNode);
+						for (TreeNode treePatternNode2 : removePatternTrees) {
+							Map<TreeNode, TreeNode> removeMathedNodes = treePatternInstance
+									.getMatchedNodes().remove(treePatternNode2);
+							matchedNodes.putAll(removeMathedNodes);
+						}
+						if (cloneParentPatternNodeTree != null
+								&& cloneDirectParentPatternTreeNode != null) {
+							Map<TreeNode, TreeNode> map = treePatternInstance
+									.getMatchedNodes().get(
+											cloneParentPatternNodeTree);
+							map.putAll(matchedNodes);
+						} else if (cloneParentPatternNodeTree == null
+								&& cloneDirectParentPatternTreeNode == null) {
+							treePatternInstance.addMatchedNode(
+									cloneNewPatternTree, matchedNodes);
+						} else {
+							System.err
+									.println("TreeNodePatternMinerImpl:cloneParentPattern error.");
+						}
+					}
+
+					// TODO: handling that pattern trees have no relationship,
+					// but the pattern instance have some relationship.
+
+				}
+
+				for (TreePatternInstance treePatternInstance2 : notMatchedPatternInstances) {
+					treePatternInstances.remove(treePatternInstance2);
+				}
+
+				removeDuplicatedPatternInstances(treePatternInstances);
+				if (cloneTreePattern.getTreePatterns().size()>1) {
+					removeOutOfOrderPatternInstances(
+							cloneTreePattern.getTreePatterns(),
+							treePatternInstances);
 				}
 			}
 
+			if (treePatternInstances == null || treePatternInstances.isEmpty()) {
+				notMatchedTreeInstances.add(treeInstance);
+			}
+		}
+
+		for (TreeNode treeInstance : notMatchedTreeInstances) {
+			if (patternTreeInstances.containsKey(treeInstance)) {
+				patternTreeInstances.remove(treeInstance);
+			}
 		}
 	}
-	
+
+	private void removeOutOfOrderPatternInstances(List<TreeNode> patternTrees,
+			List<TreePatternInstance> treePatternInstances) {
+		List<TreePatternInstance> outOfOrderPatternInstances = new ArrayList<TreePatternInstance>();
+
+		for (TreePatternInstance treePatternInstance : treePatternInstances) {
+			List<String> squenceList = new ArrayList<String>();
+			for (TreeNode treePatternNode : patternTrees) {
+				TreeNode treeNode = treePatternInstance.getMatchedNodes()
+						.get(treePatternNode).get(treePatternNode);
+				String path = path2Root(treeNode);
+				squenceList.add(path);
+			}
+			for (int i=0;i<squenceList.size()-1;i++) {
+				if (squenceList.get(i).compareTo(squenceList.get(i+1))>0) {
+					outOfOrderPatternInstances.add(treePatternInstance);
+					break;
+				}
+			}
+		}
+		for (TreePatternInstance treePatternInstance : outOfOrderPatternInstances) {
+			if (treePatternInstances.contains(treePatternInstance)) {
+				treePatternInstances.remove(treePatternInstance);
+			}
+		}
+	}
+
+	private String path2Root(TreeNode treeNode) {
+		if (treeNode == null) {
+			return "";
+		}
+		TreeNode parentTreeNode = treeNode.getParentTreeNode();
+		if (parentTreeNode != null) {
+			int index = parentTreeNode.getChildren().indexOf(treeNode);
+			return this.path2Root(parentTreeNode)+index;
+		}
+		return "";
+	}
+
+	/**
+	 * @param removePatternTrees
+	 * @param onePatternTreeInstanceNode
+	 * @param patternInstanceMatchedNodes
+	 * @return
+	 */
+	private boolean checkShouldNotAsParentOfFrequentInstance(
+			List<TreeNode> removePatternTrees,
+			TreeNode onePatternTreeInstanceNode,
+			Map<TreeNode, Map<TreeNode, TreeNode>> patternInstanceMatchedNodes) {
+		// check when there are child relationship in
+		// pattern, while the instances have the
+		// parent/child relation.
+		for (TreeNode treeNode : patternInstanceMatchedNodes.keySet()) {
+			if (!removePatternTrees.contains(treeNode)) {
+				TreeNode instanceTreeNode = patternInstanceMatchedNodes.get(
+						treeNode).get(treeNode);
+				if (this.checkChildRelation(onePatternTreeInstanceNode,
+						instanceTreeNode, new HashSet<TreeNode>())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param treePatternInstances
+	 */
+	private void removeDuplicatedPatternInstances(
+			List<TreePatternInstance> treePatternInstances) {
+		// TODO: remove duplicated TreePatternInstance for @treePatternInstances
+		List<Set<TreeNode>> duplicatedTreePatternInstanceNodes = new ArrayList<Set<TreeNode>>();
+		List<TreePatternInstance> duplicatedPatternInstances = new ArrayList<TreePatternInstance>();
+		for (TreePatternInstance treePatternInstance2 : treePatternInstances) {
+			Set<TreeNode> treePatternInstanceNodes = new HashSet<TreeNode>();
+			for (Map<TreeNode, TreeNode> treeNode : treePatternInstance2
+					.getMatchedNodes().values()) {
+				treePatternInstanceNodes.addAll(treeNode.values());
+			}
+			if (this.checkDuplicatedTreePatternInstance(
+					duplicatedTreePatternInstanceNodes,
+					treePatternInstanceNodes) != null) {
+				duplicatedPatternInstances.add(treePatternInstance2);
+			} else {
+				duplicatedTreePatternInstanceNodes
+						.add(treePatternInstanceNodes);
+			}
+		}
+		for (TreePatternInstance treePatternInstance2 : duplicatedPatternInstances) {
+			treePatternInstances.remove(treePatternInstance2);
+		}
+	}
+
+	private Set<TreeNode> checkDuplicatedTreePatternInstance(
+			List<Set<TreeNode>> duplicatedTreePatternInstances,
+			Set<TreeNode> treePatternInstanceNodes) {
+		for (Set<TreeNode> treeNode : duplicatedTreePatternInstances) {
+			if (treeNode.size() != treePatternInstanceNodes.size()) {
+				continue;
+			}
+			boolean isDuplicated = true;
+			for (TreeNode treeNode2 : treePatternInstanceNodes) {
+				if (!treeNode.contains(treeNode2)) {
+					isDuplicated = false;
+					break;
+				}
+			}
+			if (isDuplicated) {
+				return treeNode;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param parentNode
+	 * @param childNode
+	 * @param mediumNodes
+	 * @return
+	 * 
+	 *         check whether the parentNode is the parent of childNode, and make
+	 *         sure that not crossing the any mediumNodes
+	 */
+	private boolean checkChildRelation(TreeNode parentNode, TreeNode childNode,
+			Set<TreeNode> mediumNodes) {
+		TreeNode currentNode = childNode.getParentTreeNode();
+		while (currentNode != null) {
+			if (mediumNodes.contains(currentNode)) {
+				return false;
+			}
+			if (currentNode == parentNode) {
+				return true;
+			}
+			currentNode = currentNode.getParentTreeNode();
+		}
+		return false;
+	}
 
 	private List<TreePatternInstance> getOneNodeTreePatternInstances(
 			Map<TreeNode, List<TreePatternInstance>> oneNodeTreePatternInstances,
@@ -366,8 +756,10 @@ public class TreeNodePatternMinerImpl {
 	 * @param oneTreePatternFrequentNode
 	 * @return
 	 * 
-	 * check whether the oneTreePatternFrequentNode is the parent node of frequent pattern node(corresponding to matched node).
-	 * return Map of the oneTreePatternFrequentNode's children, where the key is the matched instance node, and the corresponding pattern node.
+	 *         check whether the oneTreePatternFrequentNode is the parent node
+	 *         of frequent pattern node(corresponding to matched node). return
+	 *         Map of the oneTreePatternFrequentNode's children, where the key
+	 *         is the matched instance node, and the corresponding pattern node.
 	 */
 	private Map<TreeNode, TreeNode> checkChildrenOfFrequentInstanceNode(
 			TreePatternInstance treePatternInstance,
@@ -381,6 +773,7 @@ public class TreeNodePatternMinerImpl {
 			if (patternMatchedRootNodes != null
 					&& patternMatchedRootNodes.getParentTreeNode() != null
 					&& patternMatchedRootNodes.getParentTreeNode() == oneTreePatternFrequentNode) {
+
 				if (childrenTreeNodes == null) {
 					childrenTreeNodes = new HashMap<TreeNode, TreeNode>();
 				}
@@ -391,9 +784,44 @@ public class TreeNodePatternMinerImpl {
 	}
 
 	/**
-	 * check whether the oneTreePatternFrequentNode is a child of treePatternInstance matched nodes.
-	 * if yes return Map.Entry<TreeNode, Map.Entry<TreeNode, TreeNode>>: where the first key is 
-	 * the pattern node tree, the value is the direct parent and the previous pattern child of the oneTreePatternFrequentNode.
+	 * @param treePatternInstance
+	 * @param oneTreePatternFrequentNode
+	 * @return
+	 * 
+	 *         check whether the oneTreePatternFrequentNode is the parent node
+	 *         of frequent pattern node(corresponding to matched node). return
+	 *         Map of the oneTreePatternFrequentNode's children, where the key
+	 *         is the matched instance node, and the corresponding pattern node.
+	 */
+	private Map<TreeNode, TreeNode> checkChildRelationOfFrequentInstanceNode(
+			TreePatternInstance treePatternInstance,
+			TreeNode oneTreePatternFrequentNode) {
+		Map<TreeNode, TreeNode> childrenTreeNodes = new HashMap<TreeNode, TreeNode>();
+		Map<TreeNode, Map<TreeNode, TreeNode>> patternMatchedNodeTrees = treePatternInstance
+				.getMatchedNodes();
+		HashSet<TreeNode> mediumNodes = new HashSet<TreeNode>();
+
+		for (TreeNode treePattern : patternMatchedNodeTrees.keySet()) {
+			TreeNode patternMatchedRootNodes = patternMatchedNodeTrees.get(
+					treePattern).get(treePattern);
+			if (patternMatchedRootNodes != null
+					&& patternMatchedRootNodes.getParentTreeNode() != null) {
+				if (this.checkChildRelation(oneTreePatternFrequentNode,
+						patternMatchedRootNodes, mediumNodes)) {
+					childrenTreeNodes.put(patternMatchedRootNodes, treePattern);
+				}
+			}
+		}
+		return childrenTreeNodes;
+
+	}
+
+	/**
+	 * check whether the oneTreePatternFrequentNode is a child of
+	 * treePatternInstance matched nodes. if yes return Map.Entry<TreeNode,
+	 * Map.Entry<TreeNode, TreeNode>>: where the first key is the pattern node
+	 * tree, the value is the direct parent and the previous pattern child of
+	 * the oneTreePatternFrequentNode.
 	 * 
 	 * if no, return null.
 	 * **/
@@ -452,7 +880,7 @@ public class TreeNodePatternMinerImpl {
 						indexOfChild = childrenOfPatternNodes.size() - 1;
 					}
 					// as the first child of patternNode
-					if (indexOfChild==-1) {
+					if (indexOfChild == -1) {
 						return new AbstractMap.SimpleEntry<TreeNode, Map.Entry<TreeNode, TreeNode>>(
 								patternNodeTree,
 								new AbstractMap.SimpleEntry<TreeNode, TreeNode>(
@@ -462,16 +890,17 @@ public class TreeNodePatternMinerImpl {
 					return new AbstractMap.SimpleEntry<TreeNode, Map.Entry<TreeNode, TreeNode>>(
 							patternNodeTree,
 							new AbstractMap.SimpleEntry<TreeNode, TreeNode>(
-									patternNode, childrenOfPatternNodes.get(indexOfChild)));
+									patternNode,
+									childrenOfPatternNodes.get(indexOfChild)));
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	/**
-	 * check whether the oneTreePatternFrequentNode already in the treePatternInstance.
-	 * where the return is an entry,  where the first key is 
+	 * check whether the oneTreePatternFrequentNode already in the
+	 * treePatternInstance. where the return is an entry, where the first key is
 	 * the pattern sub tree, the value is the direct parent
 	 * */
 	private Map.Entry<TreeNode, TreeNode> isExistInCurrentTreePatternInstance(
@@ -496,8 +925,8 @@ public class TreeNodePatternMinerImpl {
 	 * This method used to generate the one node frequent pattern for each tree
 	 * instance with the oneTreePatterns as inputs
 	 * 
-	 * return Map: the key is the TreeInstance.
-	 * value is a map with key: patternNode, and value: List of TreeInstance.;
+	 * return Map: the key is the TreeInstance. value is a map with key:
+	 * patternNode, and value: List of TreeInstance.;
 	 * 
 	 * @param oneTreePatterns
 	 */
@@ -532,6 +961,12 @@ public class TreeNodePatternMinerImpl {
 		return treeOneNodeFrequentPatterns;
 	}
 
+	/**
+	 * @param treeNodeGroups
+	 * @return
+	 * 
+	 *         mining one frequent node pattern,
+	 */
 	private List<TreePattern> mineOneSamePattern(
 			Map<TreeNode, Map<TreeNode, List<TreeNode>>> treeNodeGroups) {
 		List<TreePattern> oneTreePatterns = new ArrayList<TreePattern>();
@@ -563,8 +998,9 @@ public class TreeNodePatternMinerImpl {
 			}
 		}
 
-//		Set<TreePattern> builtPatterns = new HashSet<TreePattern>();
-//		ListPermutation<Map<TreeNode, TreeNode>> treeNodePermutation = new ListPermutation<Map<TreeNode, TreeNode>>();
+		// Set<TreePattern> builtPatterns = new HashSet<TreePattern>();
+		// ListPermutation<Map<TreeNode, TreeNode>> treeNodePermutation = new
+		// ListPermutation<Map<TreeNode, TreeNode>>();
 
 		/**
 		 * For each treePattern in oneTreePatterns;

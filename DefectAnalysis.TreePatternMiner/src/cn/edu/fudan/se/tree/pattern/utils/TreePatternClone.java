@@ -76,13 +76,17 @@ public class TreePatternClone {
 					for (TreeNode clonePNode : clonedNodesMap.keySet()) {
 						TreeNode clonedTreeNode = clonedNodesMap
 								.get(clonePNode);
-						if (clonedTreeNode != null) {
-							cloneMatchedNodes.put(clonePNode,
-									orginalNodeMap.get(clonedTreeNode));
-						} else {
-							System.err
-									.println("TreePatternClone: Clone Error 2.");
-						}
+//						try {
+							if (clonedTreeNode != null) {
+								cloneMatchedNodes.put(clonePNode,
+										orginalNodeMap.get(clonedTreeNode));
+							} else {
+								System.err
+										.println("TreePatternClone: Clone Error 2.");
+							}
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
 					}
 					cloneTreePatternInstance.addMatchedNode(clonedPatternNode,
 							cloneMatchedNodes);
