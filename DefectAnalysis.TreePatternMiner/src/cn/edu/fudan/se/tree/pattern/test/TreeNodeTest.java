@@ -9,6 +9,7 @@ public class TreeNodeTest implements TreeNode {
 	private String nodeId = null;
 	private ArrayList<TreeNodeTest> children = new ArrayList<TreeNodeTest>();
 	private TreeNodeTest parent;
+	private String label = null;
 
 	public String getNodeId() {
 		return nodeId;
@@ -56,8 +57,20 @@ public class TreeNodeTest implements TreeNode {
 		}
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
 	@Override
 	public String toString() {
-		return "TreeNodeTest [nodeId=" + nodeId + "]";
+		if (label==null) {
+			return this.nodeId;
+		}
+		return this.nodeId+":"+label;
 	}
+
 }

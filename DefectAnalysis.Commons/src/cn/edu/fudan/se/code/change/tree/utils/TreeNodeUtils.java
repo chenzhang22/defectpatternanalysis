@@ -24,4 +24,15 @@ public class TreeNodeUtils {
 		}
 		return num;
 	}
+	
+	public static TreeNode rootOf(TreeNode treeNode) {
+		if (treeNode==null) {
+			return null;
+		}
+		TreeNode parentTreeNode = treeNode.getParentTreeNode();
+		if (parentTreeNode==null) {
+			return treeNode;
+		}
+		return rootOf(parentTreeNode);
+	}
 }
