@@ -4,6 +4,7 @@
 package cn.edu.fudan.se.tree.pattern.bean;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
+import cn.edu.fudan.se.tree.pattern.test.TreeNodeTest;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +78,13 @@ public class TreePattern {
 
 	@Override
 	public String toString() {
-		return "treePatterns=" + treePatterns
-				+ ", patternInstances=" + patternInstances + "]";
+		String resultString ="";
+		for (TreeNode treeNode : treePatterns) {
+			if (treeNode instanceof TreeNodeTest) {
+				resultString+= ((TreeNodeTest) treeNode).toWholeString();
+			}
+		}
+		return "treePatterns:\n" + resultString
+				+ "patternInstances=" + patternInstances + "\n\n";
 	}
 }

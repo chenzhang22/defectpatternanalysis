@@ -87,7 +87,9 @@ public class GroupPatternMiningTest {
 			TreeNodePatternMinerImpl minerImpl = new TreeNodePatternMinerImpl(
 					new TreePatternSimilarityImpl(new TreeNodeTestSimilarity()), new TreeNodeTestClone());
 			List<TreePattern> treePatterns = minerImpl.mineTreePattern(trees);
-			System.out.println(treePatterns);
+			for (TreePattern treePattern : treePatterns) {
+				System.out.println(treePattern);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

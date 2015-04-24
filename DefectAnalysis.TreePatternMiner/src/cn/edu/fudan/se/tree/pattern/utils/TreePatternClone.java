@@ -3,15 +3,14 @@
  */
 package cn.edu.fudan.se.tree.pattern.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.ITreeNodeClone;
-import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
 import cn.edu.fudan.se.tree.pattern.bean.TreePattern;
+import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
 
 /**
  * @author Lotay
@@ -48,6 +47,8 @@ public class TreePatternClone {
 
 		Map<TreeNode, List<TreePatternInstance>> patternInstances = treePattern
 				.getPatternInstances();
+		
+		//Clone patterns
 		for (TreeNode patternTree : treePattern.getTreePatterns()) {
 			Map<TreeNode, TreeNode> clonedNodesMap = new HashMap<TreeNode, TreeNode>();
 			TreeNode clonedPatternNode = treeNodeClone.cloneWholeTree(
@@ -61,10 +62,42 @@ public class TreePatternClone {
 			} else {
 				System.err.println("TreePatternClone: Clone Error 1.");
 			}
-
-			for (TreeNode patternInstance : patternInstances.keySet()) {
+		}
+		
+		//clone instances
+		for (TreeNode treeInstance : patternInstances.keySet()) {
+			List<TreePatternInstance> treePatternInstances = patternInstances
+					.get(treeInstance);
+			
+			for (TreePatternInstance treePatternInstance : treePatternInstances) {
+				TreePatternInstance clonedTreePatternInstance = new TreePatternInstance();
+				for (TreeNode patternTree : treePatternInstance.getMatchedNodes().keySet()) {
+					Map<TreeNode,TreeNode> cloneMatchedNodes = new HashMap<TreeNode, TreeNode>();
+					
+					for (Map.Entry<TreeNode, TreeNode> patternNode : treePatternInstance.getMatchedNodes().get(patternTree).entrySet()) {
+						if (matchedPatternTree.containsKey(patternNode.getKey())) {
+							TreeNode clonePatternNode = matchedPatternTree.get(patternNode.getKey());
+							TreeNode orginalInstanceNode = patternNode.getValue();
+							cloneMatchedNodes.put(clonePatternNode, orginalInstanceNode);
+						}else {
+							System.err.println("TreePatternClone: Clone Error 2.");
+						}
+					}
+					TreeNode clonePatternNode = matchedPatternTree.get(patternTree);
+					if (clonePatternNode!=null) {
+						clonedTreePatternInstance.addMatchedNode(clonePatternNode, cloneMatchedNodes);
+					}else {
+						System.err.println("TreePatternClone: Clone Error 3.");
+					}
+				}
+				clonePattern.addPatternInstance(treeInstance, clonedTreePatternInstance);
+			}			
+		}
+		
+		
+/*			for (TreeNode treeInstance : patternInstances.keySet()) {
 				List<TreePatternInstance> treePatternInstances = patternInstances
-						.get(patternInstance);
+						.get(treeInstance);
 				List<TreePatternInstance> cloneTreePatternInstances = new ArrayList<TreePatternInstance>();
 				for (TreePatternInstance treePatternInstance : treePatternInstances) {
 					Map<TreeNode, Map<TreeNode, TreeNode>> matchedInstanceNodes = treePatternInstance
@@ -73,12 +106,12 @@ public class TreePatternClone {
 					Map<TreeNode, TreeNode> orginalNodeMap = matchedInstanceNodes
 							.get(patternTree);
 					Map<TreeNode, TreeNode> cloneMatchedNodes = new HashMap<TreeNode, TreeNode>();
-					for (TreeNode clonePNode : clonedNodesMap.keySet()) {
+					for (TreeNode clonePatternNode : clonedNodesMap.keySet()) {
 						TreeNode clonedTreeNode = clonedNodesMap
-								.get(clonePNode);
+								.get(clonePatternNode);
 //						try {
 							if (clonedTreeNode != null) {
-								cloneMatchedNodes.put(clonePNode,
+								cloneMatchedNodes.put(clonePatternNode,
 										orginalNodeMap.get(clonedTreeNode));
 							} else {
 								System.err
@@ -92,10 +125,10 @@ public class TreePatternClone {
 							cloneMatchedNodes);
 					cloneTreePatternInstances.add(cloneTreePatternInstance);
 				}
-				clonePattern.addPatternInstances(patternInstance,
+				clonePattern.addPatternInstances(treeInstance,
 						cloneTreePatternInstances);
 			}
-		}
+		*/
 
 		return clonePattern;
 	}

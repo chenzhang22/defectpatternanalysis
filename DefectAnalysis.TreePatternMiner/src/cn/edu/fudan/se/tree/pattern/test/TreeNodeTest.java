@@ -72,5 +72,20 @@ public class TreeNodeTest implements TreeNode {
 		}
 		return this.nodeId+":"+label;
 	}
+	
+	public String toWholeString() {
+		return toWholeString(this, 0);
+	}
 
+	public String toWholeString(TreeNodeTest node,int depth ) {
+		String toString ="";
+		for (int i = 0; i < depth; i++) {
+			toString +=" ";
+		}
+		toString += node.toString()+"\n";
+		for (TreeNodeTest treeNodeTest : node.children) {
+			toString+=this.toWholeString(treeNodeTest, depth+1);
+		}
+		return toString;
+	}
 }
