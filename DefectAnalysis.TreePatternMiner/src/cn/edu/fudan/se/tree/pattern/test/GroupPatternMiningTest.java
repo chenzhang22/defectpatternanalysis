@@ -89,6 +89,9 @@ public class GroupPatternMiningTest {
 		TreeNodeTest root33 = new TreeNodeTest();
 		root33.setNodeId("3");
 		root33.setLabel("3-3");
+		TreeNodeTest root331 = new TreeNodeTest();
+		root331.setNodeId("3");
+		root331.setLabel("3-3-1");
 		TreeNodeTest root34 = new TreeNodeTest();
 		root34.setNodeId("4");
 		root34.setLabel("4-3");
@@ -110,7 +113,8 @@ public class GroupPatternMiningTest {
 		root32.addChild(root35);
 		root32.addChild(root36);
 		root31.addChild(root33);
-		root33.addChild(root38);
+		root33.addChild(root331);
+		root331.addChild(root38);
 		root38.addChild(root37);
 		
 		
