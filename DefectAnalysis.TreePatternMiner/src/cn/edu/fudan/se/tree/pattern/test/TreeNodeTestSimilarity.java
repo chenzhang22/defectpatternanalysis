@@ -42,6 +42,7 @@ public class TreeNodeTestSimilarity implements ITreeNodeSimilarity {
 	 * treeNodeSimilarity(cn.edu.fudan.se.code.change.tree.bean.TreeNode,
 	 * cn.edu.fudan.se.code.change.tree.bean.TreeNode)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public double treeNodeSimilarity(TreeNode node1, TreeNode node2) {
 		double currentSimilarity = this.similarity(node1, node2);
@@ -49,7 +50,7 @@ public class TreeNodeTestSimilarity implements ITreeNodeSimilarity {
 			return 0;
 		}
 		for (int i = 0; i < node1.getChildren().size(); i++) {
-			currentSimilarity *= this.similarity(
+			currentSimilarity *= this.treeNodeSimilarity(
 					((List<TreeNode>) node1.getChildren()).get(i),
 					((List<TreeNode>) node2.getChildren()).get(i));
 		}

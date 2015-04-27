@@ -46,7 +46,7 @@ public class CodeTreeNodeSimilarityImpl implements ITreeNodeSimilarity {
 			CodeTreeNode childNode1 = node1.getChildren().get(i);
 			if (i < node2.getChildren().size()) {
 				CodeTreeNode childNode2 = node2.getChildren().get(i);
-				childSimilarity *= this.similarity(childNode1, childNode2);
+				childSimilarity *= this.treeNodeSimilarity(childNode1, childNode2);
 			} else {
 				childSimilarity *= 0;
 				break;

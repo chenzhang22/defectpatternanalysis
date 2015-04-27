@@ -80,13 +80,49 @@ public class GroupPatternMiningTest {
 		tree33.addChild(tree9);
 		tree9.addChild(tree7);
 
+		TreeNodeTest root31 = new TreeNodeTest();
+		root31.setNodeId("1");
+		root31.setLabel("1-3");
+		TreeNodeTest root32 = new TreeNodeTest();
+		root32.setNodeId("2");
+		root32.setLabel("2-3");
+		TreeNodeTest root33 = new TreeNodeTest();
+		root33.setNodeId("3");
+		root33.setLabel("3-3");
+		TreeNodeTest root34 = new TreeNodeTest();
+		root34.setNodeId("4");
+		root34.setLabel("4-3");
+		TreeNodeTest root35= new TreeNodeTest();
+		root35.setNodeId("5");
+		root35.setLabel("5-3");
+		TreeNodeTest root36 = new TreeNodeTest();
+		root36.setNodeId("6");
+		root36.setLabel("6-3");
+		TreeNodeTest root37 = new TreeNodeTest();
+		root37.setNodeId("7");
+		root37.setLabel("7-3");
+		TreeNodeTest root38 = new TreeNodeTest();
+		root38.setNodeId("8");
+		root38.setLabel("8-3");
+		
+		root31.addChild(root32);
+		root32.addChild(root34);
+		root32.addChild(root35);
+		root32.addChild(root36);
+		root31.addChild(root33);
+		root33.addChild(root38);
+		root38.addChild(root37);
+		
+		
 		List<TreeNode> trees = new ArrayList<TreeNode>();
 		trees.add(buildTree1);
 		trees.add(tree0);
+		trees.add(root31);
 		try {
 			TreeNodePatternMinerImpl minerImpl = new TreeNodePatternMinerImpl(
 					new TreePatternSimilarityImpl(new TreeNodeTestSimilarity()), new TreeNodeTestClone());
 			List<TreePattern> treePatterns = minerImpl.mineTreePattern(trees);
+			System.out.println("\n");
 			for (TreePattern treePattern : treePatterns) {
 				System.out.println(treePattern);
 			}
