@@ -65,7 +65,7 @@ public class FileChangeRevisionDiffer extends FileRevisionDiffer {
 		List<SourceCodeChange> changes = new ArrayList<SourceCodeChange>();
 		changes.addAll(distiller.getSourceCodeChanges());
 		try {
-			GitExplore gitExplore = new GitExplore();
+			GitExplore gitExplore = new GitExplore("RepoName1");
 			ArrayList<Integer> changeLines = gitExplore.gitBlame(fileName,
 					changedRevision);
 			CodeRangeList codeRangeList = LineRangeGenerator.genCodeRangList(

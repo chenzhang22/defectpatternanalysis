@@ -42,7 +42,7 @@ public class FileAddRevisionDiffer extends FileRevisionDiffer {
 		String revision = gitSourceFile.getRevisionId();
 		ArrayList<Integer> changeLines;
 		try {
-			GitExplore gitExplore = new GitExplore();
+			GitExplore gitExplore = new GitExplore("RepoName1");
 			changeLines = gitExplore.gitBlame(fileName, revision);
 			CodeRangeList codeRangeList = LineRangeGenerator.genCodeRangList(
 					fileName, revision, changeLines);
