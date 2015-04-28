@@ -15,7 +15,6 @@ import java.util.Set;
 
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.ITreeNodeClone;
-import cn.edu.fudan.se.code.change.tree.utils.TreeNodeUtils;
 import cn.edu.fudan.se.tree.pattern.bean.TreePattern;
 import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
@@ -27,7 +26,6 @@ import cn.edu.fudan.se.tree.pattern.utils.TreePatternClone;
  *
  */
 public class TreeNodePatternMinerImpl {
-	private static final int MIN_SAME_EXTENSION_SIZE = 1;
 	private ITreePatternSimilarity treePatternSimilarity = null;
 	private ITreeNodeSimilarity nodeSimilarity = null;
 	private int frequencyThreshold = 2;
@@ -1092,7 +1090,7 @@ public class TreeNodePatternMinerImpl {
 	 */
 	private boolean hasInterleavingRelation(TreeNode oneTreePatternFrequentNode,
 			Map<TreeNode, TreeNode> matchedNodes) {
-		// TODO:Bug: when the oneTreePatternFrequentNode is between the
+		// Bug: when the oneTreePatternFrequentNode is between the
 		// patternTreeNode and other pattern Node, And this is illegal.
 		boolean hasParentRelation = false;
 		for (TreeNode patternMatchedInstanceNode : matchedNodes.values()) {
