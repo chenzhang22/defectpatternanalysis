@@ -46,11 +46,13 @@ import cn.edu.fudan.se.utils.hibernate.HibernateUtils;
 
 public class GitExplore {
 	private Repository repo;
+	private String repoName ="";
 	private Git git;
 	private RevWalk walk;
 	
-	public GitExplore(String gitRepoPath){
+	public GitExplore(String gitRepoPath,String repoName){
 		try {
+			this.repoName = repoName;
 			repo = new FileRepository(new File(gitRepoPath));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
@@ -59,8 +61,9 @@ public class GitExplore {
 		}
 	}
 	
-	public GitExplore(){
+	public GitExplore(String repoName){
 		try {
+			this.repoName = repoName;
 			repo = new FileRepository(new File(GitExploreConstants.GIT_REPO_PATH));
 			git = new Git(repo);
 			walk = new RevWalk(repo);
@@ -71,7 +74,7 @@ public class GitExplore {
 
 	public static void main(String[] args) throws NoHeadException,
 			GitAPIException {
-		GitExplore gitExplore = new GitExplore();
+		GitExplore gitExplore = new GitExplore("RepoName1");
 		gitExplore.track(GitExploreConstants.COMPONENT_NAME);
 	}
 
@@ -246,6 +249,7 @@ public class GitExplore {
 					if (fileName
 							.endsWith(GitExploreConstants.SOURCE_FILE_SUFFIX)) {
 						GitSourceFile sourceFile = new GitSourceFile();
+						sourceFile.setRepoName(repoName);
 						sourceFile.setFileName(fileName);
 						sourceFile.setRevisionId(revisionId);
 						sourceFile.setNewPath(fileName);

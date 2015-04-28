@@ -11,7 +11,8 @@ import java.sql.Timestamp;
  *
  */
 @SuppressWarnings("serial")
-public class GitSourceFile implements Serializable{
+public class GitSourceFile implements Serializable {
+	private String repoName;
 	private String revisionId;
 	private String fileName;
 	private String newPath;
@@ -19,32 +20,27 @@ public class GitSourceFile implements Serializable{
 	private String changeType;
 	private int score;
 	private Timestamp time;
-	
-	/**
-	 * @return the revisionId
-	 */
+
+	public String getRepoName() {
+		return repoName;
+	}
+
+	public void setRepoName(String repoName) {
+		this.repoName = repoName;
+	}
+
 	public String getRevisionId() {
 		return revisionId;
 	}
 
-	/**
-	 * @param revisionId
-	 *            the revisionId to set
-	 */
 	public void setRevisionId(String revisionId) {
 		this.revisionId = revisionId;
 	}
 
-	/**
-	 * @return the fileName
-	 */
 	public String getFileName() {
 		return fileName;
 	}
 
-	/**
-	 * @param fileName the fileName to set
-	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -81,16 +77,10 @@ public class GitSourceFile implements Serializable{
 		this.score = score;
 	}
 
-	/**
-	 * @return the time
-	 */
 	public Timestamp getTime() {
 		return time;
 	}
 
-	/**
-	 * @param time the time to set
-	 */
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
@@ -101,9 +91,9 @@ public class GitSourceFile implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((changeType == null) ? 0 : changeType.hashCode());
-		result = prime * result
 				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result
+				+ ((repoName == null) ? 0 : repoName.hashCode());
 		result = prime * result
 				+ ((revisionId == null) ? 0 : revisionId.hashCode());
 		return result;
@@ -121,18 +111,18 @@ public class GitSourceFile implements Serializable{
 			return false;
 		}
 		GitSourceFile other = (GitSourceFile) obj;
-		if (changeType == null) {
-			if (other.changeType != null) {
-				return false;
-			}
-		} else if (!changeType.equals(other.changeType)) {
-			return false;
-		}
 		if (fileName == null) {
 			if (other.fileName != null) {
 				return false;
 			}
 		} else if (!fileName.equals(other.fileName)) {
+			return false;
+		}
+		if (repoName == null) {
+			if (other.repoName != null) {
+				return false;
+			}
+		} else if (!repoName.equals(other.repoName)) {
 			return false;
 		}
 		if (revisionId == null) {
