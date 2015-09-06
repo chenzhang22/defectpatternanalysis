@@ -44,8 +44,8 @@ public class GitBlameDiffFilter {
 			MissingObjectException, IncorrectObjectTypeException,
 			AmbiguousObjectException, IOException, GitAPIException {
 		// TODO Auto-generated method stub
-		String startRevisionId = "95753835f26c983ebe5b704e4d93979ad7bfc13d";
-		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/parser/Parser.java";
+		String startRevisionId = "7a1c2ec10fa6c29fd19952e2b899ad7b8ee3f72a";
+		String fileName = "org.eclipse.jdt.core/compiler/org/eclipse/jdt/internal/compiler/lookup/Scope.java";
 		new GitBlameDiffFilter().changeLines(fileName, startRevisionId);
 	}
 

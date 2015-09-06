@@ -244,7 +244,7 @@ public class TreeNodePatternMinerImpl {
 			}
 
 			if (currentFrequency > maxFrequency) {
-				// TODO: add to frequent pattern.
+				System.out.println("pattern num:"+frequentPatterns.size());
 				frequentPatterns.add(treePattern);
 			}
 		}
