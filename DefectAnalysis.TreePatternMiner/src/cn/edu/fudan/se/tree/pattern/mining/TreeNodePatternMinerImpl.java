@@ -6,6 +6,7 @@ package cn.edu.fudan.se.tree.pattern.mining;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import cn.edu.fudan.se.tree.pattern.bean.TreePattern;
 import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
 import cn.edu.fudan.se.tree.pattern.filter.IFrequentPatternFilter;
 import cn.edu.fudan.se.tree.pattern.filter.NodeChangePatternFilter;
+import cn.edu.fudan.se.tree.pattern.filter.PatternNodeNumberFilter;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreePatternSimilarity;
 import cn.edu.fudan.se.tree.pattern.utils.TreePatternClone;
@@ -35,7 +37,13 @@ public class TreeNodePatternMinerImpl {
 	private TreeNodeGrouping groupingStrategy = null;
 	private ITreeNodeClone treeNodeClone = null;
 	private TreePatternClone treePatternClone = null;
-	private IFrequentPatternFilter frequentPatternFilter = new NodeChangePatternFilter();
+	private List<IFrequentPatternFilter> frequentPatternFilters = new ArrayList<IFrequentPatternFilter>();
+	
+	{
+		frequentPatternFilters.add(new NodeChangePatternFilter());
+		frequentPatternFilters.add(new PatternNodeNumberFilter());
+	}
+	
 	public TreeNodePatternMinerImpl(
 			ITreePatternSimilarity treePatternSimilarity,
 			ITreeNodeClone treeNodeClone) {
@@ -100,6 +108,7 @@ public class TreeNodePatternMinerImpl {
 			builtTreePatternsList.add(treePattern);
 		}
 //		System.out.println(builtTreePatternsList);
+		int maxIterations = 0;
 		while (!currentTreePatterns.isEmpty()
 				|| !nextFrequentPatterns.isEmpty()) {
 			// If the currentTreePatterns is empty and nextFrequentPatterns is
@@ -235,6 +244,7 @@ public class TreeNodePatternMinerImpl {
 							// builtTreePatternsList and nextFrequentPatterns
 							if (newBuiltTreePattern.getFrequency() >= this.frequencyThreshold) {
 								nextFrequentPatterns.add(newBuiltTreePattern);
+								maxIterations = 0;
 							}
 							if (newBuiltTreePattern.getFrequency() > maxFrequency) {
 								maxFrequency = newBuiltTreePattern
@@ -248,14 +258,22 @@ public class TreeNodePatternMinerImpl {
 			if (currentFrequency > maxFrequency) {
 				System.out.println("pattern num:"+frequentPatterns.size());
 				frequentPatterns.add(treePattern);
+				maxIterations = 0;
 			}
-			if (frequentPatterns.size()>390) {
+//			if (frequentPatterns.size()>390) {
+//				break;
+//			}
+			System.out.println("current tree patterns:"+currentTreePatterns.size()+", next frequent pattern:"+nextFrequentPatterns.size());
+			if (maxIterations>100) {
 				break;
 			}
+			maxIterations++;
 		}
 
 		//filter.
-		frequentPatternFilter.filter(frequentPatterns);
+		for (IFrequentPatternFilter frequentPatternFilter : frequentPatternFilters) {
+			frequentPatternFilter.filter(frequentPatterns);
+		}
 		
 		return frequentPatterns;
 	}

@@ -78,15 +78,21 @@ public class TreePattern {
 
 	@Override
 	public String toString() {
-		String resultString ="";
+		StringBuilder resultString = new StringBuilder("treePatterns:\n");
 		for (TreeNode treeNode : treePatterns) {
 			if (treeNode instanceof TreeNodeTest) {
-				resultString+= ((TreeNodeTest) treeNode).toWholeString();
+				resultString.append(((TreeNodeTest) treeNode).toWholeString()+"\n");
 			}else {
-				resultString += treeNode.toString();
+				resultString.append(treeNode.toString()+"\n");
 			}
 		}
-		return "treePatterns:\n" + resultString
-				+ "patternInstances=" + patternInstances + "\n\n";
+		resultString.append("patternInstance:\n");
+		for (TreeNode treeNode : patternInstances.keySet()) {
+			resultString.append(treeNode);
+			for (TreePatternInstance instanceNode : patternInstances.get(treeNode)) {
+				resultString.append("\t"+instanceNode);
+			}
+		}
+		return  resultString.toString()+ "\n\n";
 	}
 }
