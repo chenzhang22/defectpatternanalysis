@@ -79,7 +79,7 @@ public abstract class AbsPatternMatching {
 		while (!candidateNodeList.isEmpty()) {
 			TreeNode candidateNode = candidateNodeList.remove(0);
 			if (this.similarityFunction.similarity(patternNode, candidateNode) >= this.similarityThredhold) {
-				List<TreeNode> patternChildren = patternNode.getChildren();
+				List<TreeNode> patternChildren = (List<TreeNode>) patternNode.getChildren();
 				if (patternChildren.isEmpty()) {
 					patternMatchedNodes.put(patternNode, candidateNode);
 					return true;

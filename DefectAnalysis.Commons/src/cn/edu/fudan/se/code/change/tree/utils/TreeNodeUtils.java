@@ -18,7 +18,7 @@ public class TreeNodeUtils {
 			return 0;
 		}
 		int num = 1;
-		List<TreeNode> children = treeNode.getChildren();
+		List<TreeNode> children = (List<TreeNode>) treeNode.getChildren();
 		for (TreeNode childNode : children) {
 			num += countNumberOfNode(childNode);
 		}

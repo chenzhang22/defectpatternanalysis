@@ -631,7 +631,7 @@ public class CodeTreeNodePatternMinerImpl extends AbsTreeNodePatternMiner {
 		}
 		groupNodeTreeInstanceList.add(codeTreeNode);
 
-		List<TreeNode> children = codeTreeNode.getChildren();
+		List<TreeNode> children = (List<TreeNode>) codeTreeNode.getChildren();
 		for (TreeNode childTreeNode : children) {
 			this.groupCodeTreeNode(rootNode, childTreeNode);
 		}

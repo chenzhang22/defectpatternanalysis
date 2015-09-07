@@ -67,7 +67,7 @@ public class TreeNodeGrouping {
 		}
 		groupNodeTreeInstanceList.add(treeNode);
 
-		List<TreeNode> children = treeNode.getChildren();
+		List<TreeNode> children = (List<TreeNode>) treeNode.getChildren();
 		for (TreeNode childTreeNode : children) {
 			this.groupCodeTreeNode(rootNode, childTreeNode, treeNodeGroup);
 		}

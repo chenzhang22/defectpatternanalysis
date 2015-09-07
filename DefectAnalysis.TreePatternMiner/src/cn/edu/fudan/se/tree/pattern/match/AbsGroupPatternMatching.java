@@ -88,7 +88,7 @@ public abstract class AbsGroupPatternMatching extends AbsPatternMatching {
 			} else {
 				splitedTrees.remove(matchedNode);
 			}
-			List<TreeNode> children = matchedNode.getChildren();
+			List<TreeNode> children = (List<TreeNode>) matchedNode.getChildren();
 			if (children != null && !children.isEmpty()) {
 				splitedTrees.addAll(children);
 			}

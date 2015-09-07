@@ -83,7 +83,7 @@ public class CodeTreeNodeClone implements ITreeNodeClone {
 		if (codeTreeNode instanceof CodeTreeNode) {
 
 			TreeNode clonedCodeTreeNode = cloneNoChildren(codeTreeNode);
-			List<CodeTreeNode> children = codeTreeNode.getChildren();
+			List<TreeNode> children = (List<TreeNode>) codeTreeNode.getChildren();
 			for (TreeNode childCodeTreeNode : children) {
 				clonedCodeTreeNode.addChild(childCodeTreeNode);
 			}

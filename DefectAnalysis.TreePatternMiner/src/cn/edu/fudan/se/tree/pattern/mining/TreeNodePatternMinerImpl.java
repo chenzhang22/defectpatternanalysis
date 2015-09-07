@@ -17,6 +17,8 @@ import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.code.change.tree.utils.ITreeNodeClone;
 import cn.edu.fudan.se.tree.pattern.bean.TreePattern;
 import cn.edu.fudan.se.tree.pattern.bean.TreePatternInstance;
+import cn.edu.fudan.se.tree.pattern.filter.IFrequentPatternFilter;
+import cn.edu.fudan.se.tree.pattern.filter.NodeChangePatternFilter;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreeNodeSimilarity;
 import cn.edu.fudan.se.tree.pattern.similarility.ITreePatternSimilarity;
 import cn.edu.fudan.se.tree.pattern.utils.TreePatternClone;
@@ -33,7 +35,7 @@ public class TreeNodePatternMinerImpl {
 	private TreeNodeGrouping groupingStrategy = null;
 	private ITreeNodeClone treeNodeClone = null;
 	private TreePatternClone treePatternClone = null;
-
+	private IFrequentPatternFilter frequentPatternFilter = new NodeChangePatternFilter();
 	public TreeNodePatternMinerImpl(
 			ITreePatternSimilarity treePatternSimilarity,
 			ITreeNodeClone treeNodeClone) {
@@ -247,10 +249,18 @@ public class TreeNodePatternMinerImpl {
 				System.out.println("pattern num:"+frequentPatterns.size());
 				frequentPatterns.add(treePattern);
 			}
+			if (frequentPatterns.size()>390) {
+				break;
+			}
 		}
 
+		//filter.
+		frequentPatternFilter.filter(frequentPatterns);
+		
 		return frequentPatterns;
 	}
+	
+
 
 	/**
 	 * build the new TreePattern based on the new relation(parent/children of
