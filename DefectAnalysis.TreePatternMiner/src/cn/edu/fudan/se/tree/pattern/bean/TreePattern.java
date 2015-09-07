@@ -3,6 +3,7 @@
  */
 package cn.edu.fudan.se.tree.pattern.bean;
 
+import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
 import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
 import cn.edu.fudan.se.tree.pattern.test.TreeNodeTest;
 
@@ -82,8 +83,8 @@ public class TreePattern {
 		for (TreeNode treeNode : treePatterns) {
 			if (treeNode instanceof TreeNodeTest) {
 				resultString.append(((TreeNodeTest) treeNode).toWholeString()+"\n");
-			}else {
-				resultString.append(treeNode.toString()+"\n");
+			}else if (treeNode instanceof CodeTreeNode){
+				resultString.append(((CodeTreeNode) treeNode).toWholeString()+"\n");
 			}
 		}
 		resultString.append("patternInstance:\n");
