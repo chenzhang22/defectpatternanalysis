@@ -82,6 +82,8 @@ public class TreePattern {
 		for (TreeNode treeNode : treePatterns) {
 			if (treeNode instanceof TreeNodeTest) {
 				resultString+= ((TreeNodeTest) treeNode).toWholeString();
+			}else {
+				resultString += treeNode.toString();
 			}
 		}
 		return "treePatterns:\n" + resultString

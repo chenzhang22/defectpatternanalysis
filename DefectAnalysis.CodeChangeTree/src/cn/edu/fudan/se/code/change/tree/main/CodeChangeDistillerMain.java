@@ -151,7 +151,10 @@ public class CodeChangeDistillerMain {
 				treePatternSimilarityImpl.setFrequencyThreshold(3);
 				List<TreePattern> treePatterns = treePatternSimilarityImpl.mineTreePattern(treeNodesInstanceList);
 
-				System.out.println(treePatterns);
+				for (TreePattern treePattern : treePatterns) {
+					System.out.println(treePattern);
+					System.out.println("\n\n");
+				}
 			}
 			
 		} catch (Exception e) {

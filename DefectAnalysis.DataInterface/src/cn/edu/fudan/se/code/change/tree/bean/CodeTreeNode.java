@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
  * @author Lotay
  *
  */
-public class CodeTreeNode implements TreeNode{
+public class CodeTreeNode implements TreeNode {
 	private String repoName;
 	private String revisionId;
 	private String fileName;
@@ -114,9 +114,11 @@ public class CodeTreeNode implements TreeNode{
 	public void addBugId(int bugId) {
 		this.bugIds.add(bugId);
 	}
+
 	public void addBugIds(HashSet<Integer> bugIds) {
 		this.bugIds.addAll(bugIds);
 	}
+
 	public List<CodeTreeNode> getChildren() {
 		return children;
 	}
@@ -130,10 +132,11 @@ public class CodeTreeNode implements TreeNode{
 
 	public void addChild(int index, TreeNode child) {
 		if (child instanceof CodeTreeNode) {
-			this.children.add(index,(CodeTreeNode) child);
+			this.children.add(index, (CodeTreeNode) child);
 			((CodeTreeNode) child).setParentTreeNode(this);
 		}
 	}
+
 	public void removeAllChildren() {
 		this.children.clear();
 	}
@@ -153,7 +156,7 @@ public class CodeTreeNode implements TreeNode{
 	public boolean hasTypeName(String name) {
 		return this.nameTypes.containsKey(name);
 	}
-	
+
 	public HashMap<String, String> getNameTypes() {
 		return this.nameTypes;
 	}
@@ -171,11 +174,11 @@ public class CodeTreeNode implements TreeNode{
 	}
 
 	public int getNodeType() {
-		if(this.node!=null)
+		if (this.node != null)
 			return this.node.getNodeType();
 		return -1;
 	}
-	
+
 	public void setNode(ASTNode node) {
 		this.node = node;
 	}
@@ -238,11 +241,11 @@ public class CodeTreeNode implements TreeNode{
 	@Override
 	public String toString() {
 		String toStr = "CodeTreeNode [repoName=" + repoName + ", revisionId="
-				+ revisionId + ", fileName=" + fileName + ", name=" + simpleNameType
-				+ ", type=" + type + ", startIndex=" + startIndex
-				+ ", endIndex=" + endIndex + ", startLine=" + startLine
-				+ ", startColumn=" + startColumn + ", endLine=" + endLine
-				+ ", endColumn=" + endColumn + "]";
+				+ revisionId + ", fileName=" + fileName + ", name="
+				+ simpleNameType + ", type=" + type + ", startIndex="
+				+ startIndex + ", endIndex=" + endIndex + ", startLine="
+				+ startLine + ", startColumn=" + startColumn + ", endLine="
+				+ endLine + ", endColumn=" + endColumn + "]";
 		return toStr;
 	}
 
@@ -252,5 +255,21 @@ public class CodeTreeNode implements TreeNode{
 
 	public String toSimpleTypeString() {
 		return simpleType;
+	}
+
+	public String toWholeString() {
+		return toWholeString(this, 0);
+	}
+
+	public String toWholeString(CodeTreeNode node, int depth) {
+		String toString = "";
+		for (int i = 0; i < depth; i++) {
+			toString += " ";
+		}
+		toString += node.toNormalString() + "\n";
+		for (CodeTreeNode treeNodeTest : node.children) {
+			toString += this.toWholeString(treeNodeTest, depth + 1);
+		}
+		return toString;
 	}
 }
