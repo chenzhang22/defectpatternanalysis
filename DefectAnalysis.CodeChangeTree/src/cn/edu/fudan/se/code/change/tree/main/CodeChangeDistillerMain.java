@@ -155,6 +155,7 @@ public class CodeChangeDistillerMain {
 					System.out.println(treePattern);
 					System.out.println("\n\n");
 				}
+				System.out.println();
 			}
 			
 		} catch (Exception e) {
