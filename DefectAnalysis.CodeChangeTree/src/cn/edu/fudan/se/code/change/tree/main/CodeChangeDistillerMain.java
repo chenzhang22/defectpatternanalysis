@@ -48,7 +48,7 @@ public class CodeChangeDistillerMain {
 		Map<String, List<GitSourceFile>> gitChangeSourceFiles = ChangeSourceFileLoader
 				.loadSourceFiles();
 		int size = gitChangeSourceFiles.size();
-		int i = 0,base = 200;
+		int i = 0,base = 100;
 		for (String fileName : gitChangeSourceFiles.keySet()) {
 			System.out.println((i++) + "/" + size + ":" + fileName);
 			if (i<base) {
@@ -156,7 +156,7 @@ public class CodeChangeDistillerMain {
 					System.out.println("\n\n");
 				}
 
-				System.out.println();
+				System.exit(0);
 			}
 			
 		} catch (Exception e) {

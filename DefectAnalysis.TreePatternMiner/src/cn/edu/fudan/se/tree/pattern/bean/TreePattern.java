@@ -89,9 +89,9 @@ public class TreePattern {
 		}
 		resultString.append("patternInstance:\n");
 		for (TreeNode treeNode : patternInstances.keySet()) {
-			resultString.append(treeNode);
+			resultString.append(treeNode+"\n");
 			for (TreePatternInstance instanceNode : patternInstances.get(treeNode)) {
-				resultString.append("\t"+instanceNode);
+				resultString.append("\t"+instanceNode+"\n");
 			}
 		}
 		return  resultString.toString()+ "\n\n";

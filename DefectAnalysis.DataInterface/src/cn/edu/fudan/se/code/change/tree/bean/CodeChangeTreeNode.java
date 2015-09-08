@@ -167,7 +167,7 @@ public class CodeChangeTreeNode extends CodeTreeNode {
 
 	@Override
 	public String toSimpleTypeString() {
-		return super.toSimpleTypeString() + "+/-";
+		return preSimpleNameType+"->"+super.toSimpleTypeString() + "+/-";
 	}
 
 }

@@ -266,9 +266,9 @@ public class CodeTreeNode implements TreeNode {
 		for (int i = 0; i < depth; i++) {
 			toString += " ";
 		}
-		toString += node.toNormalString() + "\n";
-		for (CodeTreeNode treeNodeTest : node.children) {
-			toString += this.toWholeString(treeNodeTest, depth + 1);
+		toString += node.toSimpleTypeString() + "\n";
+		for (CodeTreeNode childNode : node.children) {
+			toString += this.toWholeString(childNode, depth + 1);
 		}
 		return toString;
 	}
