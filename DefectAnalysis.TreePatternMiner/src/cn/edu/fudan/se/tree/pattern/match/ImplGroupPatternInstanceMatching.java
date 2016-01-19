@@ -100,7 +100,7 @@ public class ImplGroupPatternInstanceMatching extends AbsGroupPatternMatching {
 								System.err
 										.println("ImplGroupPatternInstanceMatching: Clone Error..");
 							} else {
-								matchedNodes.replace(patternedNode,
+								matchedNodes.put(patternedNode,
 										originalMatchedNode);
 							}
 						}

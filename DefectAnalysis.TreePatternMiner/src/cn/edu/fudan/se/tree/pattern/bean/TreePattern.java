@@ -3,15 +3,15 @@
  */
 package cn.edu.fudan.se.tree.pattern.bean;
 
-import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
-import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
-import cn.edu.fudan.se.tree.pattern.test.TreeNodeTest;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.edu.fudan.se.code.change.tree.bean.CodeTreeNode;
+import cn.edu.fudan.se.code.change.tree.bean.TreeNode;
+import cn.edu.fudan.se.tree.pattern.test.TreeNodeTest;
 
 /**
  * @author Lotay
