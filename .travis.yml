@@ -1,9 +1,6 @@
 dist: trusty
 sudo: required
 
-addons:
-  sonarqube:
-    organization: "zhangch1991425"
 jdk:
   - oraclejdk8
 
