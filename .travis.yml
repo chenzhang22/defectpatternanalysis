@@ -1,0 +1,14 @@
+dist: trusty
+sudo: required
+
+addons:
+  sonarqube:
+    organization: "zhangch1991425"
+    token:
+      secure: "vPKka8/brXbOOHv558KcGftvW+i5H++ZukZ1dwHKYv0790tMF+DlXlhYndqwCCFkbDkXdhUlE3+yz/gacU9Ads1+bQAm0eM05J22yZNmWIhD7oZy0DVfQf7gALUzAfEsAu6XZVjPMMb+29JCz2YGiuqr1y8+DiLz4xkcLfu7ABYmL1ZmKUqejVpD4ulip1jST+wZSTLZDiucs4GtSPyIpbRNjgJ4P0tpE8hkfONVKjPPnOvCnFTTPgMNawJgUu9kajA7X70gHU06PFcdBKX292Fh61V5cjdzSwjvPuX9vA2JTwUWfFJcNKrW743OO4t2bFfy8HNJfrztqISLxpbpKHgCjJgz/gExIMEH2gLSYmk2tViR7TYWnKdTPStn7QQd72qfyfNQq1IbyvRQac9kAJFo4+I+zD8mV4ghJknKrrMsvMDktOKQThR0fsyAb/f7SlMuj7fkOUg1AgoWo/73Zy8/0cl/2nBRzrnNleZWi0EkaERULwQs4S134fNAZs33gsrcwMTOYe7NV3se2bSW888Le/PlrqUK/T4oNIJAw5KsH2jAG6YNzGN9chsPwhWw8B6xy3nnHir37UiVzk44TCCR9Aci6fQj5d7aaFDWWQO+TvwrHoR/gnrOnk6H7bVQAIXWsxceufWE3EM06lBpXAIKpxdLAQQAlIwNyZ+h5Oc="
+
+jdk:
+  - oraclejdk8
+
+script:
+  - sonar-scanner
