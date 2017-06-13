@@ -1,7 +1,8 @@
 dist: trusty
 sudo: required
 addons:
-    srcclr: true
+   srcclr: true
+addons:
    sonarqube:
     organization: "zhangch1991425-github"
     token:
