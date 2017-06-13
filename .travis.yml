@@ -1,7 +1,8 @@
 dist: trusty
 sudo: required
 addons:
-  sonarqube:
+    srcclr: true
+   sonarqube:
     organization: "zhangch1991425-github"
     token:
         secure: "dFhkscJTbX73z2kHA2acqWIRZVMced4aXLf3YAtDyM9bXJVfGbp7M2tEyarc9sr4cmhUiDERkyzR9stlukbx65GXyQC6FKvmE6r35Os2YtYKXyN5AtJkecqdlcOgarElFaqghmZ/3ZZu6NhkHG/p0KI0HZgJ1n4QeR4be5A0NNvt+hvjyntkRv3Qn+X+hwcqf1oia3mVKByxr8Gr8PaHsh7R/RDZYfbkP7kLiylyuAksEHdebQ8+yth7TXR7omQxPcRkx1nSA6dCyGYZE8059x6O6xuQgAWoVgMwmDTcMwHjBHM8uifw21kVAj+ccdow3zoKu6L6Lo3trf1qRr9A/CK3EjoJxmXtR27UI3bNnRA2xG1K5NIVC8r2fW3+WB3kPXVI95OTswpEENDHyRw6LuOZrs1zW3Eiya5CXyCVeyrUeSRgxTvwcoCNb1KPHneYjXLKts0e7REQDMHFGYFFqNA4MWrrOslH77VcdoOvcIBZJpPRVS9t/KDlSFi5lUNXVWfb6tNNDOuZ/deYPkVKhzq+EnmImBAZO2Q5/0TAcK/HOb3/hfUUI+dj3W7Q1XEHjDHewrvlD1nNBCvpdTE7GFshSs80/ltfLq74Jf/7yB356Byi20b4r984BZvJNwi/2Kd9nM5fBM/QGYgSqlCIZZG+JCmzkZ5eAOOPoG+wZyQ="
